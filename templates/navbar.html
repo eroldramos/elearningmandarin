@@ -1,0 +1,112 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Learn Mandarin</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarColor02"
+      aria-controls="navbarColor02"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="#"
+            >Dash Board
+            <span class="visually-hidden">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">User</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">{{request.user.first_name}}</a>
+        </li>
+        {% if request.user.is_authenticated and request.user.is_staff %}
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            data-bs-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+            >Admin</a
+          >
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated link</a>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+
+      <div class="d-flex">
+        {% if request.user.is_authenticated %}
+        <div class="dropdown">
+          <button
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+              class="rounded-circle"
+              src="{{request.user.avatar.url}}"
+              alt="profile"
+              style="height: 1.7rem; width: 1.7rem; margin-bottom: 1px"
+            />
+            {{request.user.username}}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="">Profile</a></li>
+            <li>
+              <a class="dropdown-item" id="logoutBtn">Logout</a>
+            </li>
+            {% if request.user.is_staff %}
+            <li>
+              <a class="dropdown-item" href="{% url 'superuser-users' %}"
+                >Manage Users</a
+              >
+            </li>
+            <li><a class="dropdown-item" href="">To to added</a></li>
+            <li><a class="dropdown-item" href="">To to added</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        {% else %}
+
+        <div class="dropdown">
+          <a class="btn btn-primary" href="{% url 'login' %}">
+            <img
+              src="{% static 'images/avatar.svg' %}"
+              alt="profile"
+              style="height: 1.7rem; width: 1.7rem; margin-bottom: 1px"
+            />
+            Sign in
+          </a>
+        </div>
+        {% endif %}
+      </div>
+      <!-- <form class="d-flex">
+        <input class="form-control me-sm-2" type="text" placeholder="Search" />
+        <button class="btn btn-primary my-2 my-sm-0" type="submit">
+          Search
+        </button>
+      </form> -->
+    </div>
+  </div>
+</nav>
