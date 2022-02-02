@@ -250,7 +250,7 @@ def AdminUpdateUser(request, pk):
     }
     return render(request, 'update_user.html', context)
 
-@login_required(login_url='anonynmous')
+@login_required(login_url='anonymous')
 def AdminDeleteUser(request, pk):
 
     user = User.objects.get(id=pk)
@@ -315,7 +315,7 @@ def AdminEditWordToDictionary(request, pk):
     }
     return render(request, 'add_word_to_dictionary.html', context)
 
-@login_required(login_url='anonynmous')
+@login_required(login_url='anonymous')
 def AdminDeleteWordToDictionary(request, pk):
 
     dict_list = DictionaryList.objects.get(id=pk)
@@ -357,7 +357,7 @@ def DictionaryDetails(request, pk):
 
 
 # Lesson Views
-@login_required(login_url='anonynmous')
+@login_required(login_url='anonymous')
 def AdminAddLesson(request):
     
     form = LessonForm()
@@ -377,7 +377,7 @@ def AdminAddLesson(request):
     }
     return render(request, 'add_edit_lesson.html', context)
 
-@login_required(login_url='anonynmous')
+@login_required(login_url='anonymous')
 def AdminEditLesson(request, pk):
     label = 'Update'
     lesson = Lesson.objects.get(id=pk)
@@ -396,7 +396,7 @@ def AdminEditLesson(request, pk):
         'label' : label,
     }
     return render(request, 'add_edit_lesson.html', context)
-@login_required(login_url='anonynmous')
+@login_required(login_url='anonymous')
 def AdminDeleteLesson(request, pk):
 
     lesson = Lesson.objects.get(id=pk)
@@ -409,7 +409,7 @@ def AdminDeleteLesson(request, pk):
         return redirect('dictionary')
     context = {'obj': lesson}
     return render(request, 'delete.html', context)
-
+@login_required(login_url='anonymous')
 def LessonsPage(request):
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     hsklevels = HskLevel.objects.all()
@@ -426,7 +426,7 @@ def LessonsPage(request):
     }
     return render(request, 'lesson.html', context)
 
-@login_required(login_url='anonynmous')
+@login_required(login_url='anonymous')
 def LessonsDetails(request, pk):
     lesson = Lesson.objects.get(id=pk)
 
