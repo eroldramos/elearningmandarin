@@ -1,9 +1,8 @@
-from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.http import HttpResponse
-from .models import  User
-from .forms import MyUserCreationForm, UserForm
+from .models import  User, DictionaryList, SpeechList, HskLevel, Lesson
+from .forms import MyUserCreationForm, UserForm, DictionaryListForm, LessonForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -38,7 +37,8 @@ def RegisterPage(request):
     form = MyUserCreationForm()
     formErrors = 0
     if request.user.is_authenticated:
-        return redirect('update-user')
+        messages.info(request, 'You are already logged in')
+        return redirect('dictionary')
 
     if request.method == 'POST':
         s_1 = request.POST.get('username')
@@ -75,7 +75,7 @@ def RegisterPage(request):
                 user.save()
                 login(request, user)
                 messages.success(request, f'You are logged in as {user.username}')
-                return redirect('update-user')
+                return redirect('dictionary')
             else:
                 messages.warning(request, 'An error suddenly occured!')
                 return redirect('register')
@@ -90,7 +90,8 @@ def RegisterPage(request):
 def LoginPage(request):
 
     if request.user.is_authenticated:
-        return redirect('update-user')
+        messages.info(request, 'You are already logged in')
+        return redirect('dictionary')
 
     if request.method == 'POST':
         username = request.POST.get('username').lower()
@@ -118,7 +119,7 @@ def LoginPage(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'You are logged in as {username}')
-                return redirect('update-user')
+                return redirect('dictionary')
             else:
                 messages.warning(request, 'Invalid credentials!')
                 return redirect('login')
@@ -173,9 +174,10 @@ def PasswordReset(request):
 
 @login_required(login_url='anonymous')
 def AdminUsersTable(request):
+    page = "Manage Users"
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('update-user')
+        return redirect('dictionary')
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     users = User.objects.filter(
         Q(first_name__icontains = search) |
@@ -183,11 +185,46 @@ def AdminUsersTable(request):
         Q(username__icontains = search)|
         Q(email__icontains = search)
         )
-    
-
-
     context = {
-        'users': users
+        'users': users,
+        'page' : page,
+    }
+    return render(request,'tables.html', context)
+
+@login_required(login_url='anonymous')
+def AdminDictionaryTable(request):
+    page = "Manage Dictionary"
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    search =  request.GET.get('search') if request.GET.get('search') != None else ''
+    dict_list = DictionaryList.objects.filter(
+        Q(pinyin__icontains = search) |
+        Q(hanzi__icontains = search) |
+        Q(english__icontains = search) |
+        Q(part_of_speech__speech__icontains = search) 
+        )
+    context = {
+        'dict_list': dict_list,
+        'page' : page,
+    }
+    return render(request,'tables.html', context)
+
+@login_required(login_url='anonymous')
+def AdminLessonsTable(request):
+    page = "Manage Lessons"
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('lessons')
+    search =  request.GET.get('search') if request.GET.get('search') != None else ''
+    lessons = Lesson.objects.filter(
+        Q(description__icontains = search) |
+        Q(title__icontains = search) |
+        Q(hsklevel__level__icontains = search) 
+        )
+    context = {
+        'lessons': lessons,
+        'page' : page,
     }
     return render(request,'tables.html', context)
 
@@ -197,7 +234,7 @@ def AdminUpdateUser(request, pk):
     form = UserForm(instance=user)
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('update-user')
+        return redirect('dictionary')
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -213,13 +250,13 @@ def AdminUpdateUser(request, pk):
     }
     return render(request, 'update_user.html', context)
 
-@login_required(login_url='login')
+@login_required(login_url='anonynmous')
 def AdminDeleteUser(request, pk):
 
     user = User.objects.get(id=pk)
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('update-user')
+        return redirect('dictionary')
     if request.method == 'POST':
         messages.info(request, f"{user.username} is deleted.")
         user.delete()
@@ -230,8 +267,176 @@ def AdminDeleteUser(request, pk):
 @login_required(login_url='anonymous')
 def LogoutUser(request):
     logout(request)
-    return redirect('login')
+    messages.info(request, 'You have been logged out')
+    return redirect('dictionary')
 
 def PleaseLoginToAccessThisPage(request):
     messages.info(request, 'Please log in to access this page')
     return redirect('login')
+
+# dictionary views
+@login_required(login_url='anonymous')
+def AdminAddWordToDictionary(request):
+    
+    form = DictionaryListForm()
+    label = "Add"
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    if request.method == 'POST':
+        form = DictionaryListForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Word added to dictionary')
+            return redirect('dictionary')
+    context = {
+        'form' : form,
+        'label' : label
+    }
+    return render(request, 'add_word_to_dictionary.html', context)
+
+@login_required(login_url='anonymous')
+def AdminEditWordToDictionary(request, pk):
+    label = 'Update'
+    dict_list = DictionaryList.objects.get(id=pk)
+    form = DictionaryListForm(instance=dict_list)
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    if request.method == 'POST':
+        form = DictionaryListForm(request.POST, instance=dict_list)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Word updated')
+            return redirect('superuser-edit-word', pk=dict_list.id)
+    context = {
+        'form' : form,
+        'label' : label,
+    }
+    return render(request, 'add_word_to_dictionary.html', context)
+
+@login_required(login_url='anonynmous')
+def AdminDeleteWordToDictionary(request, pk):
+
+    dict_list = DictionaryList.objects.get(id=pk)
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    if request.method == 'POST':
+        messages.info(request, f"{dict_list.pinyin} is deleted.")
+        dict_list.delete()
+        return redirect('dictionary')
+    context = {'obj': dict_list}
+    return render(request, 'delete.html', context)
+    
+def DictionaryPage(request):
+    search =  request.GET.get('search') if request.GET.get('search') != None else ''
+    speeches = SpeechList.objects.all()
+    all_result = DictionaryList.objects.all()
+    words = DictionaryList.objects.filter(
+        Q(pinyin__icontains = search) |
+        Q(hanzi__icontains = search) |
+        Q(english__icontains = search) |
+        Q(part_of_speech__speech__icontains = search) |
+        Q(definition__icontains = search)
+        )
+    context = {
+        'words' : words,
+        'speeches' : speeches,
+        'all_result' : all_result,
+    }
+    return render(request, 'dictionary.html', context)
+
+def DictionaryDetails(request, pk):
+    word = DictionaryList.objects.get(id=pk)
+
+    context = {
+    'word' : word,   
+    }
+    return render(request, 'dictionary_details.html', context)
+
+
+# Lesson Views
+@login_required(login_url='anonynmous')
+def AdminAddLesson(request):
+    
+    form = LessonForm()
+    label = "Create"
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    if request.method == 'POST':
+        form = LessonForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Lesson created')
+            return redirect('lessons')
+    context = {
+        'form' : form,
+        'label' : label
+    }
+    return render(request, 'add_edit_lesson.html', context)
+
+@login_required(login_url='anonynmous')
+def AdminEditLesson(request, pk):
+    label = 'Update'
+    lesson = Lesson.objects.get(id=pk)
+    form = LessonForm(instance=lesson)
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    if request.method == 'POST':
+        form = LessonForm(request.POST, instance=lesson)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Lesson updated')
+            return redirect('superuser-edit-lesson', pk=lesson.id)
+    context = {
+        'form' : form,
+        'label' : label,
+    }
+    return render(request, 'add_edit_lesson.html', context)
+@login_required(login_url='anonynmous')
+def AdminDeleteLesson(request, pk):
+
+    lesson = Lesson.objects.get(id=pk)
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    if request.method == 'POST':
+        messages.info(request, f"{lesson.title} is deleted.")
+        lesson.delete()
+        return redirect('dictionary')
+    context = {'obj': lesson}
+    return render(request, 'delete.html', context)
+
+def LessonsPage(request):
+    search =  request.GET.get('search') if request.GET.get('search') != None else ''
+    hsklevels = HskLevel.objects.all()
+    all_result = Lesson.objects.all()
+    lessons = Lesson.objects.filter(
+        Q(title__icontains = search) |
+        Q(description__icontains = search) |
+        Q(hsklevel__level__icontains = search) 
+        )
+    context = {
+        'lessons' : lessons,
+        'all_result' : all_result,
+        'hsklevels' : hsklevels,
+    }
+    return render(request, 'lesson.html', context)
+
+@login_required(login_url='anonynmous')
+def LessonsDetails(request, pk):
+    lesson = Lesson.objects.get(id=pk)
+
+    context = {
+    'lesson' : lesson,   
+    }
+    return render(request, 'lesson_details.html',context)
+
+  
+   
+
+
+

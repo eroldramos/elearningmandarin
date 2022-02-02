@@ -1,0 +1,45 @@
+<table
+  class="table table-hover table-striped table-responsive table-bordered overflow-auto"
+>
+  <thead>
+    <tr class="table-primary">
+      <th scope="col">ID</th>
+      <th scope="col">HANZI</th>
+      <th scope="col">PINYIN</th>
+      <th scope="col">ENGLISH</th>
+      <th scope="col">PART OF SPEECH</th>
+      <th>
+        <form class="d-flex sm-1" action="" method="GET">
+          <input
+            class="form-control me-sm-1"
+            type="text"
+            placeholder="Search words by hanzi, pinyin, english, and part of speech"
+            name="search"
+          />
+          <button class="btn btn-secondary my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </form>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for word in dict_list %}
+    <tr>
+      <th scope="row">{{word.id}}</th>
+      <td class="text-capitalize">{{word.hanzi}}</td>
+      <td class="text-capitalize">{{word.pinyin}}</td>
+      <td>{{ word.english }}</td>
+      <td>{{ word.part_of_speech }}</td>
+      <td class="text-center">
+        <a href="{% url 'superuser-edit-word' word.id %}"
+          ><i class="fas fa-edit px-3"></i
+        ></a>
+        <a href="{% url 'superuser-delete-word' word.id %}"
+          ><i class="fas fa-trash px-3"></i
+        ></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

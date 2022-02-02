@@ -1,7 +1,7 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Learn Mandarin</a>
+    <a class="navbar-brand" href="{% url 'dictionary' %}">Learn Mandarin</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -17,20 +17,18 @@
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link active" href="#"
-            >Dash Board
+          <a class="nav-link active" href="{% url 'dictionary' %}"
+            >Dictionary
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Profile</a>
+          <a class="nav-link" href="{% url 'lessons' %}">Lessons</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">User</a>
+          <a class="nav-link" href="#">To be Added</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">{{request.user.first_name}}</a>
-        </li>
+
         {% if request.user.is_authenticated and request.user.is_staff %}
         <li class="nav-item dropdown">
           <a
@@ -40,14 +38,14 @@
             role="button"
             aria-haspopup="true"
             aria-expanded="false"
-            >Admin</a
+            >To be Added</a
           >
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="#">To be Added</a>
+            <a class="dropdown-item" href="#">To be Added</a>
+            <a class="dropdown-item" href="#">To be Added</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+            <a class="dropdown-item" href="#">To be Added</a>
           </div>
         </li>
         {% endif %}
@@ -72,7 +70,11 @@
             {{request.user.username}}
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="">Profile</a></li>
+            <li>
+              <a class="dropdown-item" href="{% url 'update-user' %}"
+                >Profile</a
+              >
+            </li>
             <li>
               <a class="dropdown-item" id="logoutBtn">Logout</a>
             </li>
@@ -82,8 +84,16 @@
                 >Manage Users</a
               >
             </li>
-            <li><a class="dropdown-item" href="">To to added</a></li>
-            <li><a class="dropdown-item" href="">To to added</a></li>
+            <li>
+              <a class="dropdown-item" href="{% url 'superuser-dictionary' %}"
+                >Manage Dictionary</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'superuser-lessons' %}"
+                >Manage Lessons</a
+              >
+            </li>
             {% endif %}
           </ul>
         </div>

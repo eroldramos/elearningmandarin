@@ -1,0 +1,32 @@
+{% extends 'main.html' %} {% block content%} {% load static %}
+<div class="container-fluid py-3 px-3">
+  <div class="row justify-content-center">
+    <div class="col col-lg-8">
+      <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+
+      <div class="card border-primary mb-3">
+        <div class="card-header">
+          <strong style="font-size: xx-large">{{word.pinyin}}</strong> |
+          {{word.part_of_speech}}
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Definition of <em>{{word.pinyin}}</em></h3>
+          <p class="card-text">{{word.definition}}</p>
+          <h5 class="card-title">
+            Translation In Hanzi -<em>{{word.hanzi}}</em>
+          </h5>
+          <h5 class="card-title">
+            Translation In English -<em>{{word.english}}</em>
+          </h5>
+
+          <h3 class="card-title mt-3">Example in a sentence</h3>
+          <p class="card-text">{{word.sentence}}</p>
+          <h3 class="card-title mt-3">Translation in English</h3>
+          <p class="card-text">{{word.translation}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock content %}

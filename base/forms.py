@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import  User
+from .models import  User, DictionaryList, SpeechList, Lesson
 from django.contrib.auth.forms import UserCreationForm
 
 class MyUserCreationForm(UserCreationForm):
@@ -27,3 +27,29 @@ class UserForm(ModelForm):
         self.fields['last_name'].widget.attrs.update({'class': 'form-control','placeholder':'Enter last name'})
         self.fields['username'].widget.attrs.update({'class': 'form-control','placeholder':'Enter username'})
         self.fields['email'].widget.attrs.update({'class': 'form-control','placeholder':'Enter email'})
+class DictionaryListForm(ModelForm):
+    class Meta:
+        model = DictionaryList
+        fields = ['hanzi', 'pinyin', 'english', 'part_of_speech', 'definition', 'sentence', 'translation']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)   
+        self.fields['hanzi'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Hanzi'})
+        self.fields['pinyin'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Pinyin'})
+        self.fields['english'].widget.attrs.update({'class': 'form-control', 'placeholder': 'English'})
+        self.fields['part_of_speech'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Part of speech'})
+        self.fields['definition'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Definition'})
+        self.fields['sentence'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Example in a sentence'})
+        self.fields['translation'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Translation of the sentence'})
+
+class LessonForm(ModelForm):
+    class Meta:
+        model = Lesson
+        fields = ['title', 'description', 'hsklevel', 'content', 'is_publish']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)   
+        self.fields['title'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Title'})
+        self.fields['description'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Description'})
+        self.fields['hsklevel'].widget.attrs.update({'class': 'form-control', 'placeholder': 'HSK Level'})
+        self.fields['content'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Content',  'id':'myTextArea'})
+        self.fields['is_publish'].widget.attrs.update({'class': 'form-check-input mt-4' })
+      

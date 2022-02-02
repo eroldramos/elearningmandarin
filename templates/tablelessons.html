@@ -1,0 +1,43 @@
+<table
+class="table table-hover table-striped table-responsive table-bordered overflow-auto"
+>
+<thead>
+  <tr class="table-primary">
+    <th scope="col">ID</th>
+    <th scope="col">TITLE</th>
+    <th scope="col">DESCRIPTION</th>
+    <th scope="col">HSK LEVEL</th>
+    <th>
+      <form class="d-flex sm-1" action="" method="GET">
+        <input
+          class="form-control me-sm-1"
+          type="text"
+          placeholder="Search lessons"
+          name="search"
+        />
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">
+          Search
+        </button>
+      </form>
+    </th>
+  </tr>
+</thead>
+<tbody>
+  {% for lesson in lessons %}
+  <tr>
+    <th scope="row">{{lesson.id}}</th>
+    <td>{{lesson.title}}</td>
+    <td>{{lesson.description}}</td>
+    <td>{{ lesson.hsklevel }}</td>
+    <td class="text-center">
+      <a href="{% url 'superuser-edit-lesson' lesson.id %}"
+        ><i class="fas fa-edit px-3"></i
+      ></a>
+      <a href="{% url 'superuser-delete-lesson' lesson.id %}"
+        ><i class="fas fa-trash px-3"></i
+      ></a>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
