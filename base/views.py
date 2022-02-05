@@ -87,7 +87,7 @@ def RegisterPage(request):
         'form': form,
 
     }
-    return render(request, 'login_register.html', context)
+    return render(request, 'register.html', context)
 
 def LoginPage(request):
 
@@ -135,7 +135,7 @@ def LoginPage(request):
         'page' : 'login'
 
     }
-    return render(request, 'login_register.html', context)
+    return render(request, 'login.html', context)
     
 @login_required(login_url='anonymous')
 def PasswordReset(request):
