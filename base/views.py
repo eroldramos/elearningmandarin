@@ -119,9 +119,14 @@ def LoginPage(request):
         if formErrors == 0:
             user = authenticate(request, username = username, password=password)
             if user is not None:
-                login(request, user)
-                messages.success(request, f'You are logged in as {username}')
-                return redirect('dictionary')
+                if user.is_staff:
+                    login(request, user)
+                    messages.success(request, f'You are logged in as {username}')
+                    return redirect('lessons')
+                else:
+                    login(request, user)
+                    messages.success(request, f'You are logged in as {username}')
+                    return redirect('dictionary')
             else:
                 messages.warning(request, 'Invalid credentials!')
                 return redirect('login')

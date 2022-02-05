@@ -11,7 +11,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-@import url("https://fonts.googleapis.com/css2?family=News+Cycle:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200&display=swap');
 :root {
   --bs-blue: #eb6864;
   --bs-indigo: #6610f2;
@@ -2177,7 +2177,7 @@ progress {
   background-color: #fff;
   border-color: #f5b4b2;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(235, 104, 100, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(237, 78, 56);
 }
 
 .form-control::-webkit-date-and-time-value {
@@ -2393,7 +2393,7 @@ textarea.form-control-lg {
 .form-select:focus {
   border-color: #f5b4b2;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(235, 104, 100, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(237, 78, 56);
 }
 
 .form-select[multiple], .form-select[size]:not([size="1"]) {
@@ -2471,7 +2471,7 @@ textarea.form-control-lg {
 .form-check-input:focus {
   border-color: #f5b4b2;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(235, 104, 100, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(237, 78, 56);
 }
 
 .form-check-input:checked {
@@ -2565,11 +2565,11 @@ textarea.form-control-lg {
 }
 
 .form-range:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(235, 104, 100, 0.25);
+  box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(237, 78, 56);
 }
 
 .form-range:focus::-moz-range-thumb {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(235, 104, 100, 0.25);
+  box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(237, 78, 56);
 }
 
 .form-range::-moz-focus-outer {
@@ -3076,7 +3076,7 @@ textarea.form-control-lg {
 
 .btn-check:focus + .btn, .btn:focus {
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(235, 104, 100, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(237, 78, 56);
 }
 
 .btn:disabled, .btn.disabled,
@@ -3087,7 +3087,7 @@ fieldset:disabled .btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #eb6864;
+  background-color: rgba(237, 78, 56);
   border-color: #eb6864;
 }
 
@@ -5099,7 +5099,7 @@ fieldset:disabled .btn {
   z-index: 3;
   border-color: #f5b4b2;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(235, 104, 100, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(237, 78, 56);
 }
 
 .accordion-header {
@@ -5226,7 +5226,7 @@ fieldset:disabled .btn {
   color: #bc5350;
   background-color: #eee;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(235, 104, 100, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(237, 78, 56);
 }
 
 .page-item:not(:first-child) .page-link {
@@ -5880,7 +5880,7 @@ fieldset:disabled .btn {
 
 .btn-close:focus {
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(235, 104, 100, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(237, 78, 56);
   opacity: 1;
 }
 
