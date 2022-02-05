@@ -340,6 +340,7 @@ def AdminDeleteWordToDictionary(request, pk):
     return render(request, 'delete.html', context)
     
 def DictionaryPage(request):
+    
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     speeches = SpeechList.objects.all()
     all_result = DictionaryList.objects.all()
@@ -357,6 +358,8 @@ def DictionaryPage(request):
         'words' : words,
         'speeches' : speeches,
         'all_result' : all_result,
+        'dictionary_active' : 'active',
+        'lesson_active' : '',
     }
     return render(request, 'dictionary.html', context)
 
@@ -436,6 +439,8 @@ def LessonsPage(request):
         'lessons' : lessons,
         'all_result' : all_result,
         'hsklevels' : hsklevels,
+        'dictionary_active' : '',
+        'lesson_active' : 'active',
     }
     return render(request, 'lesson.html', context)
 

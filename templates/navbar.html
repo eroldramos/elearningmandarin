@@ -20,13 +20,13 @@
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav me-auto navbar_menuChouce">
         <li class="nav-item">
-          <a class="nav-link active navigation_choices" href="{% url 'dictionary' %}"
+          <a class="nav-link {{dictionary_active}} navigation_choices" href="{% url 'dictionary' %}"
             >Dictionary
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link navigation_choices" href="{% url 'lessons' %}">Lessons</a>
+          <a class="nav-link {{lesson_active}} navigation_choices" href="{% url 'lessons' %}">Lessons</a>
         </li>
         <li class="nav-item">
           <a class="nav-link navigation_choices" href="#">To be Added</a>
