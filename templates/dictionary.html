@@ -84,8 +84,30 @@
       </div>
       {% endfor %}
     </div>
+    <div class="pagination">
+      {% if words.has_previous %}
+      <a href="?page=1">&laquo First</a>
+      <a href="?page={{ words.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      Page {{ words.number }}  of {{ words.paginator.num_pages }}
+
+      {% if words.has_next %}
+      <a href="?page={{words.next_page_number}}">Next</a>
+      <a href="?page={{ words.paginator.num_pages  }}">Last &raquo</a>
+      {% endif %}
+    </div>
   </div>
 </div>
 
+<!-- Has Previous : {{words.has_previous}}
+Has Next : {{words.has_next}}
+Current Page : {{words.number}}
+Number of Pages: {{words.paginator.num_pages}}
+<hr><br><br> -->
+
+
+{% if request.user.is_authenticated %}
 <script src="{% static 'js/main.js' %}"></script>
+{% endif %}
 {% endblock content %}

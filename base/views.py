@@ -8,8 +8,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from difflib import SequenceMatcher
+from django.core.paginator import Paginator
+
 # Create your views here.
-from difflib import SequenceMatcher
+
 
 @login_required(login_url='anonymous')
 def UpdateUserPage(request):
@@ -157,8 +159,11 @@ def PasswordReset(request):
         if len(newpassword) < 8:
             messages.error(request, 'Password must be at least 8 characters')
             formErrors += 1
+        user = authenticate(request, username = user.username, password= oldpassword)
+        if user is None: 
+            messages.warning(request, 'old password is incorrect')
+            return redirect('update-user')
         if formErrors == 0:
-            user = authenticate(request, username = user.username, password= oldpassword)
             if user is not None:
                 user.password = make_password(newpassword)
                 user.save()
@@ -166,10 +171,10 @@ def PasswordReset(request):
                 messages.success(request, 'Password changed.')
                 return redirect('update-user')
             else:
-                messages.warning(request, 'old password is incorrect')
                 return redirect('update-user')
         else:
             return redirect('update-user')
+            
     return redirect('update-user')
 
 @login_required(login_url='anonymous')
@@ -340,6 +345,9 @@ def DictionaryPage(request):
         Q(part_of_speech__speech__icontains = search) |
         Q(definition__icontains = search)
         )
+    p = Paginator(words, 6)
+    page = request.GET.get('page')
+    words = p.get_page(page)
     context = {
         'words' : words,
         'speeches' : speeches,
@@ -375,7 +383,7 @@ def AdminAddLesson(request):
         'form' : form,
         'label' : label
     }
-    return render(request, 'add_edit_lesson.html', context)
+    return render(request, 'lesson_add.html', context)
 
 @login_required(login_url='anonymous')
 def AdminEditLesson(request, pk):
@@ -395,7 +403,7 @@ def AdminEditLesson(request, pk):
         'form' : form,
         'label' : label,
     }
-    return render(request, 'add_edit_lesson.html', context)
+    return render(request, 'lesson_edit.html', context)
 @login_required(login_url='anonymous')
 def AdminDeleteLesson(request, pk):
 
