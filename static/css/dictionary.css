@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.forRemovingMargin{
+    padding-top: 0rem !important;
+    padding-right: 0rem !important;
+    padding-left: 0rem !important;
+}
+#dictionary_header{
+    height: 30vh;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-image: url(../../static/images/dictionary_headerBg.png);
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+}
+.dictionary_text{
+    text-align: center;
+    font-size: 5vh;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bolder;
+}
+.input_searchD{
+    margin: 0 1rem;
+    padding: .7rem 0;
+    text-indent: 10px;
+}
+.search_btn{
+    padding: 0rem 2rem;
+    margin-right: 2rem;
+}

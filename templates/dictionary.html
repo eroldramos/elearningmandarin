@@ -1,16 +1,19 @@
 {% extends 'main.html' %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/dictionary.css' %}" />
 
-<div class="container-fluid px-3 py-3">
-  <div class="row mb-3 justify-content-center">
+
+<div class="container-fluid px-3 py-3 forRemovingMargin">
+  <div class="row  justify-content-center" id="dictionary_header">
     <div class="col col-lg-6">
+      <p class="dictionary_text">Dictionary</p>
       <form class="d-flex sm-1" action="" method="GET">
         <input
-          class="form-control me-sm-1"
+          class="form-control me-sm-1 input_searchD"
           type="text"
           placeholder="Search your words..."
           name="search"
         />
-        <button class="btn btn-primary my-2 my-sm-0" type="submit">
+        <button class="btn btn-primary my-2 my-sm-0 search_btn" type="submit">
           Search
         </button>
       </form>
@@ -18,7 +21,7 @@
   </div>
 
   {% if request.user.is_authenticated and request.user.is_staff %}
-  <div class="row mb-3 justify-content-center">
+  <div class="row mb-3 justify-content-center px-3">
     <div class="col col-lg-10">
       <a
         href="{% url 'superuser-add-word' %}"
@@ -30,7 +33,7 @@
     </div>
   </div>
   {% endif %}
-  <div class="row justify-content-center">
+  <div class="row justify-content-center px-3 py-3">
     <div class="col col-lg-2 col-md-4 d-lg-block d-sm-none d-md-block d-none">
       <div class="card border-primary" style="height: 500px">
         <div class="card-header">
@@ -84,7 +87,7 @@
       </div>
       {% endfor %}
     </div>
-    <div class="pagination">
+    <div class="pagination px-3 py-3">
       {% if words.has_previous %}
       <a href="?page=1">&laquo First</a>
       <a href="?page={{ words.previous_page_number }}">Previous</a>
