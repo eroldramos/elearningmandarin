@@ -1,23 +1,18 @@
 {% extends "main.html" %} {% block content %} {% load static %}
 <link rel="stylesheet" href="{% static 'css/dictionary.css' %}" />
 
-<<<<<<< HEAD
 <script>
     document.getElementById("lesson_page").style.color = "#ED4E38";
 </script>
 
-<div class="container-fluid px-3 py-3">
-  <div class="row mb-3 justify-content-center">
-=======
 <div class="container-fluid px-3 py-3 forRemovingMargin">
-   <div class="row  justify-content-center" id="dictionary_header">
->>>>>>> 8f70924d642d8351ae101b20938caa711dc728ab
+  <div class="row  justify-content-center" id="dictionary_header">
     <div class="col col-lg-6">
       <p class="dictionary_text">Lessons</p>
       <form class="d-flex sm-1" action="" method="GET">
         <input
           class="form-control me-sm-1 input_searchD"
-          type="text"
+          type="search"
           placeholder="Search your lessons..."
           name="search"
         />
@@ -30,7 +25,7 @@
 
 
 {% if request.user.is_authenticated and request.user.is_staff %}
-<div class="row mb-3 justify-content-center">
+<div class="row mb-3 justify-content-center px-3">
   <div class="col col-lg-10">
     <a
       href="{% url 'superuser-add-lesson' %}"
@@ -42,10 +37,10 @@
   </div>
 </div>
 {% endif %}
-<div class="row justify-content-center">
+<div class="row justify-content-center  px-3">
   <div class="col col-lg-2 col-md-4 d-lg-block d-sm-none d-md-block d-none">
     <div class="card border-primary" style="height: 500px">
-      <div class="card-header">
+      <div class="card-header" id="card_header">
         <strong style="font-size: large">HSK Levels</strong>
       </div>
       <div class="card-body">
@@ -69,8 +64,8 @@
   <div class="col col-lg-8 col-md-8">
    {% for lesson in lessons %}
     <div class="card border-primary mb-3">
-      <div class="card-header">
-        <strong style="font-size: xx-large">{{lesson.title}}</strong> |
+      <div class="card-header card_head_def">
+        <strong style="font-size: x-large">{{lesson.title}}</strong> |
         <span class="text-uppercase">{{ lesson.hsklevel }}</span>
         {%if request.user.is_authenticated and request.user.is_staff%}
         <div style="float: right">
