@@ -9,3 +9,4 @@ document.getElementById("confirm_logout").onclick = function () {
 document.getElementById("cancel_logout").onclick = function () {
   document.querySelector('.logout_container').style.display = "none";
 };
+
