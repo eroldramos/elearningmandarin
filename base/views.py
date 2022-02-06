@@ -371,6 +371,8 @@ def DictionaryPage(request):
         'all_result' : all_result,
         'dictionary_active' : 'active',
         'lesson_active' : '',
+        'search': search,
+        'page' : page,
     }
     return render(request, 'dictionary.html', context)
 
