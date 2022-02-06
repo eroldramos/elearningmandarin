@@ -41,3 +41,20 @@ html, body {
     padding: 0rem 2rem;
     margin-right: 2rem;
 }
+
+#card_header{
+    background: #ED4E38; 
+    color: #fff;
+}
+#card-body{
+    background-color: rgb(248, 248, 248);
+    border-radius: 10px;
+}
+.for_shadow{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.card_head_def{
+    background-color: rgb(243, 242, 242);
+    padding-top: .7rem;
+    padding-bottom: .7rem;
+}

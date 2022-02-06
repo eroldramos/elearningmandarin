@@ -1,4 +1,8 @@
 {% extends 'main.html' %} {% block content %} {% load static %}
+<script>
+  document.getElementById("dictionary_page").style.color = "#ED4E38";
+</script>
+
 <link rel="stylesheet" href="{% static 'css/dictionary.css' %}" />
 
 
@@ -9,7 +13,7 @@
       <form class="d-flex sm-1" action="" method="GET">
         <input
           class="form-control me-sm-1 input_searchD"
-          type="text"
+          type="search"
           placeholder="Search your words..."
           name="search"
         />
@@ -33,15 +37,19 @@
     </div>
   </div>
   {% endif %}
+<<<<<<< HEAD
 
   
   <div class="row justify-content-center">
+=======
+  <div class="row justify-content-center px-3">
+>>>>>>> cc240aacb79dead0d544c2ba1574893568cfbcc6
     <div class="col col-lg-2 col-md-4 d-lg-block d-sm-none d-md-block d-none">
       <div class="card border-primary" style="height: 500px">
-        <div class="card-header">
+        <div class="card-header" id="card_header">
           <strong style="font-size: large">Part of Speech</strong>
         </div>
-        <div class="card-body">
+        <div class="card-body for_shadow" id="card-body">
           <ul>
             <li class="my-3">
               <a href="{% url 'dictionary' %}">All</a>
@@ -62,8 +70,8 @@
     <div class="col col-lg-8 col-md-8">
       {% for word in words %}
       <div class="card border-primary mb-3">
-        <div class="card-header">
-          <strong style="font-size: xx-large">{{word.pinyin}}</strong> |
+        <div class="card-header card_head_def">
+          <strong style="font-size: x-large">{{word.pinyin}}</strong> |
           <span>{{word.part_of_speech}}</span>
           {%if request.user.is_authenticated and request.user.is_staff%}
           <div style="float: right">

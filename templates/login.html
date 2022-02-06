@@ -16,6 +16,9 @@
     <!-- Style -->
     <link rel="stylesheet" href="{% static 'css/login_register_style.css' %}">
 
+    <!-- Tab icon-->
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/navbar_logo.png' %}"> 
+
     <title>Login</title>
   </head>
   <body>
@@ -35,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="contents order-2 order-md-2">
+    <div class="contents order-2 order-md-2 px-4">
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <a href="{{request.META.HTTP_REFERER}}"><img src="{% static 'images/back.svg'%}" class="back"></a>
@@ -74,7 +77,7 @@
                 <span class="ml-auto"><a href="" class="forgot-pass">Forgot password?</a></span> 
               </div>
 
-              <input type="submit" value="Login" class="btn btn-block btn-primary">
+              <input type="submit" value="Login" class="btn btn-block btn-primary" id="login_btn">
 
               <div class="d-flex mb-5 align-items-center caption">
                 <span>Don't have an account? <a href="{% url 'register' %}">Signup now.</a></span> 
