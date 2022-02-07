@@ -5,7 +5,11 @@
   </div>
   <div class="row" >
     <div class="col" style="display: flex; justify-content: center">
+      {% if page == 'authenticated' %}
       <img src="{{request.user.avatar.url}}" alt="profile" class="rounded-circle border border-dark" style="width:8rem; height:8rem;">
+      {% else %}
+      <img src="{{user.avatar.url}}" alt="profile" class="rounded-circle border border-dark" style="width:8rem; height:8rem;">
+      {% endif %}
     </div>
   </div>
   <div class="row justify-content-center" >

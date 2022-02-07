@@ -30,7 +30,8 @@ def UpdateUserPage(request):
             return redirect('update-user')
     context = {
         'form': form,
-        'page' : page
+        'page' : page,
+       
     }
     return render(request, 'update_user.html', context)
 
@@ -184,7 +185,7 @@ def PasswordReset(request):
 
 @login_required(login_url='anonymous')
 def AdminUsersTable(request):
-    page = "Manage Users"
+    pageTable = "Manage Users"
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
@@ -195,15 +196,18 @@ def AdminUsersTable(request):
         Q(username__icontains = search)|
         Q(email__icontains = search)
         )
+    p = Paginator(users, 1)
+    page = request.GET.get('page')
+    users = p.get_page(page)
     context = {
-        'users': users,
-        'page' : page,
+        'table_data': users,
+        'pageTable' : pageTable,
     }
     return render(request,'tables.html', context)
 
 @login_required(login_url='anonymous')
 def AdminDictionaryTable(request):
-    page = "Manage Dictionary"
+    pageTable = "Manage Dictionary"
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
@@ -214,15 +218,18 @@ def AdminDictionaryTable(request):
         Q(english__icontains = search) |
         Q(part_of_speech__speech__icontains = search) 
         )
+    p = Paginator(dict_list, 1)
+    page = request.GET.get('page')
+    dict_list = p.get_page(page)
     context = {
-        'dict_list': dict_list,
-        'page' : page,
+        'table_data': dict_list,
+        'pageTable' : pageTable,
     }
     return render(request,'tables.html', context)
 
 @login_required(login_url='anonymous')
 def AdminLessonsTable(request):
-    page = "Manage Lessons"
+    pageTable = "Manage Lessons"
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('lessons')
@@ -232,9 +239,12 @@ def AdminLessonsTable(request):
         Q(title__icontains = search) |
         Q(hsklevel__level__icontains = search) 
         )
+    p = Paginator(lessons, 1)
+    page = request.GET.get('page')
+    lessons = p.get_page(page)
     context = {
-        'lessons': lessons,
-        'page' : page,
+        'table_data': lessons,
+        'pageTable' : pageTable,
     }
     return render(request,'tables.html', context)
 
@@ -257,6 +267,7 @@ def AdminUpdateUser(request, pk):
             return redirect('superuser-edit-user', pk=user.id)
     context = {
         'form': form,
+         'user' : user,
     }
     return render(request, 'update_user.html', context)
 
@@ -351,7 +362,7 @@ def DictionaryPage(request):
         Q(part_of_speech__speech__icontains = search) |
         Q(definition__icontains = search)
         )
-    p = Paginator(words, 6)
+    p = Paginator(words, 1)
     page = request.GET.get('page')
     words = p.get_page(page)
     context = {
@@ -360,6 +371,8 @@ def DictionaryPage(request):
         'all_result' : all_result,
         'dictionary_active' : 'active',
         'lesson_active' : '',
+        'search': search,
+        'page' : page,
     }
     return render(request, 'dictionary.html', context)
 
@@ -435,6 +448,9 @@ def LessonsPage(request):
         Q(description__icontains = search) |
         Q(hsklevel__level__icontains = search) 
         )
+    p = Paginator(lessons, 1)
+    page = request.GET.get('page')
+    lessons = p.get_page(page)
     context = {
         'lessons' : lessons,
         'all_result' : all_result,

@@ -37,6 +37,33 @@
     </div>
   </div>
   {% endif %}
+
+  <div class="row justify-content-center">
+    <div class="col col-lg-6">
+        <ul class="pagination justify-content-center">
+          <div class="pagination px-3 py-3">
+            {% if words.has_previous %}
+            <li class="page-item"><a class="page-link" href="?search={{search}}&page=1">&laquo First</a></li>
+            <li class="page-item"><a class="page-link" href="?search={{search}}&page={{ words.previous_page_number }}">Previous</a></li>
+            {% endif %}
+          
+          
+            {% for i in words.paginator.page_range %}
+            {% if words.number == i %}
+            <li class="page-item active"><a class="page-link" href="?search={{search}}&page={{i}}">{{i}}</a></li>
+            {% elif i > words.number|add:'-3' and i < words.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?search={{search}}&page={{i}}">{{i}}</a></li>
+            {% endif %}
+            {% endfor %}
+      
+            {% if words.has_next %}
+            <li class="page-item"><a class="page-link" href="?search={{search}}&page={{words.next_page_number}}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?search={{search}}&page={{ words.paginator.num_pages  }}">Last &raquo</a></li>
+            {% endif %}
+        </ul>
+    </div>
+  </div> 
+
   <div class="row justify-content-center px-3">
     <div class="col col-lg-2 col-md-4 d-lg-block d-sm-none d-md-block d-none">
       <div class="card border-primary" style="height: 500px">
@@ -51,7 +78,7 @@
             </li>
             {% for speech in speeches %}
             <li class="my-3">
-              <a href="{% url 'dictionary' %}?search={{speech.speech}}"
+              <a href="{% url 'dictionary' %}?search={{speech.speech}}&page={{page}}"
                 >{{ speech.speech }}</a
               >
               ({{speech.dictionarylist_set.all.count}})
@@ -91,21 +118,9 @@
       </div>
       {% endfor %}
     </div>
-    <div class="pagination px-3 py-3">
-      {% if words.has_previous %}
-      <a href="?page=1">&laquo First</a>
-      <a href="?page={{ words.previous_page_number }}">Previous</a>
-      {% endif %}
-
-      Page {{ words.number }}  of {{ words.paginator.num_pages }}
-
-      {% if words.has_next %}
-      <a href="?page={{words.next_page_number}}">Next</a>
-      <a href="?page={{ words.paginator.num_pages  }}">Last &raquo</a>
-      {% endif %}
-    </div>
+    
   </div>
-</div>
+
 
 <!-- Has Previous : {{words.has_previous}}
 Has Next : {{words.has_next}}

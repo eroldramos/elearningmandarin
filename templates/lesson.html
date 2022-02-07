@@ -37,6 +37,33 @@
   </div>
 </div>
 {% endif %}
+<div class="row justify-content-center">
+  <div class="col col-lg-6">
+      <ul class="pagination justify-content-center">
+        <div class="pagination px-3 py-3">
+          {% if lessons.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{ lessons.previous_page_number }}">Previous</a></li>
+          {% endif %}
+        
+        
+          {% for i in lessons.paginator.page_range %}
+          {% if lessons.number == i %}
+          <li class="page-item active"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+          {% elif i > lessons.number|add:'-3' and i < lessons.number|add:'3' %}
+          <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+          {% endif %}
+          {% endfor %}
+    
+          {% if lessons.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{lessons.next_page_number}}">Next</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{ lessons.paginator.num_pages  }}">Last &raquo</a></li>
+          {% endif %}
+      </ul>
+  </div>
+</div>
+
+
 <div class="row justify-content-center  px-3">
   <div class="col col-lg-2 col-md-4 d-lg-block d-sm-none d-md-block d-none">
     <div class="card border-primary" style="height: 500px">
@@ -94,7 +121,7 @@
     {% endfor %}
   </div>
 </div>
-</div>
+
 
 <script src="{% static 'js/main.js' %}"></script>
 

@@ -11,7 +11,8 @@ class User(AbstractUser):
     avatar = models.ImageField(null=True, default="avatar.svg")
 
     REQUIRED_FIELDS = []
-
+    class Meta:
+        ordering = ['-username']
 
 class SpeechList(models.Model):
     speech = models.CharField(max_length=200)
