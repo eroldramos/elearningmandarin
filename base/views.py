@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.http import HttpResponse
-from .models import  User, DictionaryList, SpeechList, HskLevel, Lesson
+from .models import  User, DictionaryList, SpeechList, HskLevel, Lesson, Quiz
 from .forms import MyUserCreationForm, UserForm, DictionaryListForm, LessonForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from difflib import SequenceMatcher
 from django.core.paginator import Paginator
-
+import json
 # Create your views here.
 
 
@@ -390,7 +390,7 @@ def DictionaryDetails(request, pk):
 def AdminAddLesson(request):
     
     form = LessonForm()
-    label = "Create"
+  
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
@@ -402,15 +402,22 @@ def AdminAddLesson(request):
             return redirect('lessons')
     context = {
         'form' : form,
-        'label' : label
+      
     }
     return render(request, 'lesson_add.html', context)
 
 @login_required(login_url='anonymous')
 def AdminEditLesson(request, pk):
-    label = 'Update'
+ 
     lesson = Lesson.objects.get(id=pk)
     form = LessonForm(instance=lesson)
+    try:
+        quiz = Quiz.objects.get(id=lesson.quiz.id)
+        questions = json.loads(quiz.questions)
+    except:
+        quiz = None   
+        questions = None
+
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
@@ -420,9 +427,30 @@ def AdminEditLesson(request, pk):
             form.save()
             messages.success(request, 'Lesson updated')
             return redirect('superuser-edit-lesson', pk=lesson.id)
+    if request.method == 'POST' and request.POST.get('title'):
+            try:
+                quiz = Quiz.objects.get(id=lesson.quiz.id)
+                quiz.title =  request.POST.get('title')
+                quiz.description = request.POST.get('description')
+                quiz.questions = request.POST.get('questions')
+                quiz.time = request.POST.get('time')
+                quiz.required_score_to_pass = request.POST.get('passingScore')
+                quiz.save()
+            except:
+                quiz = Quiz.objects.create(
+                    lesson = lesson,
+                    title = request.POST.get('title'),
+                    description = request.POST.get('description'),
+                    questions = request.POST.get('questions'),
+                    time = request.POST.get('time'),
+                    required_score_to_pass = request.POST.get('passingScore'),
+                )
+                print(request.POST)
+               
     context = {
         'form' : form,
-        'label' : label,
+        'quiz' : quiz,
+        'questions' : questions,
     }
     return render(request, 'lesson_edit.html', context)
 @login_required(login_url='anonymous')
