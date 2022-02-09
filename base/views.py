@@ -434,7 +434,7 @@ def AdminEditLesson(request, pk):
                 quiz.description = request.POST.get('description')
                 quiz.questions = request.POST.get('questions')
                 quiz.time = request.POST.get('time')
-                quiz.required_score_to_pass = request.POST.get('passingScore')
+                quiz.passingScore = request.POST.get('passingScore')
                 quiz.save()
             except:
                 quiz = Quiz.objects.create(
@@ -443,7 +443,7 @@ def AdminEditLesson(request, pk):
                     description = request.POST.get('description'),
                     questions = request.POST.get('questions'),
                     time = request.POST.get('time'),
-                    required_score_to_pass = request.POST.get('passingScore'),
+                    passingScore = request.POST.get('passingScore'),
                 )
                 print(request.POST)
                
