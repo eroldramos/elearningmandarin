@@ -69,10 +69,10 @@ class Quiz(models.Model):
     title = models.CharField(max_length=120, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     questions = models.TextField(null=True, blank=True)
-    total_points = models.IntegerField(help_text="total_points", default=0)
     time = models.IntegerField(help_text="duration of the quiz in minutes", default=0)
-    required_score_to_pass = models.IntegerField(help_text="required score in %", default=0)
-
+    passingScore = models.IntegerField(help_text="required score in %", default=0)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.lesson.title
     class Meta:
