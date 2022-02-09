@@ -445,7 +445,6 @@ def AdminEditLesson(request, pk):
                     time = request.POST.get('time'),
                     passingScore = request.POST.get('passingScore'),
                 )
-                print(request.POST)
                
     context = {
         'form' : form,
