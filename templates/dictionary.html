@@ -52,7 +52,7 @@
             </li>
             {% for speech in speeches %}
             <li class="my-3">
-              <a href="{% url 'dictionary' %}?search={{speech.speech}}&page={{page}}"
+              <a href="{% url 'dictionary' %}?search={{speech.speech}}&page=1"
                 >{{ speech.speech }}</a
               >
               ({{speech.dictionarylist_set.all.count}})
@@ -64,6 +64,12 @@
     </div>
 
     <div class="col col-lg-8 col-md-8">
+      {% if words|length == 0 %}
+
+      <p class="text-center">No Results Found.</p>
+
+      {% endif %}
+      
       {% for word in words %}
       <div class="card border-primary mb-3">
         <div class="card-header card_head_def" id="card_subhead">

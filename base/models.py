@@ -55,15 +55,6 @@ class Lesson(models.Model):
     class Meta:
         ordering = ['-updated', '-created']
 
-
-        
-# DIFF_CHOICES = (
-#     ('easy', 'easy'),
-#     ('medium', 'medium'),
-#     ('hard', 'hard'),
-# )
-
-
 class Quiz(models.Model):
     lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
     title = models.CharField(max_length=120, null=True, blank=True)
@@ -78,11 +69,11 @@ class Quiz(models.Model):
     class Meta:
         verbose_name_plural = 'Quizzes'
 
-# class Result(models.Model):
-#     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     score = models.FloatField()
+class Result(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    score = models.IntegerField()
 
-#     def __str__(self):
-#         return str(self.pk)
+    def __str__(self):
+        return str(self.user.username)
 

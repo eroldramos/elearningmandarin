@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from django.http import HttpResponse
-from .models import  User, DictionaryList, SpeechList, HskLevel, Lesson, Quiz
+from django.http import HttpResponse, JsonResponse
+from .models import  User, DictionaryList, SpeechList, HskLevel, Lesson, Quiz, Result
 from .forms import MyUserCreationForm, UserForm, DictionaryListForm, LessonForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -484,15 +484,45 @@ def LessonsPage(request):
         'hsklevels' : hsklevels,
         'dictionary_active' : '',
         'lesson_active' : 'active',
+        'search': search,
+        'page' : page,
     }
     return render(request, 'lesson.html', context)
 
 @login_required(login_url='anonymous')
 def LessonsDetails(request, pk):
     lesson = Lesson.objects.get(id=pk)
+    try:
+        quiz = Quiz.objects.get(id=lesson.quiz.id)
+    except:
+        quiz = None
+    if request.method == 'POST' and request.POST.get('startQuiz'):
+        try:
+            quiz = Quiz.objects.get(id=lesson.quiz.id)
+            data = {
+                'title' : quiz.title,
+                'description': quiz.description,
+                'questions': quiz.questions,
+                'time': quiz.time,
+                'passingScore' : quiz.passingScore,
+            }
+            return JsonResponse(data)
+        except:
+            quiz = "[]"
+            data = {
+                
+            }
+            return JsonResponse(data)
 
+    if request.method == 'POST' and request.POST.get('score'):
+        result = Result.objects.create(
+            quiz = quiz,
+            user = request.user,
+            score = request.POST.get('score'),
+        )
     context = {
     'lesson' : lesson,   
+    'quiz' : quiz,
     }
     return render(request, 'lesson_details.html',context)
 
