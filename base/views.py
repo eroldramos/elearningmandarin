@@ -202,6 +202,7 @@ def AdminUsersTable(request):
     context = {
         'table_data': users,
         'pageTable' : pageTable,
+        'search' : search
     }
     return render(request,'tables.html', context)
 
@@ -224,6 +225,7 @@ def AdminDictionaryTable(request):
     context = {
         'table_data': dict_list,
         'pageTable' : pageTable,
+        'search' : search
     }
     return render(request,'tables.html', context)
 
@@ -245,6 +247,7 @@ def AdminLessonsTable(request):
     context = {
         'table_data': lessons,
         'pageTable' : pageTable,
+        'search' : search
     }
     return render(request,'tables.html', context)
 
