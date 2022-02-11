@@ -21,6 +21,11 @@
       <!-- MANAGE LESSONS -->
       {% include 'tablelessons.html' %}
       {% endif %}
+
+      {% if pageTable == "Manage Quizzes" %}
+      <!-- MANAGE QUIZZES -->
+      {% include 'tablequizzes.html' %}
+      {% endif %}
     </div>
   </div>
 </div>
@@ -44,8 +49,8 @@
           {% endfor %}
     
           {% if table_data.has_next %}
-          <li class="page-item"><a class="page-link" href="?page={{table_data.next_page_number}}">Next</a></li>
-          <li class="page-item"><a class="page-link" href="?page={{ table_data.paginator.num_pages  }}">Last &raquo</a></li>
+          <li class="page-item"><a class="page-link" href="?search={{search}}&page={{table_data.next_page_number}}">Next</a></li>
+          <li class="page-item"><a class="page-link" href="?search={{search}}&page={{ table_data.paginator.num_pages  }}">Last &raquo</a></li>
           {% endif %}
       </ul>
   </div>

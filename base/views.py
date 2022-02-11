@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from django.http import HttpResponse
-from .models import  User, DictionaryList, SpeechList, HskLevel, Lesson, Quiz
+from django.http import HttpResponse, JsonResponse
+from .models import  User, DictionaryList, SpeechList, HskLevel, Lesson, Quiz, Result
 from .forms import MyUserCreationForm, UserForm, DictionaryListForm, LessonForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from difflib import SequenceMatcher
 from django.core.paginator import Paginator
+import random
 import json
 # Create your views here.
 
@@ -168,7 +169,7 @@ def PasswordReset(request):
         user = authenticate(request, username = user.username, password= oldpassword)
         if user is None: 
             messages.warning(request, 'old password is incorrect')
-            return redirect('update-user')
+            formErrors += 1
         if formErrors == 0:
             if user is not None:
                 user.password = make_password(newpassword)
@@ -196,12 +197,13 @@ def AdminUsersTable(request):
         Q(username__icontains = search)|
         Q(email__icontains = search)
         )
-    p = Paginator(users, 1)
+    p = Paginator(users, 6)
     page = request.GET.get('page')
     users = p.get_page(page)
     context = {
         'table_data': users,
         'pageTable' : pageTable,
+        'search' : search
     }
     return render(request,'tables.html', context)
 
@@ -218,12 +220,13 @@ def AdminDictionaryTable(request):
         Q(english__icontains = search) |
         Q(part_of_speech__speech__icontains = search) 
         )
-    p = Paginator(dict_list, 1)
+    p = Paginator(dict_list, 6)
     page = request.GET.get('page')
     dict_list = p.get_page(page)
     context = {
         'table_data': dict_list,
         'pageTable' : pageTable,
+        'search' : search
     }
     return render(request,'tables.html', context)
 
@@ -239,12 +242,34 @@ def AdminLessonsTable(request):
         Q(title__icontains = search) |
         Q(hsklevel__level__icontains = search) 
         )
-    p = Paginator(lessons, 1)
+    p = Paginator(lessons, 6)
     page = request.GET.get('page')
     lessons = p.get_page(page)
     context = {
         'table_data': lessons,
         'pageTable' : pageTable,
+        'search' : search
+    }
+    return render(request,'tables.html', context)
+
+@login_required(login_url='anonymous')
+def AdminQuizzesTable(request):
+    pageTable = "Manage Quizzes"
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    search =  request.GET.get('search') if request.GET.get('search') != None else ''
+    quizzes = Quiz.objects.filter(
+        Q(description__icontains = search) |
+        Q(title__icontains = search) 
+        )
+    p = Paginator(quizzes, 6)
+    page = request.GET.get('page')
+    quizzes = p.get_page(page)
+    context = {
+        'table_data': quizzes,
+        'pageTable' : pageTable,
+        'search' : search
     }
     return render(request,'tables.html', context)
 
@@ -362,7 +387,7 @@ def DictionaryPage(request):
         Q(part_of_speech__speech__icontains = search) |
         Q(definition__icontains = search)
         )
-    p = Paginator(words, 1)
+    p = Paginator(words, 6)
     page = request.GET.get('page')
     words = p.get_page(page)
     context = {
@@ -458,13 +483,30 @@ def AdminDeleteLesson(request, pk):
     lesson = Lesson.objects.get(id=pk)
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('dictionary')
+        return redirect('lessons')
     if request.method == 'POST':
         messages.info(request, f"{lesson.title} is deleted.")
         lesson.delete()
-        return redirect('dictionary')
+        return redirect('lessons')
     context = {'obj': lesson}
     return render(request, 'delete.html', context)
+
+
+@login_required(login_url='anonymous')
+def AdminDeleteQuiz(request, pk):
+
+    quiz = Quiz.objects.get(id=pk)
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('lessons')
+    if request.method == 'POST':
+        messages.info(request, f"{quiz.title} is deleted.")
+        quiz.delete()
+        return redirect('lessons')
+    context = {'obj': quiz}
+    return render(request, 'delete.html', context)
+
+
 @login_required(login_url='anonymous')
 def LessonsPage(request):
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
@@ -475,7 +517,7 @@ def LessonsPage(request):
         Q(description__icontains = search) |
         Q(hsklevel__level__icontains = search) 
         )
-    p = Paginator(lessons, 1)
+    p = Paginator(lessons, 6)
     page = request.GET.get('page')
     lessons = p.get_page(page)
     context = {
@@ -484,15 +526,47 @@ def LessonsPage(request):
         'hsklevels' : hsklevels,
         'dictionary_active' : '',
         'lesson_active' : 'active',
+        'search': search,
+        'page' : page,
     }
     return render(request, 'lesson.html', context)
 
 @login_required(login_url='anonymous')
 def LessonsDetails(request, pk):
     lesson = Lesson.objects.get(id=pk)
+    try:
+        quiz = Quiz.objects.get(id=lesson.quiz.id)
+    except:
+        quiz = None
+    if request.method == 'POST' and request.POST.get('startQuiz'):
+        try:
+            quiz = Quiz.objects.get(id=lesson.quiz.id)
+            shuffledTenQuestion = json.loads(quiz.questions)
+            random.shuffle(shuffledTenQuestion)
+            data = {
+                'title' : quiz.title,
+                'description': quiz.description,
+                'questions': json.dumps(shuffledTenQuestion[:10]),
+                'time': quiz.time,
+                'passingScore' : quiz.passingScore,
+            }
+            return JsonResponse(data)
+        except:
+            quiz = "[]"
+            data = {
+                
+            }
+            return JsonResponse(data)
 
+    if request.method == 'POST' and request.POST.get('score'):
+        result = Result.objects.create(
+            quiz = quiz,
+            user = request.user,
+            score = request.POST.get('score'),
+        )
     context = {
     'lesson' : lesson,   
+    'quiz' : quiz,
     }
     return render(request, 'lesson_details.html',context)
 
