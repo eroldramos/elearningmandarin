@@ -27,6 +27,10 @@ class UserForm(ModelForm):
         self.fields['last_name'].widget.attrs.update({'class': 'form-control','placeholder':'Enter last name'})
         self.fields['username'].widget.attrs.update({'class': 'form-control','placeholder':'Enter username'})
         self.fields['email'].widget.attrs.update({'class': 'form-control','placeholder':'Enter email'})
+        self.fields['first_name'].widget.attrs['required'] = 'required'
+        self.fields['last_name'].widget.attrs['required'] = 'required'
+        self.fields['username'].widget.attrs['required'] = 'required'
+        self.fields['email'].widget.attrs['required'] = 'required'
 class DictionaryListForm(ModelForm):
     class Meta:
         model = DictionaryList
