@@ -339,7 +339,7 @@ def AdminAddWordToDictionary(request):
         'form' : form,
         'label' : label
     }
-    return render(request, 'add_word_to_dictionary.html', context)
+    return render(request, 'dictionary_edit_add.html', context)
 
 @login_required(login_url='anonymous')
 def AdminEditWordToDictionary(request, pk):
@@ -359,7 +359,7 @@ def AdminEditWordToDictionary(request, pk):
         'form' : form,
         'label' : label,
     }
-    return render(request, 'add_word_to_dictionary.html', context)
+    return render(request, 'dictionary_edit_add.html', context)
 
 @login_required(login_url='anonymous')
 def AdminDeleteWordToDictionary(request, pk):
