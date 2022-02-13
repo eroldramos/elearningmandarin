@@ -29,7 +29,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
     <th scope="row">{{activitylogs.id}}</th>
     <td>{{activitylogs.user.username}}</td>
     <td>{{activitylogs.action}}</td>
-    <td>{{activitylogs.time_stamp}}</td>
+    <td>{{activitylogs.time_stamp|date:'Y-m-d'}}</td>
     <td class="text-center">
       <a href="{% url 'superuser-delete-activitylog' activitylogs.id %}"
         ><i class="fas fa-trash px-3"></i

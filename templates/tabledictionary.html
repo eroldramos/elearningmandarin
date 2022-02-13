@@ -8,6 +8,7 @@
       <th scope="col">PINYIN</th>
       <th scope="col">ENGLISH</th>
       <th scope="col">PART OF SPEECH</th>
+      <th scope="col">CREATED AT</th>
       <th>
         <form class="d-flex sm-1" action="" method="GET">
           <input
@@ -31,6 +32,7 @@
       <td class="text-capitalize">{{word.pinyin}}</td>
       <td>{{ word.english }}</td>
       <td>{{ word.part_of_speech }}</td>
+      <td>{{ word.created|date:'Y-m-d' }}</td>
       <td class="text-center">
         <a href="{% url 'superuser-edit-word' word.id %}"
           ><i class="fas fa-edit px-3"></i
