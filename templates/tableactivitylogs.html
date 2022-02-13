@@ -1,0 +1,41 @@
+<table
+class="table table-hover table-striped table-responsive table-bordered overflow-auto"
+>
+<thead>
+  <tr class="table-primary">
+    <th scope="col">ID</th>
+    <th scope="col">USER</th>
+    <th scope="col">ACTION</th>
+    <th scope="col">TIME STAMP</th>
+   
+    <th>
+      <form class="d-flex sm-1" action="" method="GET">
+        <input
+          class="form-control me-sm-1"
+          type="text"
+          placeholder="Search lessons"
+          name="search"
+        />
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">
+          Search
+        </button>
+      </form>
+    </th>
+  </tr>
+</thead>
+<tbody>
+  {% for activitylogs in table_data %}
+  <tr>
+    <th scope="row">{{activitylogs.id}}</th>
+    <td>{{activitylogs.user.username}}</td>
+    <td>{{activitylogs.action}}</td>
+    <td>{{activitylogs.time_stamp}}</td>
+    <td class="text-center">
+      <a href="{% url 'superuser-delete-activitylog' activitylogs.id %}"
+        ><i class="fas fa-trash px-3"></i
+      ></a>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>

@@ -11,6 +11,7 @@ class User(AbstractUser):
     avatar = models.ImageField(null=True, default="avatar.svg")
 
     REQUIRED_FIELDS = []
+
     class Meta:
         ordering = ['username']
 
@@ -65,15 +66,28 @@ class Quiz(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return self.lesson.title
+        return f"{self.lesson.title} - Quiz"
     class Meta:
         verbose_name_plural = 'Quizzes'
+        ordering = ['-updated', '-created']
 
 class Result(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     score = models.IntegerField()
-
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return str(self.user.username)
+    class Meta:
+        ordering = ['-score']
 
+class ActivityLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    action = models.CharField(max_length=200, null=True)
+    time_stamp = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return str(f"{self.user.username} ({self.action})")
+    class Meta:
+        ordering = ['-time_stamp']
