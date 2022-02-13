@@ -7,6 +7,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
     <th scope="col">TITLE</th>
     <th scope="col">DESCRIPTION</th>
     <th scope="col">HSK LEVEL</th>
+    <th scope="col">CREATED AT</th>
     <th>
       <form class="d-flex sm-1" action="" method="GET">
         <input
@@ -29,6 +30,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
     <td>{{lesson.title}}</td>
     <td>{{lesson.description}}</td>
     <td>{{ lesson.hsklevel }}</td>
+    <td>{{ lesson.created|date:'Y-m-d' }}</td>
     <td class="text-center">
       <a href="{% url 'superuser-edit-lesson' lesson.id %}"
         ><i class="fas fa-edit px-3"></i

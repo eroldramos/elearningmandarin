@@ -6,6 +6,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
     <th scope="col">ID</th>
     <th scope="col">TITLE</th>
     <th scope="col">DESCRIPTION</th>
+    <th scope="col">CREATED AT</th>
    
     <th>
       <form class="d-flex sm-1" action="" method="GET">
@@ -28,6 +29,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
     <th scope="row">{{quiz.id}}</th>
     <td>{{quiz.title}}</td>
     <td>{{quiz.description}}</td>
+    <td>{{quiz.created|date:'Y-m-d'}}</td>
     <td class="text-center">
       <a href="{% url 'superuser-edit-lesson' quiz.lesson.id %}"
         ><i class="fas fa-edit px-3"></i
