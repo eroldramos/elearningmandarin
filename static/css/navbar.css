@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200&display=swap');
-
+#test{
+    font-family: 'Poppins', sans-serif;
+}
 #navbar_header{
     background-color: #363740;
     padding-right: 3%;
@@ -23,4 +25,9 @@
 .navigation_choices{
     font-family: 'Poppins', sans-serif;
     margin: 0% 1rem;
+}
+.navbar_mini_icon{
+    height: 3vh;
+    width: auto;
+    margin-right: .5rem;
 }

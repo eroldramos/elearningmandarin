@@ -1,0 +1,30 @@
+#dictionary_header{
+    height: 30vh;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-image: url(../../static/images/dictionary_headerBg.png);
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+}
+#back_div{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+#back_btn{
+    text-decoration: none;
+    color: #696F79;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0%;
+    padding: 0%;
+    display: flex;
+    align-items: center;
+    margin-right: 4rem;
+}

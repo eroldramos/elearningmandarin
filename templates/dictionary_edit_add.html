@@ -2,17 +2,25 @@
 <script>
   document.getElementById("dictionary_page").style.color = "#ED4E38";
 </script>
-<div class="container-fluid py-3 px-3">
-  <div class="row mb-5">
+<link rel="stylesheet" href="{% static 'css/dictionaryAdd_Edit.css' %}" />
+
+<div class="container-fluid">
+  <div class="row mb-5" id="dictionary_header">
     <h1 class="text-center">Dictionary</h1>
   </div>
+
   <div class="row justify-content-center">
     <div class="col col-lg-6">
-      <a href="{%url 'dictionary'%}"
-        ></i>&#8592; Go Back</a
-      >
       <form action="" method="POST">
-        <h3> {{label}} Word {% if label == 'Add' %}to Dictionary{%endif%}</h3>
+
+        <div id="back_div"> 
+          <a href="{%url 'dictionary'%}" id="back_btn">
+            <img src="{% static 'images/back_icon.png' %}" class="navbar_mini_icon">
+             Back
+          </a>
+          <h3 style="margin: 0%;"> {{label}}  {% if label == 'Add' %}new word{%endif%}</h3>
+        </div>
+        
         {%csrf_token %}
 
         <div class="col-sm-12">

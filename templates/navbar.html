@@ -58,7 +58,7 @@
         {% if request.user.is_authenticated %}
         <div class="dropdown">
           <button
-            class="btn btn-primary dropdown-toggle button_profile"
+            class="btn btn-primary dropdown-toggle button_profile" id="test"
             type="button"
             id="dropdownMenuButton1"
             data-bs-toggle="dropdown"
@@ -74,41 +74,51 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li>
-              <a class="dropdown-item" href="{% url 'update-user' %}"
-                >Profile</a
+              <a class="dropdown-item" href="{% url 'update-user' %}">
+                <img src="{% static 'images/profile_icon_navbar.png' %}" class="navbar_mini_icon">
+                Profile</a
               >
-            </li>
-            <li>
-              <a class="dropdown-item" id="logoutBtn">Logout</a>
             </li>
             {% if request.user.is_staff %}
             <li>
-              <a class="dropdown-item" href="{% url 'superuser-users' %}"
-                >Manage Users</a
+              <a class="dropdown-item" href="{% url 'superuser-users' %}">
+                <img src="{% static 'images/manageUser_icon_navbar.png' %}" class="navbar_mini_icon">
+                Manage Users</a
               >
             </li>
             <li>
-              <a class="dropdown-item" href="{% url 'superuser-dictionary' %}"
-                >Manage Dictionary</a
+              <a class="dropdown-item" href="{% url 'superuser-dictionary' %}">
+                <img src="{% static 'images/manageDict_icon_navbar.png' %}" class="navbar_mini_icon">
+                Manage Dictionary</a
               >
             </li>
             <li>
-              <a class="dropdown-item" href="{% url 'superuser-lessons' %}"
-                >Manage Lessons</a
+              <a class="dropdown-item" href="{% url 'superuser-lessons' %}">
+                <img src="{% static 'images/manageLesson_icon_navbar.png' %}" class="navbar_mini_icon">
+                Manage Lessons</a
               >
             </li>
             <li>
-              <a class="dropdown-item" href="{% url 'superuser-quizzes' %}"
-                >Manage Quizzes</a
+              <a class="dropdown-item" href="{% url 'superuser-quizzes' %}">
+                <img src="{% static 'images/manageQuizzes_icon_navbar.png' %}" class="navbar_mini_icon">
+                Manage Quizzes</a
               >
             </li>
 
             <li>
-              <a class="dropdown-item" href="{% url 'superuser-activitylogs' %}"
-                >Manage Activities</a
+              <a class="dropdown-item" href="{% url 'superuser-activitylogs' %}">
+                <img src="{% static 'images/activityLog_icon_navbar.png' %}" class="navbar_mini_icon">
+                Activity Logs</a
               >
             </li>
             {% endif %}
+            
+            <hr>
+            <li style="margin-top:-.5rem;">
+              <a class="dropdown-item" id="logoutBtn">
+                <img src="{% static 'images/logout_icon_navbar.png' %}" class="navbar_mini_icon">
+                Logout</a>
+            </li>
           </ul>
         </div>
         {% else %}
