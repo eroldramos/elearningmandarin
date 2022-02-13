@@ -1,7 +1,9 @@
 {% extends 'main.html' %} {% block content %} {% load static %}
-<div class="container-fluid py-3 px-3" >
-  <div class="row mb-5">
-    <h1 class="text-center">Learn Mandarin Now</h1>
+<link rel="stylesheet" href="{% static 'css/dictionaryAdd_Edit.css' %}" />
+
+<div class="container-fluid">
+  <div class="row mb-5" id="dictionary_header">
+    <h1 class="text-center">Edit Profile</h1>
   </div>
   <div class="row" >
     <div class="col" style="display: flex; justify-content: center">
@@ -15,7 +17,6 @@
   <div class="row justify-content-center" >
     <div class="col col-lg-6 col-md-8 col-sm-8" >
       <form action="" method="POST" enctype="multipart/form-data">
-        <h3>User Profile</h3>
         {%csrf_token %}
         <div class="col-sm-12">
           <div class="form-group">
@@ -59,28 +60,29 @@
             </div>
           </div>
 
-        <div class="form-group">
-          <br />
+        <div class="form-group" id="edit_pass">
           <button type="submit" class="btn btn-primary btn-lg btn-block">
           Update
           </button>
+
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="enableChangePass">
+                <label class="form-check-label" for="flexCheckIndeterminate">
+                  Click to change password
+                </label>
+              </div>
+
+
         </div>
       </form>
     </div>
   </div>
-{% if page == 'authenticated' %}
-<div class="row justify-content-center my-3">
-  <div class="col col-lg-6">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="enableChangePass">
-      <label class="form-check-label" for="flexCheckIndeterminate">
-        Click to change password
-      </label>
-    </div>
-  </div>
-</div>
 
-<div class="row justify-content-center" id="passwordReset" style="display: none;">
+  
+{% if page == 'authenticated' %}
+
+<div class="row justify-content-center" id="passwordReset" style="display: none; margin-bottom: 3rem;">
   <div class="col col-lg-6 col-md-8 col-sm-8">
     <form action="{% url 'passwordreset' %}" method="POST">
       <h3>Password Reset</h3>
@@ -107,7 +109,7 @@
         <div class="col-sm-12">
           <div class="form-group">
             <label for="" class="form-label mt-4">
-             Confirm Password
+             Confirm New Password
             </label>
             <input type="password" name="confirmpassword" class="form-control" placeholder="*******" required>
           </div>
@@ -123,6 +125,9 @@
   </div>
 </div>
 </div>
+
+<img src="{% static 'images/right_bgImg.png' %}" id="right_bg_img">
+
 <script>
 document.getElementById('enableChangePass').onchange = function (){
   if (document.getElementById('enableChangePass').checked){

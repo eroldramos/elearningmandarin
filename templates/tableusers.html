@@ -1,5 +1,39 @@
+  <!-- Filter Date Range -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<div id="reportrange">
+  <span id="span_edit">Click to filter by date range</span>
+  <img src="../../images/calendar_inq.png">
+  <input type="hidden" name="filterStart" id="filterStart">
+  <input type="hidden" name="filterEnd" id="filterEnd">
+</div>
+
+<div id="export_container" class="export_pdf_btn">
+  <img src="../../images/export.png">
+  Export PDF
+</div>
+
+
+<div id="search_inp">
+  <select id="filter_category">
+      <option value="ALL" selected>ALL</option>
+      <option value="ID">ID</option>
+      <option value="FIRST NAME">FIRST NAME</option>
+      <option value="LAST NAME">LAST NAME</option>
+      <option value="USERNAME">USERNAME</option>
+      <option value="EMAIL">EMAIL</option>
+      <option value="DATE JOINED">DATE JOINED</option>
+  </select>
+  <input type="text" placeholder="Search here....." id="search_User">
+  <img src="../../images/search_gif.gif">
+</div>
+
+
+
 <table
-  class="table table-hover table-striped table-responsive table-bordered overflow-auto"
+  class="table table-hover table-striped table-responsive table-bordered overflow-auto table_id" id="table_user"
 >
   <thead>
     <tr class="table-primary">
@@ -9,25 +43,13 @@
       <th scope="col">USERNAME</th>
       <th scope="col">EMAIL</th>
       <th scope="col">DATE JOINED</th>
-      <th>
-        <form class="d-flex sm-1" action="" method="GET">
-          <input
-            class="form-control me-sm-1"
-            type="text"
-            placeholder="Search users by first name, last name, email, and username"
-            name="search"
-          />
-          <button class="btn btn-secondary my-2 my-sm-0" type="submit">
-            Search
-          </button>
-        </form>
-      </th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
     {% for user in table_data %}
-    <tr>
-      <th scope="row">{{user.id}}</th>
+    <tr id="tr_Search">
+      <td scope="row">{{user.id}}</th>
       <td class="text-capitalize">{{user.first_name}}</td>
       <td class="text-capitalize">{{user.last_name}}</td>
       <td>{{ user.username }}</td>
@@ -45,3 +67,101 @@
     {% endfor %}
   </tbody>
 </table>
+
+
+<div id="no_dataVerifyer">
+  <img src="../../images/no_record_found.png" alt="">
+  NO DATA FOUND
+</div>
+
+
+<!-- Script for pdf -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
+
+<script type="text/javascript">
+
+document.querySelector('.export_pdf_btn').addEventListener("click", () => {
+    const invoice = document.getElementById("table_user");
+
+            var opt = {
+                margin: 1,
+                filename: 'Users.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape'}
+            };
+            html2pdf().from(invoice).set(opt).save();
+ })
+
+
+
+function myFunction() {
+  var table, filter,tr, td, i, txtValue;
+  var dateRangeVal = document.getElementById("span_edit").innerHTML;
+  const myArray = dateRangeVal.split(" to ");
+
+  var start = myArray[0]
+  var end1 = myArray[1]
+
+  table = document.getElementById("table_user");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[5];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (start <= txtValue && txtValue <= end1) {
+        tr[i].style.display = "";
+        document.getElementById("no_dataVerifyer").style.display = "none"
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+
+  var verifyer_ctr = $('#table_user #tr_Search:visible').length;
+  var inplen = $("#search_User").val();
+
+    if(verifyer_ctr === 0) {
+      document.getElementById("no_dataVerifyer").style.display = "flex"
+    }
+    else if(inplen.length === 0){
+      document.getElementById("no_dataVerifyer").style.display = "none"
+    }
+
+}
+
+  
+$(function() {
+var start = moment().subtract(29, 'days');
+var end = moment();
+
+function cb(start, end) {
+    $('#reportrange #span_edit').html(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD')); 
+}
+        
+
+$('#reportrange').daterangepicker({
+    startDate: start,
+    endDate: end,
+    ranges: {
+       'Today': [moment(), moment()],
+       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+       'This Month': [moment().startOf('month'), moment().endOf('month')],
+       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    }
+}, cb);
+
+$('#reportrange').on('apply.daterangepicker', (e, picker) => {
+        var dateRangeVal = document.getElementById("span_edit").innerHTML;
+        const myArray = dateRangeVal.split(" to ");
+        document.getElementById("filterStart").value = myArray[0]
+        document.getElementById("filterEnd").value = myArray[1]
+        myFunction();
+});
+
+});
+
+</script>

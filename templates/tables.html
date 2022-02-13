@@ -1,9 +1,14 @@
 {% extends 'main.html' %} {% block content %} {% load static %}
 <link rel="stylesheet" href="{% static 'css/tables.css' %}" />
+<link rel="stylesheet" href="{% static 'css/dictionaryAdd_Edit.css' %}" />
+<link rel="stylesheet" href="{% static 'css/table.css' %}" />
+
+
+
 
 <div class="container-fluid">
-  <div class="row my-3">
-    <h1 class="text-center">{{pageTable}}</h1>
+  <div class="row" id="dictionary_header">
+    <h1 class="text-center" id="head_Text">{{pageTable}}</h1>
   </div>
   <div class="row justify-content-center">
     <div class="col col-lg-10 col-sm-12">
@@ -62,5 +67,5 @@
 </div>
 
 <script src="{% static 'js/main.js' %}"></script>
-
+<script src="{% static 'js/filterSearch.js' %}"></script>
 {% endblock content %}

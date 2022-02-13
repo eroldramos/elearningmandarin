@@ -37,7 +37,7 @@
 }
 .logout_text{
     line-height: 1;
-    margin: 0% 2rem;
+    margin: 0% 5rem;
     margin-top: 1rem;
     font-size: 3vh;
     font-family: 'Poppins', sans-serif;
@@ -58,6 +58,8 @@
     border: none;
     border-radius: 20px;
     margin: 0 .7rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     color: #fff;
     padding: .5rem  1.8rem;
 }
