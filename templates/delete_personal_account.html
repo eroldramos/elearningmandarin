@@ -1,0 +1,16 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/delete.css' %}" />
+
+<div class="delete_container">
+    <div class="card" style="width: 25rem;" id="delete_box">
+        <div class="top_header">
+            <img src="{% static 'images/questionmark_validation.png' %}" alt="">
+        </div>
+        <p class="delete_text">Are you sure you want to delete your account?</p>
+
+        <div class="btn_delete">
+            <button type="button" class="btn  btn1" id="confirm_delete">Confirm</button>
+            <button type="button" class="btn  btn2" id="cancel_delete">Cancel</button>
+        </div>
+    </div>
+</div>

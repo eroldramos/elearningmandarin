@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200&display=swap');
+
+.delete_container{
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    width: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+    background-color: rgba(0, 0, 0, 0.411);
+}
+#delete_box{
+    margin: 0 5%;
+    background-color: #EEEEF0;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.top_header{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: 20vh;
+    width: 100%;
+    background-image: url(../../static/images/validation_bg.png);
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.top_header img{
+    height: 60%;
+    width: auto;
+}
+.delete_text{
+    line-height: 1;
+    margin: 0% 5rem;
+    margin-top: 1rem;
+    font-size: 3vh;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    text-align: center;
+}
+.btn_delete{
+    margin: 1.5rem 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn_delete button{
+    font-family: 'Poppins', sans-serif;
+    font-size: 2vh;
+    border: none;
+    border-radius: 20px;
+    margin: 0 .7rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    color: #fff;
+    padding: .5rem  1.8rem;
+}
+.btn_delete .btn1{
+    background-color: #779ECB;
+}
+.btn_delete .btn2{
+    background-color: #8B8B8B;
+}
+.btn_delete button:hover{
+    opacity: 70%;
+}
