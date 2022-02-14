@@ -1,12 +1,23 @@
 {% extends 'main.html' %} {% block content %} {% load static %}
 <link rel="stylesheet" href="{% static 'css/dictionaryAdd_Edit.css' %}" />
-
+<link rel="stylesheet" href="{% static 'css/dictionary.css' %}" />
 <div class="container-fluid">
   <div class="row mb-5" id="dictionary_header">
-    <h1 class="text-center" id="head_text">Edit Profile</h1>
+    <h1 class="text-center" id="head_Text">Edit Profile</h1>
   </div>
+
+  {% if page == 'authenticated' %}
+ <div class="row justify-content-center">
+   <div class="col col-lg-6">
+    <button class="btn btn-primary" id="deleteBtn">Delete Account</button>
+   </div>
+ </div> 
+ {% include 'delete_personal_account.html' %}
+ <script src="{% static 'js/delete.js' %}"></script>
+ {% endif %}
   <div class="row" >
     <div class="col" style="display: flex; justify-content: center">
+    
       {% if page == 'authenticated' %}
       <img src="{{request.user.avatar.url}}" alt="profile" class="rounded-circle border border-dark" style="width:8rem; height:8rem;">
       {% else %}
@@ -64,7 +75,8 @@
           <button type="submit" class="btn btn-primary btn-lg btn-block">
           Update
           </button>
-
+  
+          {% if page == 'authenticated' %}
 
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="enableChangePass">
@@ -72,7 +84,7 @@
                   Click to change password
                 </label>
               </div>
-
+          {% endif %}
 
         </div>
       </form>

@@ -81,11 +81,13 @@ def RegisterPage(request):
                 user = form.save(commit=False)
                 
                 user.username = user.username.lower()
+                
+                user.save()
+
                 ActivityLog.objects.create(
                 user = user,
                 action = f"New user is registered - {user.username}",
                 )
-                user.save()
                 login(request, user)
                 messages.success(request, f'You are logged in as {user.username}')
                 return redirect('dictionary')
