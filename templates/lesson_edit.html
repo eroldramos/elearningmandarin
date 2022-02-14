@@ -25,6 +25,7 @@
           <a class="nav-link" data-bs-toggle="tab" href="#quiz">Assessment</a>
         </li>
       </ul>
+      <br>
       <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade active show" id="lesson">
           <form action="" method="POST">
@@ -147,7 +148,7 @@
 
                   {% if question.type == "MC" %}
                   <div class="questions" id="questions{{forloop.counter}}"><!--
-                  --><button class="removeQuestionBtn" onclick='removeQuestion2("questions{{forloop.counter}}")'>X</button><!--
+                  --><button class="removeQuestionBtn" onclick='removeQuestion2("questions{{forloop.counter}}")'>&#215;</button><!--
                   --><p class="question-number">{{forloop.counter}}</p><!--
                   --><small class="question-type">Multiple Choice</small><!--
                    --><hr><!--
