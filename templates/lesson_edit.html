@@ -25,6 +25,7 @@
           <a class="nav-link" data-bs-toggle="tab" href="#quiz">Assessment</a>
         </li>
       </ul>
+      <br>
       <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade active show" id="lesson">
           <form action="" method="POST">
@@ -147,7 +148,7 @@
 
                   {% if question.type == "MC" %}
                   <div class="questions" id="questions{{forloop.counter}}"><!--
-                  --><button class="removeQuestionBtn" onclick='removeQuestion2("questions{{forloop.counter}}")'>X</button><!--
+                  --><button class="removeQuestionBtn" onclick='removeQuestion2("questions{{forloop.counter}}")'>&#215;</button><!--
                   --><p class="question-number">{{forloop.counter}}</p><!--
                   --><small class="question-type">Multiple Choice</small><!--
                    --><hr><!--
@@ -236,10 +237,22 @@
         <div class="menu-question-type">
           <div class="title-question-menu" style='text-align: center;'>Question Types</div>
           <ul class="nav">
-            <li class='list' onclick="addIdentification2()"><span>Identification</span></li>
-            <li class='list' onclick="addMultipleChoice2()"><span>Multiple Choice</span></li>
-            <li class='list' onclick="addTrueOrFalse2()"><span>True or False</span></li>
-            <li class='list' onclick="removeQuestion()"><span>Remove Question</span></li>
+            <li class='list' onclick="addIdentification2()">
+              <img src="{% static 'images/identification.png' %}" class="navbar_mini_icon">
+              <span>Identification</span>
+            </li>
+            <li class='list' onclick="addMultipleChoice2()">
+              <img src="{% static 'images/multipleChoice.png' %}" class="navbar_mini_icon">
+              <span>Multiple Choice</span>
+            </li>
+            <li class='list' onclick="addTrueOrFalse2()">
+              <img src="{% static 'images/trueorfalse.png' %}" class="navbar_mini_icon">
+              <span>True or False</span>
+            </li>
+            <li class='list' onclick="removeQuestion()">
+              <img src="{% static 'images/remove.png' %}" class="navbar_mini_icon">
+              <span>Remove Question</span>
+            </li>
           </ul>
         </div>
         </div>
@@ -251,7 +264,7 @@
   </div>
 </div>
 
-<img src="{% static 'images/right_bgImg.png' %}" id="right_bg_img">
+
 
 <script src="{% static 'js/main.js' %}"></script>
 <script src="{% static 'js/lesson_edit.js' %}"></script>

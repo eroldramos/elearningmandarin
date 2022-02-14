@@ -245,31 +245,38 @@ document.getElementsByClassName('removeQuestionBtn')[i-1].setAttribute('onclick'
 }
 
 function addIdentification2(){
+  $('html,body').animate({ scrollTop: 9999 }, 'slow');
+
+
 current_question_number = document.getElementsByClassName('question-number');
 current_question_number = current_question_number[current_question_number.length - 1].textContent;
 
 identification = `
-<div class="questions" id="questions${parseInt(current_question_number) + 1}"><button class="removeQuestionBtn" onclick='removeQuestion2("questions${parseInt(current_question_number) + 1}")'>X</button><p class="question-number">${parseInt(current_question_number) + 1}</p><small class="question-type">Identification</small><hr><label class="questionAnswerLabel">Question:</label><input type="text" class="question" placeholder="Question"><br><label class="questionAnswerLabel">Correct Answer:</label><input type="text" class="answer" id="answer${parseInt(current_question_number) + 1}" placeholder="Correct Answer"><p class="errorMessageQuestion"></p></div>
+<div class="questions" id="questions${parseInt(current_question_number) + 1}"><button class="removeQuestionBtn" onclick='removeQuestion2("questions${parseInt(current_question_number) + 1}")'>X</button><p class="question-number">${parseInt(current_question_number) + 1}</p><small class="question-type">Identification</small><hr><label class="questionAnswerLabel">Question:</label><input type="text" class="question" placeholder="Question"><br><br><label class="questionAnswerLabel">Correct Answer:</label><input type="text" class="answer" id="answer${parseInt(current_question_number) + 1}" placeholder="Correct Answer"><p class="errorMessageQuestion"></p></div>
 `
 
 document.getElementById("main-questions").innerHTML += identification
 }
+
 function addMultipleChoice2(){
+  $('html,body').animate({ scrollTop: 9999 }, 'slow');
 
 current_question_number = document.getElementsByClassName('question-number');
 current_question_number = current_question_number[current_question_number.length - 1].textContent;
 
 multipleChoice = `
-<div class="questions" id="questions${parseInt(current_question_number) + 1}"><button class="removeQuestionBtn" onclick='removeQuestion2("questions${parseInt(current_question_number) + 1}")'>X</button><p class="question-number">${parseInt(current_question_number) + 1}</p><small class="question-type">Multiple Choice</small><hr><label class="questionAnswerLabel">Question:</label><input type="text" class="question" placeholder="Question"><br><label class="questionAnswerLabel">Correct Answer:</label><input type="text" class="answer" id="answer${parseInt(current_question_number) + 1}" placeholder="Correct Answer"><br><label class="labelOptions">A:</label><input type="text" class="letter_a" id="letter_a${parseInt(current_question_number) + 1}" placeholder="Option A"><label class="labelOptions">B:</label><input type="text" class="letter_b" id="letter_b${parseInt(current_question_number) + 1}" placeholder="Option B"><br><label class="labelOptions">C:</label><input type="text" class="letter_c" id="letter_c${parseInt(current_question_number) + 1}" placeholder="Option C"><label class="labelOptions">D:</label><input type="text" class="letter_d" id="letter_d${parseInt(current_question_number) + 1}" placeholder="Option D"><p class="errorMessageQuestion"></p></div>
+<div class="questions" id="questions${parseInt(current_question_number) + 1}"><button class="removeQuestionBtn" onclick='removeQuestion2("questions${parseInt(current_question_number) + 1}")'>X</button><p class="question-number">${parseInt(current_question_number) + 1}</p><small class="question-type">Multiple Choice</small><hr><label class="questionAnswerLabel">Question:</label><input type="text" class="question" placeholder="Question"><br><br><label class="questionAnswerLabel">Correct Answer:</label><input type="text" class="answer" id="answer${parseInt(current_question_number) + 1}" placeholder="Correct Answer"><br><br><label class="labelOptions">A:</label><input type="text" class="letter_a" id="letter_a${parseInt(current_question_number) + 1}" placeholder="Option A" style="margin-left:-3rem;"><label class="labelOptions">B:</label><input type="text" class="letter_b" id="letter_b${parseInt(current_question_number) + 1}" placeholder="Option B" style="margin-left:-3rem;"><br><br><label class="labelOptions">C:</label><input type="text" class="letter_c" id="letter_c${parseInt(current_question_number) + 1}" placeholder="Option C" style="margin-left:-3rem;"><label class="labelOptions">D:</label><input type="text" class="letter_d" id="letter_d${parseInt(current_question_number) + 1}" placeholder="Option D" style="margin-left:-3rem;"><p class="errorMessageQuestion"></p></div>
 `
 document.getElementById("main-questions").innerHTML += multipleChoice
 }
 
 function addTrueOrFalse2(){
+  $('html,body').animate({ scrollTop: 9999 }, 'slow');
+
 current_question_number = document.getElementsByClassName('question-number');
 current_question_number = current_question_number[current_question_number.length - 1].textContent;
 trueOrFalse = `
-<div class="questions" id="questions${parseInt(current_question_number) + 1}"><button class="removeQuestionBtn" onclick='removeQuestion2("questions${parseInt(current_question_number) + 1}")'>X</button><p class="question-number">${parseInt(current_question_number) + 1}</p><small class="question-type">True or False</small><hr><label class="questionAnswerLabel">Question:</label><input type="text" class="question" placeholder="Question"><br><label class="questionAnswerLabel">Correct Answer:</label><input type="radio" name="truefalse${parseInt(current_question_number) + 1}" id="true${parseInt(current_question_number) + 1}" value="true"><label>True</label><input type="radio" name="truefalse${parseInt(current_question_number) + 1}" id="false${parseInt(current_question_number) + 1}" value="false"><label>False</label><p class="errorMessageQuestion"></p></div>
+<div class="questions" id="questions${parseInt(current_question_number) + 1}"><button class="removeQuestionBtn" onclick='removeQuestion2("questions${parseInt(current_question_number) + 1}")'>X</button><p class="question-number">${parseInt(current_question_number) + 1}</p><small class="question-type">True or False</small><hr><label class="questionAnswerLabel">Question:</label><input type="text" class="question" placeholder="Question"><br><br><label class="questionAnswerLabel">Correct Answer:</label><input type="radio" name="truefalse${parseInt(current_question_number) + 1}" id="true${parseInt(current_question_number) + 1}" value="true"><label style="margin-right:2rem;">True</label><input type="radio" name="truefalse${parseInt(current_question_number) + 1}" id="false${parseInt(current_question_number) + 1}" value="false"><label>False</label><p class="errorMessageQuestion"></p></div>
 `
 document.getElementById("main-questions").innerHTML += trueOrFalse
 }

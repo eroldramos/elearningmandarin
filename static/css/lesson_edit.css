@@ -1,23 +1,28 @@
 .menu-question-type{
-    top: 0;
-    border-radius: 50% 0 0 50%;
+     top: 40%;
      font-weight:100;
+     border-top-left-radius: 10px;
+     border-bottom-left-radius: 10px;
      background:#efefef;
-     width:185px;
-     height:100%;
+     width:240px;
+     height:50%;
      padding:0 15px 0 5px;
      position:fixed;
      z-index:100;
      -webkit-box-shadow:-3px 0px 5px 0px rgba(0,0,0,0.2);
      box-shadow:-3px 0px 5px 0px rgba(0,0,0,0.2);
-     right:-140px;
+     right:-185px;
      transition:all .3s;
      -webkit-transition:all .3s;
-     color:#222
+     color:#222;
+     background-image: url(../../static/images/quiz_type_bf.png);
+     background-position: bottom center;
+     background-repeat: no-repeat;
+     background-size: cover;
   }
   .menu-question-type:hover,.menu-question-type:focus{
-     transform:translate3d(-140px, 0, 0);
-     animation-timing-function:1s ease-in
+     transform:translate3d(-185px, 0, 0);
+     animation-timing-function:1s ease-in;
   }
   .menu-question-type .title-question-menu{
      top:47.5%;
@@ -41,7 +46,7 @@
      width: 100%;
   }
   .menu-question-type .nav li{
-     padding:15px 0;
+     padding:15px 15px;
      list-style-type:none;
      cursor: pointer;
   }
@@ -49,7 +54,8 @@
     width:100%;
   }
   .list:hover{
-    background-color: #ccc
+    background-color: #ccc;
+    border-radius: 10px;
   }
   .questions{
       width:100%;
@@ -101,12 +107,22 @@
     }
   }
   .removeQuestionBtn{
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     float: right;
-    padding: 10px;
+    height: 4vh;
+    width: 4vh;
+    font-size: 2vh;
     background-color: #ED4E38;
     color: white;
     font-weight: bolder;
-  
+  }
+  .removeQuestionBtn:hover{
+    cursor: pointer;
+    opacity: 70%;
   }
   .question-number{
       font-size: 1.5em;
