@@ -4,6 +4,7 @@
 </script>
 
 <link rel="stylesheet" href="{% static 'css/dictionary.css' %}" />
+<link rel="stylesheet" href="{% static 'css/table.css' %}" />
 
 
 <div class="container-fluid px-3 py-3 forRemovingMargin">
@@ -66,7 +67,11 @@
     <div class="col col-lg-8 col-md-8">
       {% if words|length == 0 %}
 
-      <p class="text-center">No Results Found.</p>
+      <div id="no_dataVerifyer" style="display: flex;">
+        <img src="{% static 'images/no_record_found.png' %}" alt="">
+        NO DATA FOUND
+        <a href="{%url 'dictionary'%}" style="font-size:.8rem;">Clear Searches</a>
+      </div>
 
       {% endif %}
       

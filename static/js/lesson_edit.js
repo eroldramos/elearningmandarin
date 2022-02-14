@@ -245,6 +245,9 @@ document.getElementsByClassName('removeQuestionBtn')[i-1].setAttribute('onclick'
 }
 
 function addIdentification2(){
+  var scrollingElement = (document.scrollingElement || document.body);
+  scrollingElement.scrollTop = scrollingElement.scrollHeight;
+
 current_question_number = document.getElementsByClassName('question-number');
 current_question_number = current_question_number[current_question_number.length - 1].textContent;
 

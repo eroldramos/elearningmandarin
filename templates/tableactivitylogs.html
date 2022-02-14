@@ -48,7 +48,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
     <td scope="row">{{activitylogs.id}}</td>
     <td>{{activitylogs.user.username}}</td>
     <td>{{activitylogs.action}}</td>
-    <td>{{activitylogs.time_stamp|date:'Y-m-d'}}</td>
+    <td>{{activitylogs.time_stamp|date:'Y-m-d | H:i a'}}</td>
     <td class="text-center">
       <a href="{% url 'superuser-delete-activitylog' activitylogs.id %}"
         ><i class="fas fa-trash px-3"></i
@@ -102,7 +102,8 @@ function myFunction() {
     td = tr[i].getElementsByTagName("td")[3];
     if (td) {
       txtValue = td.textContent || td.innerText;
-      if (start <= txtValue && txtValue <= end1) {
+      var strFirstSix = txtValue.substring(0,10);
+      if (start <= strFirstSix && strFirstSix <= end1) {
         tr[i].style.display = "";
         document.getElementById("no_dataVerifyer").style.display = "none"
       } else {

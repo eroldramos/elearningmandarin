@@ -15,26 +15,52 @@
 
   <div class="row justify-content-center">
     <div class="col col-lg-8">
-      <a href="{%url 'dictionary'%}">Go Back</a>
+      <a href="{%url 'dictionary'%}" id="back_btn">
+        <img src="{% static 'images/back_icon.png' %}" class="navbar_mini_icon">
+        Back
+      </a>
 
       <div class="card border-primary mb-3">
         <div class="card-header" id="card_header" style="text-align:left;">
-          <strong style="font-size: x-large; padding-left: 2rem;" >Definition</strong>
+          <strong style="font-size: x-large; padding-left: 2rem;" >Information</strong>
         </div>
-        <div class="card-body">
-          <h3 class="card-title">Definition of <em>{{word.pinyin}}</em></h3>
-          <p class="card-text">{{word.definition}}</p>
-          <h5 class="card-title">
-            Translation In Hanzi -<em>{{word.hanzi}}</em>
-          </h5>
-          <h5 class="card-title">
-            Translation In English -<em>{{word.english}}</em>
-          </h5>
+        <div class="card-body" style="padding: 0;">
+          <div id="row_info" class="row1">
+            <div id="left"><h5 class="card-title">English Translation :</h5></div>
+            <div id="right"><h5 class="card-title">{{word.english}}</h5></div>
+          </div>
 
-          <h3 class="card-title mt-3">Example in a sentence</h3>
-          <p class="card-text">{{word.sentence}}</p>
-          <h3 class="card-title mt-3">Translation in English</h3>
-          <p class="card-text">{{word.translation}}</p>
+          <div id="row_info" class="row2">
+            <div id="left"><h5 class="card-title">Part of Speech :</h5></div>
+            <div id="right"><h5 class="card-title">{{word.part_of_speech}}</h5></div>
+          </div>
+
+          <div id="row_info" class="row1">
+            <div id="left"><h5 class="card-title">Definition :</h5></div>
+            <div id="right"><h6 class="card-title">{{word.definition}}</h6></div>
+          </div>
+
+          <div id="row_info" class="row2">
+            <div id="left"><h5 class="card-title">Hanzi :</h5></div>
+            <div id="right"><h5 class="card-title">{{word.hanzi}}</h5></div>
+          </div>
+
+          <div id="row_info" class="row1">
+            <div id="left"><h5 class="card-title">Pinyin :</h5></div>
+            <div id="right"><h5 class="card-title">{{word.pinyin}}</h5></div>
+          </div>
+          
+          <div id="row_info" class="row2">
+            <div id="left"><h5 class="card-title">In a sentence :</h5></div>
+            <div id="right"><h5 class="card-title">{{word.sentence}}</h5></div>
+          </div>
+
+          <div id="row_info" class="row1">
+            <div id="left"><h5 class="card-title">English Translation :</h5></div>
+            <div id="right"><h5 class="card-title">{{word.translation}}</h5></div>
+          </div>
+
+
         </div>
       </div>
     </div>

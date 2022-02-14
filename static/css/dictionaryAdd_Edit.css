@@ -27,6 +27,9 @@
     margin-right: 4rem;
     margin-bottom: 1rem;
 }
+#back_btn:hover{
+    opacity: 70%;    
+}
 
 #edit_pass{
     margin-top: 1rem;
@@ -58,4 +61,57 @@
     font-size: 2rem;
     font-weight: bold;
     font-family: 'Poppins', sans-serif;
+}
+
+#row_info{
+    height: 5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.row1{
+    background-color: #f5f4f4;
+    height: 100%;
+}
+.row2{
+    background-color: #f3d0cc;
+    height: 100%;
+}
+#row_info #left{
+    width: 49%;
+    height: 100%;
+    border-right: 1px solid  #ED4E38;
+    display: flex;
+    align-items: center;
+}
+#row_info #right{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+#row_info #right h5, #row_info #right h6{
+    margin-left: -5rem;
+    margin-right: 3rem;
+}
+
+
+#dictionary_header1{
+    height: 30vh;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../../static/images/dictionary_headerBg1.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.lesson_Text_header{
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    margin: 0%;
+    font-size: 4rem;
+    color: #D03F2B;
 }

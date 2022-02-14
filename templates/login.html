@@ -27,7 +27,7 @@
   <div class="d-lg-flex half">
 
     {% with link="images/background.png" %}
-    <div class="bg order-1 order-md-1" style="background-image: url('{% static  link %}'); background-size: auto 100%;">
+    <div class="bg order-1 order-md-1" id="bg_left">
     {% endwith %}
       <div class="container">
         <div class="row align-items-center justify-content-center">
@@ -70,13 +70,13 @@
               
               <div class="d-flex mb-5 align-items-center">
                 <label class="control control--checkbox mb-0"><span class="caption">Remember me</span>
-                  <input type="checkbox" checked="checked"/>
+                  <input type="checkbox" id="keep_logA"/>
                   <div class="control__indicator"></div>
                 </label>
                 <span class="ml-auto"><a href="" class="forgot-pass">Forgot password?</a></span> 
               </div>
 
-              <input type="submit" value="Login" class="btn btn-block btn-primary" id="login_btn">
+              <input type="submit" value="Login" class="btn btn-block btn-primary" id="login_btn" onclick="lsRememberMe1()">
 
               <div class="d-flex mb-5 align-items-center caption">
                 <span>Don't have an account? <a href="{% url 'register' %}">Signup now.</a></span> 
@@ -102,3 +102,32 @@
 ></script>
   </body>
 </html>
+
+
+<script>
+const rmCheck1 = document.getElementById("keep_logA"),
+emailInput1 = document.getElementById("username");
+passInput1 = document.getElementById("password");
+
+if (localStorage.checkbox1 && localStorage.checkbox1 !== "") {
+  rmCheck1.setAttribute("checked", "checked");
+  emailInput1.value = localStorage.username1;
+  passInput1.value = localStorage.password1;
+} else {
+  rmCheck1.removeAttribute("checked");
+  emailInput1.value = "";
+  passInput1.value = "";
+}
+
+function lsRememberMe1() {
+  if (rmCheck1.checked && emailInput1.value !== "") {
+    localStorage.username1 = emailInput1.value;
+    localStorage.password1 = passInput1.value
+    localStorage.checkbox1 = rmCheck1.value;
+  } else {
+    localStorage.username1 = "";
+    localStorage.password1 = "";
+    localStorage.checkbox1 = "";
+  }
+}
+</script>

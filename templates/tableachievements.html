@@ -22,10 +22,11 @@ Export PDF
     <option value="ALL" selected>ALL</option>
     <option value="ID">ID</option>
     <option value="USER">USER</option>
-    <option value="QUIZ">QUIZ</option>
+    <option value="LESSON">LESSON</option>
     <option value="SCORE">SCORE</option>
+    <option value="DATE TAKEN">DATE TAKEN</option>
 </select>
-<input type="text" placeholder="Search here....." id="search_logs">
+<input type="text" placeholder="Search here....." id="search_achievements">
 <img src="{% static  'images/search_gif.gif' %}">
 </div>
 
@@ -46,7 +47,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
 <tbody>
   {% for result in table_data %}
   <tr id="tr_Search">
-    <td scope="row">{{activitylogs.id}}</td>
+    <td scope="row">{{result.id}}</td>
     <td>{{result.user.username}}</td>
     <td>{{result.quiz.lesson}}</td>
     <td>{{result.score}}</td>
@@ -77,11 +78,11 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
 <script type="text/javascript">
 
 document.querySelector('.export_pdf_btn').addEventListener("click", () => {
-    const invoice = document.getElementById("table_logs");
+    const invoice = document.getElementById("table_achievements");
 
             var opt = {
                 margin: 1,
-                filename: 'ActivityLogs.pdf',
+                filename: 'Achivements.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape'}
@@ -98,10 +99,10 @@ function myFunction() {
   var start = myArray[0]
   var end1 = myArray[1]
 
-  table = document.getElementById("table_logs");
+  table = document.getElementById("table_achievements");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[3];
+    td = tr[i].getElementsByTagName("td")[4];
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (start <= txtValue && txtValue <= end1) {
@@ -113,8 +114,8 @@ function myFunction() {
     }       
   }
 
-  var verifyer_ctr = $('#table_logs #tr_Search:visible').length;
-  var inplen = $("#search_logs").val();
+  var verifyer_ctr = $('#table_achievements #tr_Search:visible').length;
+  var inplen = $("#search_achievements").val();
 
     if(verifyer_ctr === 0) {
       document.getElementById("no_dataVerifyer").style.display = "flex"
