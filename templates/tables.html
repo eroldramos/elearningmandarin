@@ -27,7 +27,7 @@
       {% include 'tablelessons.html' %}
       {% endif %}
 
-      {% if pageTable == "Manage Quizzes" %}
+      {% if pageTable == "Manage Assessments" %}
       <!-- MANAGE QUIZZES -->
       {% include 'tablequizzes.html' %}
       {% endif %}
@@ -35,6 +35,12 @@
       {% if pageTable == "Manage Activity Logs" %}
       <!-- MANAGE ACTIVITY LOGS -->
       {% include 'tableactivitylogs.html' %}
+      {% endif %}
+
+
+      {% if pageTable == "Achievements" %}
+      <!-- ACHIEVEMENTS -->
+      {% include 'tableachievements.html' %}
       {% endif %}
     </div>
   </div>

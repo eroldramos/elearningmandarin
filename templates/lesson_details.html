@@ -15,10 +15,10 @@
           <strong style="font-size: xx-large">{{lesson.title}}</strong> |
           <span class="text-uppercase">{{lesson.hsklevel}}</span>
           {% if quiz is None %}
-          <button style="float: right;" class="btn btn-primary border border-light rounded disabled">Quiz Not Available</button>
+          <button style="float: right;" class="btn btn-primary border border-light rounded disabled">Assessment Not Available</button>
           {% else %}
           {% csrf_token %}
-          <button style="float: right;" class="btn btn-primary border border-light rounded" id="takeQuizBtn">Take Quiz</button>
+          <button style="float: right;" class="btn btn-primary border border-light rounded" id="takeQuizBtn">Take Assessment</button>
           {% endif %}
           
         </div>

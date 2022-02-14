@@ -41,14 +41,27 @@
             role="button"
             aria-haspopup="true"
             aria-expanded="false"
-             id="">To be Added</a
+             id="">Manage Tables</a
           >
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">To be Added</a>
-            <a class="dropdown-item" href="#">To be Added</a>
-            <a class="dropdown-item" href="#">To be Added</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">To be Added</a>
+            <a class="dropdown-item" href="{% url 'superuser-users' %}">
+              <img src="{% static 'images/manageUser_icon_navbar.png' %}" class="navbar_mini_icon">
+              Manage Users</a
+            >
+
+            <a class="dropdown-item" href="{% url 'superuser-lessons' %}">
+              <img src="{% static 'images/manageLesson_icon_navbar.png' %}" class="navbar_mini_icon">
+              Manage Lessons</a
+            >
+
+            <a class="dropdown-item" href="{% url 'superuser-dictionary' %}">
+              <img src="{% static 'images/manageDict_icon_navbar.png' %}" class="navbar_mini_icon">
+              Manage Dictionary</a
+            >
+            <a class="dropdown-item" href="{% url 'superuser-quizzes' %}">
+              <img src="{% static 'images/manageQuizzes_icon_navbar.png' %}" class="navbar_mini_icon">
+              Manage Assessments</a
+            >
           </div>
         </li>
         {% endif %}
@@ -81,34 +94,15 @@
             </li>
             {% if request.user.is_staff %}
             <li>
-              <a class="dropdown-item" href="{% url 'superuser-users' %}">
-                <img src="{% static 'images/manageUser_icon_navbar.png' %}" class="navbar_mini_icon">
-                Manage Users</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="{% url 'superuser-dictionary' %}">
-                <img src="{% static 'images/manageDict_icon_navbar.png' %}" class="navbar_mini_icon">
-                Manage Dictionary</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="{% url 'superuser-lessons' %}">
-                <img src="{% static 'images/manageLesson_icon_navbar.png' %}" class="navbar_mini_icon">
-                Manage Lessons</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="{% url 'superuser-quizzes' %}">
-                <img src="{% static 'images/manageQuizzes_icon_navbar.png' %}" class="navbar_mini_icon">
-                Manage Quizzes</a
-              >
-            </li>
-
-            <li>
               <a class="dropdown-item" href="{% url 'superuser-activitylogs' %}">
                 <img src="{% static 'images/activityLog_icon_navbar.png' %}" class="navbar_mini_icon">
                 Activity Logs</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'superuser-achievements' %}">
+                <img src="{% static 'images/activityLog_icon_navbar.png' %}" class="navbar_mini_icon">
+                Achievements</a
               >
             </li>
             {% endif %}

@@ -13,6 +13,7 @@ urlpatterns = [
     path('superuser/lessons/', views.AdminLessonsTable, name = 'superuser-lessons'),
     path('superuser/quizzes/', views.AdminQuizzesTable, name = 'superuser-quizzes'),
     path('superuser/activitylogs/', views.AdminActivityLogTable, name = 'superuser-activitylogs'),
+    path('superuser/achievements/', views.AdminAchievementTable, name = 'superuser-achievements'),
     path('superuser/edit-user/<str:pk>/', views.AdminUpdateUser, name = 'superuser-edit-user'),
     path('superuser/delete-user/<str:pk>/', views.AdminDeleteUser, name = 'superuser-delete-user'),
     path('superuser/add-word/', views.AdminAddWordToDictionary, name = 'superuser-add-word'),

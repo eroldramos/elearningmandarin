@@ -1,17 +1,18 @@
 <!-- Filter Date Range -->
+{% load static %}
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <div id="reportrange">
 <span id="span_edit">Click to filter by date range</span>
-<img src="../../images/calendar_inq.png">
+<img src="{% static 'images/calendar_inq.png' %}">
 <input type="hidden" name="filterStart" id="filterStart">
 <input type="hidden" name="filterEnd" id="filterEnd">
 </div>
 
 <div id="export_container" class="export_pdf_btn">
-<img src="../../images/export.png">
+  <img src="{% static 'images/export.png' %}">
 Export PDF
 </div>
 
@@ -25,7 +26,7 @@ Export PDF
     <option value="TIME STAMP">TIME STAMP</option>
 </select>
 <input type="text" placeholder="Search here....." id="search_logs">
-<img src="../../images/search_gif.gif">
+<img src="{% static  'images/search_gif.gif' %}">
 </div>
 
 
@@ -38,7 +39,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
     <th scope="col">USER</th>
     <th scope="col">ACTION</th>
     <th scope="col">TIME STAMP</th>
-    <th>Actions</th>
+    <th>ACTIONS</th>
   </tr>
 </thead>
 <tbody>
@@ -61,7 +62,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
 
 
 <div id="no_dataVerifyer">
-  <img src="../../images/no_record_found.png" alt="">
+  <img src="{% static 'images/no_record_found.png' %}" alt="">
   NO DATA FOUND
 </div>
 

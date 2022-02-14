@@ -22,7 +22,7 @@
           <a class="nav-link active" data-bs-toggle="tab" href="#lesson">Lesson</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#quiz">Quiz</a>
+          <a class="nav-link" data-bs-toggle="tab" href="#quiz">Assessment</a>
         </li>
       </ul>
       <div id="myTabContent" class="tab-content">
@@ -53,19 +53,19 @@
         {% if quiz == None %}
         <!-- IF QUiZ IS NONE DO THIS -->
         <div >
-          <h3>Quiz about the lesson</h3>
+          <h3>Assessment</h3>
           {%csrf_token %}
   
           <div class="col-sm-12">
             
             <div class="form-group">
-              <label for="" class="form-label mt-4">Quiz Title</label> </label>
+              <label for="" class="form-label mt-4">Assessment Title</label> </label>
               <input type="text" id="title" class="form-control" placeholder="Quiz Title"> 
               <p  class="errorMessage" id="titleErrorMessage"></p>
             </div>
 
             <div class="form-group">
-              <label for="" class="form-label mt-4">Quiz Description</label> </label>
+              <label for="" class="form-label mt-4">Assessment Description</label> </label>
               <textarea id="description" class="form-control" rows="10" placeholder="Description" ></textarea>
               <p  class="errorMessage" id="descriptionErrorMessage"></p>
             </div>
@@ -98,7 +98,7 @@
           <div class="form-group">
             <br />
             <button onclick="saveQuiz()" class="btn btn-primary btn-lg btn-block">
-              Create
+              Save
             </button>
           </div>
         
@@ -107,19 +107,19 @@
         {% else %}
         <!-- IF QUiZ IS NOT NONE DO THIS -->
         <div >
-          <h3>Quiz about the lesson</h3>
+          <h3>Assessment</h3>
           {%csrf_token %}
   
           <div class="col-sm-12">
             
             <div class="form-group">
-              <label for="" class="form-label mt-4">Quiz Title</label> </label>
+              <label for="" class="form-label mt-4">Assessment Title</label> </label>
               <input type="text" id="title" class="form-control" placeholder="Quiz Title" value="{{quiz.title}}"> 
               <p  class="errorMessage" id="titleErrorMessage"></p>
             </div>
 
             <div class="form-group">
-              <label for="" class="form-label mt-4">Quiz Description</label> </label>
+              <label for="" class="form-label mt-4">Assessment Description</label> </label>
               <textarea id="description" class="form-control" rows="10" placeholder="Description">{{quiz.description}}</textarea>
               <p  class="errorMessage" id="descriptionErrorMessage"></p>
             </div>
@@ -225,7 +225,7 @@
           <div class="form-group">
             <br />
             <button onclick="saveQuiz()" class="btn btn-primary btn-lg btn-block">
-              Create
+              Save
             </button>
           </div>
         

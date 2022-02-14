@@ -12,50 +12,47 @@
 </div>
 
 <div id="export_container" class="export_pdf_btn">
-<img src="{% static 'images/export.png' %}">
+  <img src="{% static 'images/export.png' %}">
 Export PDF
 </div>
+
 
 <div id="search_inp">
 <select id="filter_category">
     <option value="ALL" selected>ALL</option>
     <option value="ID">ID</option>
-    <option value="TITLE">TITLE</option>
-    <option value="DESCRIPTION">DESCRIPTION</option>
-    <option value="HSK LEVEL">HSK LEVEL</option>
-    <option value="DATE CREATED">DATE CREATED</option>
+    <option value="USER">USER</option>
+    <option value="QUIZ">QUIZ</option>
+    <option value="SCORE">SCORE</option>
 </select>
-<input type="text" placeholder="Search here....." id="search_lesson">
+<input type="text" placeholder="Search here....." id="search_logs">
 <img src="{% static  'images/search_gif.gif' %}">
 </div>
 
 
 <table
-class="table table-hover table-striped table-responsive table-bordered overflow-auto table_id" id="table_lesson"
+class="table table-hover table-striped table-responsive table-bordered overflow-auto table_id" id="table_achievements"
 >
 <thead>
   <tr class="table-primary">
     <th scope="col">ID</th>
-    <th scope="col">TITLE</th>
-    <th scope="col">DESCRIPTION</th>
-    <th scope="col">HSK LEVEL</th>
-    <th scope="col">CREATED AT</th>
+    <th scope="col">USER</th>
+    <th scope="col">LESSON ASSESSMENT</th>
+    <th scope="col">SCORE</th>
+    <th scope="col">DATE TAKEN</th>
     <th>ACTIONS</th>
   </tr>
 </thead>
 <tbody>
-  {% for lesson in table_data %}
+  {% for result in table_data %}
   <tr id="tr_Search">
-    <td scope="row">{{lesson.id}}</td>
-    <td>{{lesson.title}}</td>
-    <td>{{lesson.description}}</td>
-    <td>{{ lesson.hsklevel }}</td>
-    <td>{{ lesson.created|date:'Y-m-d' }}</td>
+    <td scope="row">{{activitylogs.id}}</td>
+    <td>{{result.user.username}}</td>
+    <td>{{result.quiz.lesson}}</td>
+    <td>{{result.score}}</td>
+    <td>{{result.created|date:'Y-m-d'}}</td>
     <td class="text-center">
-      <a href="{% url 'superuser-edit-lesson' lesson.id %}"
-        ><i class="fas fa-edit px-3"></i
-      ></a>
-      <a href="{% url 'superuser-delete-lesson' lesson.id %}"
+      <a href=""
         ><i class="fas fa-trash px-3"></i
       ></a>
     </td>
@@ -73,7 +70,6 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
 
 
 
-
 <!-- Script for pdf -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
@@ -81,11 +77,11 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
 <script type="text/javascript">
 
 document.querySelector('.export_pdf_btn').addEventListener("click", () => {
-    const invoice = document.getElementById("table_lesson");
+    const invoice = document.getElementById("table_logs");
 
             var opt = {
                 margin: 1,
-                filename: 'Lessons.pdf',
+                filename: 'ActivityLogs.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape'}
@@ -102,10 +98,10 @@ function myFunction() {
   var start = myArray[0]
   var end1 = myArray[1]
 
-  table = document.getElementById("table_lesson");
+  table = document.getElementById("table_logs");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[4];
+    td = tr[i].getElementsByTagName("td")[3];
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (start <= txtValue && txtValue <= end1) {
@@ -117,8 +113,8 @@ function myFunction() {
     }       
   }
 
-  var verifyer_ctr = $('#table_lesson #tr_Search:visible').length;
-  var inplen = $("#search_lesson").val();
+  var verifyer_ctr = $('#table_logs #tr_Search:visible').length;
+  var inplen = $("#search_logs").val();
 
     if(verifyer_ctr === 0) {
       document.getElementById("no_dataVerifyer").style.display = "flex"

@@ -275,7 +275,7 @@ def AdminLessonsTable(request):
 
 @login_required(login_url='anonymous')
 def AdminQuizzesTable(request):
-    pageTable = "Manage Quizzes"
+    pageTable = "Manage Assessments"
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
@@ -310,6 +310,27 @@ def AdminActivityLogTable(request):
     activity_logs = p.get_page(page)
     context = {
         'table_data': activity_logs,
+        'pageTable' : pageTable,
+        'search' : search
+    }
+    return render(request,'tables.html', context)
+
+@login_required(login_url='anonymous')
+def AdminAchievementTable(request):
+    pageTable = "Achievements"
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    search =  request.GET.get('search') if request.GET.get('search') != None else ''
+    result = Result.objects.filter(
+        Q(user__username__icontains = search) |
+        Q(score__icontains = search) 
+        )
+    p = Paginator(result, 6)
+    page = request.GET.get('page')
+    result = p.get_page(page)
+    context = {
+        'table_data': result,
         'pageTable' : pageTable,
         'search' : search
     }
