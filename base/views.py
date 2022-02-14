@@ -710,8 +710,28 @@ def AdminDeleteActivityLog(request, pk):
     context = {'obj': activity_log}
     return render(request, 'delete.html', context)
 
-  
-   
 
+
+  
+@login_required(login_url='anonymous')
+def DeletePersonalAccount(request):
+    if request.user.is_authenticated and  request.user.is_staff:
+        messages.warning(request, "Administrator cannot delete their account!")
+        return redirect('lessons')
+    user = User.objects.get(id=request.user.id)
+    
+   
+        
+        
+    ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{user.username} deleted his account.",
+            )
+
+    user.delete()
+
+    messages.info(request, f"Your account has been deleted")
+    return redirect('logout')
+    
 
 

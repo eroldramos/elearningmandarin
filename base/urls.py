@@ -28,5 +28,6 @@ urlpatterns = [
     path('superuser/delete-lesson/<str:pk>/', views.AdminDeleteLesson, name = 'superuser-delete-lesson'),
     path('superuser/delete-quiz/<str:pk>/', views.AdminDeleteQuiz, name = 'superuser-delete-quiz'),
     path('superuser/delete-activity/<str:pk>/', views.AdminDeleteActivityLog, name = 'superuser-delete-activitylog'),
+    path('delete-account', views.DeletePersonalAccount, name = 'delete-account'),
     
 ]
