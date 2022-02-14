@@ -1,16 +1,23 @@
 {% extends 'main.html' %} {% block content %} {% load static %}
+<script>
+  document.getElementById("dictionary_page").style.color = "#ED4E38";
+</script>
 
-<div class="container-fluid px-3 py-3">
-  <div class="row mb-3 justify-content-center">
+<link rel="stylesheet" href="{% static 'css/dictionary.css' %}" />
+
+
+<div class="container-fluid px-3 py-3 forRemovingMargin">
+  <div class="row  justify-content-center" id="dictionary_header">
     <div class="col col-lg-6">
+      <p class="dictionary_text">Dictionary</p>
       <form class="d-flex sm-1" action="" method="GET">
         <input
-          class="form-control me-sm-1"
-          type="text"
+          class="form-control me-sm-1 input_searchD"
+          type="search"
           placeholder="Search your words..."
           name="search"
         />
-        <button class="btn btn-primary my-2 my-sm-0" type="submit">
+        <button class="btn btn-primary my-2 my-sm-0 search_btn" type="submit">
           Search
         </button>
       </form>
@@ -18,7 +25,7 @@
   </div>
 
   {% if request.user.is_authenticated and request.user.is_staff %}
-  <div class="row mb-3 justify-content-center">
+  <div class="row mb-3 justify-content-center px-3">
     <div class="col col-lg-10">
       <a
         href="{% url 'superuser-add-word' %}"
@@ -30,13 +37,14 @@
     </div>
   </div>
   {% endif %}
-  <div class="row justify-content-center">
+
+  <div class="row justify-content-center px-3">
     <div class="col col-lg-2 col-md-4 d-lg-block d-sm-none d-md-block d-none">
       <div class="card border-primary" style="height: 500px">
-        <div class="card-header">
+        <div class="card-header" id="card_header">
           <strong style="font-size: large">Part of Speech</strong>
         </div>
-        <div class="card-body">
+        <div class="card-body for_shadow" id="card-body">
           <ul>
             <li class="my-3">
               <a href="{% url 'dictionary' %}">All</a>
@@ -44,7 +52,7 @@
             </li>
             {% for speech in speeches %}
             <li class="my-3">
-              <a href="{% url 'dictionary' %}?search={{speech.speech}}"
+              <a href="{% url 'dictionary' %}?search={{speech.speech}}&page=1"
                 >{{ speech.speech }}</a
               >
               ({{speech.dictionarylist_set.all.count}})
@@ -54,51 +62,79 @@
         </div>
       </div>
     </div>
+
     <div class="col col-lg-8 col-md-8">
+      {% if words|length == 0 %}
+
+      <p class="text-center">No Results Found.</p>
+
+      {% endif %}
+      
       {% for word in words %}
       <div class="card border-primary mb-3">
-        <div class="card-header">
-          <strong style="font-size: xx-large">{{word.pinyin}}</strong> |
+        <div class="card-header card_head_def" id="card_subhead">
+          <strong style="font-size: x-large">{{word.pinyin}}</strong> |
           <span>{{word.part_of_speech}}</span>
           {%if request.user.is_authenticated and request.user.is_staff%}
           <div style="float: right">
             <a href="{% url 'superuser-edit-word' word.id %}"
-              ><i class="fas fa-edit mx-2"></i
+              ><i class="fas fa-edit mx-2 sub_headIcon"></i
             ></a>
             <a href="{% url 'superuser-delete-word' word.id %}"
-              ><i class="fas fa-trash mx-2"></i
+              ><i class="fas fa-trash mx-2 sub_headIcon"></i
             ></a>
           </div>
           {% endif %}
         </div>
         <div class="card-body">
-          <h4 class="card-title">Definition of <em>{{word.pinyin}}</em></h4>
-          <p class="card-text">{{word.definition}}</p>
-          <a
-            href="{% url 'dictionary-details' word.id %}"
-            class="btn btn-primary"
-            style="float: right; clear: after"
-            >More Info</a
-          >
+            <div id="left">
+                <h3 id="word_hanzi">{{word.hanzi}}</h3>
+                <h4>{{word.pinyin}}</h4>
+            </div>
+            <div id="right">
+              <h6 class="card-title"><em>Definition:</em></h6>
+              <h4 id="def_text">  {{word.definition}}</h4>
+              <h6 class="card-title" style="margin-top: 1rem;"><em>Example:</em></h6>
+              <h6 id="def_text" style="margin-bottom: 1rem;">1.  {{word.sentence}}</h6>
+            </div>
+
+            <div id="more_info_container">
+              <a href="{% url 'dictionary-details' word.id %}"
+              class="btn btn-primary">More Info</a>
+            </div>
         </div>
       </div>
       {% endfor %}
     </div>
-    <div class="pagination">
-      {% if words.has_previous %}
-      <a href="?page=1">&laquo First</a>
-      <a href="?page={{ words.previous_page_number }}">Previous</a>
-      {% endif %}
-
-      Page {{ words.number }}  of {{ words.paginator.num_pages }}
-
-      {% if words.has_next %}
-      <a href="?page={{words.next_page_number}}">Next</a>
-      <a href="?page={{ words.paginator.num_pages  }}">Last &raquo</a>
-      {% endif %}
-    </div>
+    
   </div>
-</div>
+
+  <div class="row justify-content-center">
+    <div class="col col-lg-6">
+        <ul class="pagination justify-content-center">
+          <div class="pagination px-3 py-3">
+            {% if words.has_previous %}
+            <li class="page-item"><a class="page-link" href="?search={{search}}&page=1">&laquo First</a></li>
+            <li class="page-item"><a class="page-link" href="?search={{search}}&page={{ words.previous_page_number }}">&#60;</a></li>
+            {% endif %}
+          
+          
+            {% for i in words.paginator.page_range %}
+            {% if words.number == i %}
+            <li class="page-item active"><a class="page-link" href="?search={{search}}&page={{i}}">{{i}}</a></li>
+            {% elif i > words.number|add:'-3' and i < words.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?search={{search}}&page={{i}}">{{i}}</a></li>
+            {% endif %}
+            {% endfor %}
+      
+            {% if words.has_next %}
+            <li class="page-item"><a class="page-link" href="?search={{search}}&page={{words.next_page_number}}">&#62;</a></li>
+            <li class="page-item"><a class="page-link" href="?search={{search}}&page={{ words.paginator.num_pages  }}">Last &raquo</a></li>
+            {% endif %}
+        </ul>
+    </div>
+  </div> 
+
 
 <!-- Has Previous : {{words.has_previous}}
 Has Next : {{words.has_next}}

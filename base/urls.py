@@ -11,6 +11,9 @@ urlpatterns = [
     path('superuser/users/', views.AdminUsersTable, name = 'superuser-users'),
     path('superuser/dictionary/', views.AdminDictionaryTable, name = 'superuser-dictionary'),
     path('superuser/lessons/', views.AdminLessonsTable, name = 'superuser-lessons'),
+    path('superuser/quizzes/', views.AdminQuizzesTable, name = 'superuser-quizzes'),
+    path('superuser/activitylogs/', views.AdminActivityLogTable, name = 'superuser-activitylogs'),
+    path('superuser/achievements/', views.AdminAchievementTable, name = 'superuser-achievements'),
     path('superuser/edit-user/<str:pk>/', views.AdminUpdateUser, name = 'superuser-edit-user'),
     path('superuser/delete-user/<str:pk>/', views.AdminDeleteUser, name = 'superuser-delete-user'),
     path('superuser/add-word/', views.AdminAddWordToDictionary, name = 'superuser-add-word'),
@@ -23,5 +26,9 @@ urlpatterns = [
     path('superuser/add-lesson/', views.AdminAddLesson, name = 'superuser-add-lesson'),
     path('superuser/edit-lesson/<str:pk>/', views.AdminEditLesson, name = 'superuser-edit-lesson'),
     path('superuser/delete-lesson/<str:pk>/', views.AdminDeleteLesson, name = 'superuser-delete-lesson'),
+    path('superuser/delete-quiz/<str:pk>/', views.AdminDeleteQuiz, name = 'superuser-delete-quiz'),
+    path('superuser/delete-activity/<str:pk>/', views.AdminDeleteActivityLog, name = 'superuser-delete-activitylog'),
+    path('superuser/delete-achievement/<str:pk>/', views.AdminDeleteAchievement, name = 'superuser-delete-achievement'),
+    path('delete-account', views.DeletePersonalAccount, name = 'delete-account'),
     
 ]

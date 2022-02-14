@@ -1,0 +1,150 @@
+#head_Text{
+    font-size: 3.1rem;
+    font-family: 'Poppins', sans-serif; 
+    font-weight: bold;
+}
+
+#search_inp{
+    float: right;
+    height: 6vh;
+    width: 35%;
+    background-color: #EFF3F9;
+    border: 2px solid rgb(163, 163, 163);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+#search_inp img{
+    height: 50%;
+    width: auto;
+    margin-right: 5%;
+}
+#search_inp input{
+    height: auto;
+    background-color: transparent;
+    outline: none;
+    width: 50%;
+    border: none;
+    color:rgb(56, 56, 56);
+    box-shadow: 0px 0px 0px;
+    font-family: 'Poppins', sans-serif; 
+    font-size: 2vh;
+    text-indent: 5px;
+    border-radius: 5px;
+}
+#search_inp select{
+    height: 70%;
+    background-color: #EFF3F9;
+    width: 30%;
+    color:rgb(56, 56, 56);
+    border: none;
+    outline: none;
+    border-right: 1px solid rgb(143, 142, 142);
+    box-shadow: 0px 0px 0px;
+    font-family: 'Poppins', sans-serif; 
+    font-size: 1.8vh;
+    text-indent: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 50%;
+    padding-right: 2rem;
+    padding-left: 1rem;
+}
+#search_inp select:hover{
+    cursor: pointer;
+}
+
+.table_id th{
+    border: none;
+    text-align: center;
+}
+.table_id tr td{
+    text-align: center;
+}
+
+
+
+#reportrange{
+    float: left;
+    height: 6vh;
+    width: 25%;
+    background-color: #EFF3F9;
+    border: 2px solid rgb(163, 163, 163);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#reportrange:hover{
+    cursor: pointer;
+    opacity: 70%;
+}
+#reportrange span{
+    height: 100%;
+    border: none;
+    width: 80%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 2vh;
+    text-indent: 17px;
+    color: #575757;
+    display: flex;
+    align-items: center;
+}
+#reportrange img{
+    height: 40%;
+    margin-right: 5%;
+    width: auto;
+}
+
+
+#export_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    height: 6vh;
+    float: right;
+    width: auto;
+    padding: 0 1rem;
+    font-size: 1rem;
+    color:rgb(109, 109, 109);
+    background-color: #EFF3F9;
+    border: 2px solid rgb(163, 163, 163);
+    border-radius: 5px;
+}
+#export_container img{
+    height: 3vh;
+    width: auto;
+    margin-right: .5rem;
+}
+#export_container:hover{
+    opacity: 70%;
+    cursor: pointer;
+}
+
+#no_dataVerifyer{
+    display: none;
+    height: auto;
+    margin-top: 3rem;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #AEAEAE;
+    margin-bottom: 1rem;
+}
+#no_dataVerifyer img{
+    height: 25vh;
+    width: auto;
+    margin-bottom: 2%;
+}

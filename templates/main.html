@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Learn Mandarin</title>
+    <title>Learn Mandarin Now</title>
     <!-- <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -15,8 +15,10 @@
       
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/navbar_logo.png' %}"> 
     <script src="https://cdn.tiny.cloud/1/olmi2c2yy7i4xsc2g0iwdv24tqtqxjw6e8mlyjhyhk1x7q91/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <style>
       * {
         box-sizing: border-box;
       }
@@ -34,7 +36,7 @@
     </style>
   </head>
   <body>
-  
+{% include 'logout.html' %}  
 {% include 'navbar.html' %} 
 {% if messages %}  
 {% for message in messages %} 
@@ -60,6 +62,5 @@
       integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
       crossorigin="anonymous"
     ></script>
-
   </body>
 </html>

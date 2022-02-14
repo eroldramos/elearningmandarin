@@ -1,0 +1,61 @@
+#dictionary_header{
+    height: 30vh;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../../static/images/dictionary_headerBg.png);
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#back_div{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+#back_btn{
+    text-decoration: none;
+    color: #696F79;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0%;
+    padding: 0%;
+    display: flex;
+    align-items: center;
+    margin-right: 4rem;
+    margin-bottom: 1rem;
+}
+
+#edit_pass{
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#right_bg_img{
+    position: fixed;
+    height: 40vh;
+    width: auto;
+    right: 0;
+    bottom: 0;
+}
+
+
+.text1{
+    text-align: center;
+    margin: 0;
+    font-size: 4rem;
+    font-family: 'Poppins', sans-serif;
+}
+.text2{
+    text-align: center;
+    margin: 0;
+    margin-top: -6rem;
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+}

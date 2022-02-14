@@ -1,13 +1,25 @@
 {% extends 'main.html' %} {% block content%} {% load static %}
-<div class="container-fluid py-3 px-3">
+<link rel="stylesheet" href="{% static 'css/dictionary.css' %}" />
+
+<script>
+  document.getElementById("dictionary_page").style.color = "#ED4E38";
+</script>
+<link rel="stylesheet" href="{% static 'css/dictionaryAdd_Edit.css' %}" />
+
+<div class="container-fluid">
+  <div class="row mb-5" id="dictionary_header">
+    <p class="text1">{{word.hanzi}}</p>
+    <p class="text2">{{word.pinyin}}</p>
+  </div>
+
+
   <div class="row justify-content-center">
     <div class="col col-lg-8">
-      <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+      <a href="{%url 'dictionary'%}">Go Back</a>
 
       <div class="card border-primary mb-3">
-        <div class="card-header">
-          <strong style="font-size: xx-large">{{word.pinyin}}</strong> |
-          {{word.part_of_speech}}
+        <div class="card-header" id="card_header" style="text-align:left;">
+          <strong style="font-size: x-large; padding-left: 2rem;" >Definition</strong>
         </div>
         <div class="card-body">
           <h3 class="card-title">Definition of <em>{{word.pinyin}}</em></h3>

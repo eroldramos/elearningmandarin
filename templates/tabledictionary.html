@@ -1,5 +1,39 @@
+  <!-- Filter Date Range -->
+  {% load static %}
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<div id="reportrange">
+  <span id="span_edit">Click to filter by date range</span>
+  <img src="{% static 'images/calendar_inq.png' %}">
+  <input type="hidden" name="filterStart" id="filterStart">
+  <input type="hidden" name="filterEnd" id="filterEnd">
+</div>
+
+<div id="export_container" class="export_pdf_btn">
+  <img src="{% static 'images/export.png' %}">
+  Export PDF
+</div>
+
+
+<div id="search_inp">
+  <select id="filter_category">
+      <option value="ALL" selected>ALL</option>
+      <option value="ID">ID</option>
+      <option value="HANZI">HANZI</option>
+      <option value="PINYIN">PINYIN</option>
+      <option value="ENGLISH">ENGLISH</option>
+      <option value="Date Created">Date Created</option>
+      <option value="PART OF SPEECH">PART OF SPEECH</option>
+  </select>
+  <input type="text" placeholder="Search here....." id="search_Dictionary">
+  <img src="{% static  'images/search_gif.gif' %}">
+</div>
+
+
 <table
-  class="table table-hover table-striped table-responsive table-bordered overflow-auto"
+  class="table table-hover table-striped table-responsive table-bordered overflow-auto table_id" id="table_dictionary"
 >
   <thead>
     <tr class="table-primary">
@@ -8,29 +42,19 @@
       <th scope="col">PINYIN</th>
       <th scope="col">ENGLISH</th>
       <th scope="col">PART OF SPEECH</th>
-      <th>
-        <form class="d-flex sm-1" action="" method="GET">
-          <input
-            class="form-control me-sm-1"
-            type="text"
-            placeholder="Search words by hanzi, pinyin, english, and part of speech"
-            name="search"
-          />
-          <button class="btn btn-secondary my-2 my-sm-0" type="submit">
-            Search
-          </button>
-        </form>
-      </th>
+      <th scope="col">CREATED AT</th>
+      <th scope="col">ACTIONS</th> 
     </tr>
   </thead>
   <tbody>
-    {% for word in dict_list %}
-    <tr>
-      <th scope="row">{{word.id}}</th>
+    {% for word in table_data %}
+    <tr id="tr_Search">
+      <td scope="row">{{word.id}}</td>
       <td class="text-capitalize">{{word.hanzi}}</td>
       <td class="text-capitalize">{{word.pinyin}}</td>
       <td>{{ word.english }}</td>
       <td>{{ word.part_of_speech }}</td>
+      <td>{{ word.created|date:'Y-m-d' }}</td>
       <td class="text-center">
         <a href="{% url 'superuser-edit-word' word.id %}"
           ><i class="fas fa-edit px-3"></i
@@ -43,3 +67,102 @@
     {% endfor %}
   </tbody>
 </table>
+
+<div id="no_dataVerifyer">
+  <img src="{% static 'images/no_record_found.png' %}" alt="">
+  NO DATA FOUND
+</div>
+
+
+
+
+<!-- Script for pdf -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
+
+<script type="text/javascript">
+
+document.querySelector('.export_pdf_btn').addEventListener("click", () => {
+    const invoice = document.getElementById("table_dictionary");
+
+            var opt = {
+                margin: 1,
+                filename: 'Dictionary.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape'}
+            };
+            html2pdf().from(invoice).set(opt).save();
+ })
+
+
+
+function myFunction() {
+  var table, filter,tr, td, i, txtValue;
+  var dateRangeVal = document.getElementById("span_edit").innerHTML;
+  const myArray = dateRangeVal.split(" to ");
+
+  var start = myArray[0]
+  var end1 = myArray[1]
+
+  table = document.getElementById("table_dictionary");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[5];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (start <= txtValue && txtValue <= end1) {
+        tr[i].style.display = "";
+        document.getElementById("no_dataVerifyer").style.display = "none"
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+
+  var verifyer_ctr = $('#table_dictionary #tr_Search:visible').length;
+    var inplen = $("#search_Dictionary").val();
+
+    if(verifyer_ctr === 0) {
+      document.getElementById("no_dataVerifyer").style.display = "flex"
+    }
+    else if(inplen.length === 0){
+      document.getElementById("no_dataVerifyer").style.display = "none"
+    }
+
+}
+
+  
+$(function() {
+var start = moment().subtract(29, 'days');
+var end = moment();
+
+function cb(start, end) {
+    $('#reportrange #span_edit').html(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD')); 
+}
+        
+
+$('#reportrange').daterangepicker({
+    startDate: start,
+    endDate: end,
+    ranges: {
+       'Today': [moment(), moment()],
+       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+       'This Month': [moment().startOf('month'), moment().endOf('month')],
+       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    }
+}, cb);
+
+$('#reportrange').on('apply.daterangepicker', (e, picker) => {
+        var dateRangeVal = document.getElementById("span_edit").innerHTML;
+        const myArray = dateRangeVal.split(" to ");
+        document.getElementById("filterStart").value = myArray[0]
+        document.getElementById("filterEnd").value = myArray[1]
+        myFunction();
+});
+
+});
+
+</script>

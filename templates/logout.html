@@ -1,0 +1,16 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/logout.css' %}" />
+
+<div class="logout_container">
+    <div class="card" style="width: 25rem;" id="logout_box">
+        <div class="top_header">
+            <img src="{% static 'images/questionmark_validation.png' %}" alt="">
+        </div>
+        <p class="logout_text">Are you sure you want to logout?</p>
+
+        <div class="btn_logout">
+            <button type="button" class="btn  btn1" id="confirm_logout">Confirm</button>
+            <button type="button" class="btn  btn2" id="cancel_logout">Cancel</button>
+        </div>
+    </div>
+</div>

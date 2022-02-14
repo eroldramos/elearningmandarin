@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from django.http import HttpResponse
-from .models import  User, DictionaryList, SpeechList, HskLevel, Lesson
+from django.http import HttpResponse, JsonResponse
+from .models import  User, DictionaryList, SpeechList, HskLevel, Lesson, Quiz, Result, ActivityLog
 from .forms import MyUserCreationForm, UserForm, DictionaryListForm, LessonForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -9,7 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from difflib import SequenceMatcher
 from django.core.paginator import Paginator
-
+import random
+import json
 # Create your views here.
 
 
@@ -23,6 +24,10 @@ def UpdateUserPage(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Account updated!")
+            ActivityLog.objects.create(
+                user = request.user,
+                action = "Update account information",
+            )
             return redirect('update-user')
         else :
             for field, errors in form.errors.items():
@@ -30,7 +35,8 @@ def UpdateUserPage(request):
             return redirect('update-user')
     context = {
         'form': form,
-        'page' : page
+        'page' : page,
+       
     }
     return render(request, 'update_user.html', context)
 
@@ -73,8 +79,15 @@ def RegisterPage(request):
             form = MyUserCreationForm(request.POST)
             if form.is_valid():
                 user = form.save(commit=False)
+                
                 user.username = user.username.lower()
+                
                 user.save()
+
+                ActivityLog.objects.create(
+                user = user,
+                action = f"New user is registered - {user.username}",
+                )
                 login(request, user)
                 messages.success(request, f'You are logged in as {user.username}')
                 return redirect('dictionary')
@@ -87,7 +100,7 @@ def RegisterPage(request):
         'form': form,
 
     }
-    return render(request, 'login_register.html', context)
+    return render(request, 'register.html', context)
 
 def LoginPage(request):
 
@@ -119,9 +132,22 @@ def LoginPage(request):
         if formErrors == 0:
             user = authenticate(request, username = username, password=password)
             if user is not None:
-                login(request, user)
-                messages.success(request, f'You are logged in as {username}')
-                return redirect('dictionary')
+                if user.is_staff:
+                    login(request, user)
+                    messages.success(request, f'You are logged in as {username}')
+                    ActivityLog.objects.create(
+                    user = user,
+                    action = f"Logged In",
+                    )
+                    return redirect('lessons')
+                else:
+                    login(request, user)
+                    messages.success(request, f'You are logged in as {username}')
+                    ActivityLog.objects.create(
+                    user = user,
+                    action = f"Logged In",
+                    )
+                    return redirect('dictionary')
             else:
                 messages.warning(request, 'Invalid credentials!')
                 return redirect('login')
@@ -130,7 +156,7 @@ def LoginPage(request):
         'page' : 'login'
 
     }
-    return render(request, 'login_register.html', context)
+    return render(request, 'login.html', context)
     
 @login_required(login_url='anonymous')
 def PasswordReset(request):
@@ -162,13 +188,17 @@ def PasswordReset(request):
         user = authenticate(request, username = user.username, password= oldpassword)
         if user is None: 
             messages.warning(request, 'old password is incorrect')
-            return redirect('update-user')
+            formErrors += 1
         if formErrors == 0:
             if user is not None:
                 user.password = make_password(newpassword)
                 user.save()
                 login(request, user)
                 messages.success(request, 'Password changed.')
+                ActivityLog.objects.create(
+                    user = user,
+                    action = f"Password changed",
+                    )
                 return redirect('update-user')
             else:
                 return redirect('update-user')
@@ -179,7 +209,7 @@ def PasswordReset(request):
 
 @login_required(login_url='anonymous')
 def AdminUsersTable(request):
-    page = "Manage Users"
+    pageTable = "Manage Users"
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
@@ -190,15 +220,19 @@ def AdminUsersTable(request):
         Q(username__icontains = search)|
         Q(email__icontains = search)
         )
+    p = Paginator(users, 6)
+    page = request.GET.get('page')
+    users = p.get_page(page)
     context = {
-        'users': users,
-        'page' : page,
+        'table_data': users,
+        'pageTable' : pageTable,
+        'search' : search
     }
     return render(request,'tables.html', context)
 
 @login_required(login_url='anonymous')
 def AdminDictionaryTable(request):
-    page = "Manage Dictionary"
+    pageTable = "Manage Dictionary"
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
@@ -209,15 +243,19 @@ def AdminDictionaryTable(request):
         Q(english__icontains = search) |
         Q(part_of_speech__speech__icontains = search) 
         )
+    p = Paginator(dict_list, 6)
+    page = request.GET.get('page')
+    dict_list = p.get_page(page)
     context = {
-        'dict_list': dict_list,
-        'page' : page,
+        'table_data': dict_list,
+        'pageTable' : pageTable,
+        'search' : search
     }
     return render(request,'tables.html', context)
 
 @login_required(login_url='anonymous')
 def AdminLessonsTable(request):
-    page = "Manage Lessons"
+    pageTable = "Manage Lessons"
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('lessons')
@@ -227,9 +265,76 @@ def AdminLessonsTable(request):
         Q(title__icontains = search) |
         Q(hsklevel__level__icontains = search) 
         )
+    p = Paginator(lessons, 6)
+    page = request.GET.get('page')
+    lessons = p.get_page(page)
     context = {
-        'lessons': lessons,
-        'page' : page,
+        'table_data': lessons,
+        'pageTable' : pageTable,
+        'search' : search
+    }
+    return render(request,'tables.html', context)
+
+@login_required(login_url='anonymous')
+def AdminQuizzesTable(request):
+    pageTable = "Manage Assessments"
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    search =  request.GET.get('search') if request.GET.get('search') != None else ''
+    quizzes = Quiz.objects.filter(
+        Q(description__icontains = search) |
+        Q(title__icontains = search) 
+        )
+    p = Paginator(quizzes, 6)
+    page = request.GET.get('page')
+    quizzes = p.get_page(page)
+    context = {
+        'table_data': quizzes,
+        'pageTable' : pageTable,
+        'search' : search
+    }
+    return render(request,'tables.html', context)
+
+@login_required(login_url='anonymous')
+def AdminActivityLogTable(request):
+    pageTable = "Manage Activity Logs"
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    search =  request.GET.get('search') if request.GET.get('search') != None else ''
+    activity_logs = ActivityLog.objects.filter(
+        Q(user__username__icontains = search) |
+        Q(time_stamp__icontains = search) 
+        )
+    p = Paginator(activity_logs, 6)
+    page = request.GET.get('page')
+    activity_logs = p.get_page(page)
+    context = {
+        'table_data': activity_logs,
+        'pageTable' : pageTable,
+        'search' : search
+    }
+    return render(request,'tables.html', context)
+
+@login_required(login_url='anonymous')
+def AdminAchievementTable(request):
+    pageTable = "Achievements"
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('dictionary')
+    search =  request.GET.get('search') if request.GET.get('search') != None else ''
+    result = Result.objects.filter(
+        Q(user__username__icontains = search) |
+        Q(score__icontains = search) 
+        )
+    p = Paginator(result, 6)
+    page = request.GET.get('page')
+    result = p.get_page(page)
+    context = {
+        'table_data': result,
+        'pageTable' : pageTable,
+        'search' : search
     }
     return render(request,'tables.html', context)
 
@@ -245,6 +350,10 @@ def AdminUpdateUser(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Account updated!")
+            ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} updated account of {user.username}",
+            )
             return redirect('superuser-edit-user', pk=user.id)
         else :
             for field, errors in form.errors.items():
@@ -252,6 +361,7 @@ def AdminUpdateUser(request, pk):
             return redirect('superuser-edit-user', pk=user.id)
     context = {
         'form': form,
+         'user' : user,
     }
     return render(request, 'update_user.html', context)
 
@@ -265,14 +375,23 @@ def AdminDeleteUser(request, pk):
     if request.method == 'POST':
         messages.info(request, f"{user.username} is deleted.")
         user.delete()
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted the account of {user.username}",
+            )
         return redirect('superuser-users')
     context = {'obj': user}
     return render(request, 'delete.html', context)
 
 @login_required(login_url='anonymous')
 def LogoutUser(request):
-    logout(request)
+    
     messages.info(request, 'You have been logged out')
+    ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"Logged out",
+            )
+    logout(request)        
     return redirect('dictionary')
 
 def PleaseLoginToAccessThisPage(request):
@@ -293,12 +412,16 @@ def AdminAddWordToDictionary(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Word added to dictionary')
+            ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} added a word to dictionary",
+            )
             return redirect('dictionary')
     context = {
         'form' : form,
         'label' : label
     }
-    return render(request, 'add_word_to_dictionary.html', context)
+    return render(request, 'dictionary_edit_add.html', context)
 
 @login_required(login_url='anonymous')
 def AdminEditWordToDictionary(request, pk):
@@ -313,12 +436,16 @@ def AdminEditWordToDictionary(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Word updated')
+            ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} edited a word from dictionary",
+            )
             return redirect('superuser-edit-word', pk=dict_list.id)
     context = {
         'form' : form,
         'label' : label,
     }
-    return render(request, 'add_word_to_dictionary.html', context)
+    return render(request, 'dictionary_edit_add.html', context)
 
 @login_required(login_url='anonymous')
 def AdminDeleteWordToDictionary(request, pk):
@@ -330,11 +457,16 @@ def AdminDeleteWordToDictionary(request, pk):
     if request.method == 'POST':
         messages.info(request, f"{dict_list.pinyin} is deleted.")
         dict_list.delete()
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted a word from dictionary",
+            )
         return redirect('dictionary')
     context = {'obj': dict_list}
     return render(request, 'delete.html', context)
     
 def DictionaryPage(request):
+    
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     speeches = SpeechList.objects.all()
     all_result = DictionaryList.objects.all()
@@ -352,6 +484,10 @@ def DictionaryPage(request):
         'words' : words,
         'speeches' : speeches,
         'all_result' : all_result,
+        'dictionary_active' : 'active',
+        'lesson_active' : '',
+        'search': search,
+        'page' : page,
     }
     return render(request, 'dictionary.html', context)
 
@@ -369,7 +505,7 @@ def DictionaryDetails(request, pk):
 def AdminAddLesson(request):
     
     form = LessonForm()
-    label = "Create"
+  
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
@@ -378,18 +514,29 @@ def AdminAddLesson(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Lesson created')
+            ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} added a lesson",
+            )
             return redirect('lessons')
     context = {
         'form' : form,
-        'label' : label
+      
     }
     return render(request, 'lesson_add.html', context)
 
 @login_required(login_url='anonymous')
 def AdminEditLesson(request, pk):
-    label = 'Update'
+ 
     lesson = Lesson.objects.get(id=pk)
     form = LessonForm(instance=lesson)
+    try:
+        quiz = Quiz.objects.get(id=lesson.quiz.id)
+        questions = json.loads(quiz.questions)
+    except:
+        quiz = None   
+        questions = None
+
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
@@ -398,10 +545,42 @@ def AdminEditLesson(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Lesson updated')
+            ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} updated a lesson",
+            )
             return redirect('superuser-edit-lesson', pk=lesson.id)
+    if request.method == 'POST' and request.POST.get('title'):
+            try:
+                quiz = Quiz.objects.get(id=lesson.quiz.id)
+                quiz.title =  request.POST.get('title')
+                quiz.description = request.POST.get('description')
+                quiz.questions = request.POST.get('questions')
+                quiz.time = request.POST.get('time')
+                quiz.passingScore = request.POST.get('passingScore')
+                quiz.save()
+                ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} updated a quiz for {lesson}",
+            )
+            except:
+                quiz = Quiz.objects.create(
+                    lesson = lesson,
+                    title = request.POST.get('title'),
+                    description = request.POST.get('description'),
+                    questions = request.POST.get('questions'),
+                    time = request.POST.get('time'),
+                    passingScore = request.POST.get('passingScore'),
+                )
+                ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} created a quiz for {lesson}",
+            )
+               
     context = {
         'form' : form,
-        'label' : label,
+        'quiz' : quiz,
+        'questions' : questions,
     }
     return render(request, 'lesson_edit.html', context)
 @login_required(login_url='anonymous')
@@ -410,13 +589,40 @@ def AdminDeleteLesson(request, pk):
     lesson = Lesson.objects.get(id=pk)
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('dictionary')
+        return redirect('lessons')
     if request.method == 'POST':
         messages.info(request, f"{lesson.title} is deleted.")
         lesson.delete()
-        return redirect('dictionary')
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted lesson {lesson}",
+            )
+        return redirect('lessons')
     context = {'obj': lesson}
     return render(request, 'delete.html', context)
+
+
+@login_required(login_url='anonymous')
+def AdminDeleteQuiz(request, pk):
+
+    quiz = Quiz.objects.get(id=pk)
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('lessons')
+    if request.method == 'POST':
+        messages.info(request, f"{quiz.title} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} added a quiz for {quiz.lesson}",
+            )
+        quiz.delete()
+        
+        return redirect('lessons')
+        
+    context = {'obj': quiz}
+    return render(request, 'delete.html', context)
+
+
 @login_required(login_url='anonymous')
 def LessonsPage(request):
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
@@ -427,24 +633,125 @@ def LessonsPage(request):
         Q(description__icontains = search) |
         Q(hsklevel__level__icontains = search) 
         )
+    p = Paginator(lessons, 6)
+    page = request.GET.get('page')
+    lessons = p.get_page(page)
     context = {
         'lessons' : lessons,
         'all_result' : all_result,
         'hsklevels' : hsklevels,
+        'dictionary_active' : '',
+        'lesson_active' : 'active',
+        'search': search,
+        'page' : page,
     }
     return render(request, 'lesson.html', context)
 
 @login_required(login_url='anonymous')
 def LessonsDetails(request, pk):
     lesson = Lesson.objects.get(id=pk)
+    try:
+        quiz = Quiz.objects.get(id=lesson.quiz.id)
+    except:
+        quiz = None
+    if request.method == 'POST' and request.POST.get('startQuiz'):
+        try:
+            quiz = Quiz.objects.get(id=lesson.quiz.id)
+            shuffledTenQuestion = json.loads(quiz.questions)
+            random.shuffle(shuffledTenQuestion)
+            data = {
+                'title' : quiz.title,
+                'description': quiz.description,
+                'questions': json.dumps(shuffledTenQuestion[:10]),
+                'time': quiz.time,
+                'passingScore' : quiz.passingScore,
+            }
+            return JsonResponse(data)
+        except:
+            quiz = "[]"
+            data = {
+                
+            }
+            return JsonResponse(data)
 
+    if request.method == 'POST' and request.POST.get('score'):
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} took a quiz for {lesson}",
+            )
+        result = Result.objects.create(
+            quiz = quiz,
+            user = request.user,
+            score = request.POST.get('score'),
+        )
     context = {
     'lesson' : lesson,   
+    'quiz' : quiz,
     }
     return render(request, 'lesson_details.html',context)
 
-  
-   
+@login_required(login_url='anonymous')
+def AdminDeleteActivityLog(request, pk):
 
+    activity_log = ActivityLog.objects.get(id=pk)
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('lessons')
+    if request.method == 'POST':
+        messages.info(request, f"Activity of {activity_log.user.username} is deleted")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted activity of {activity_log.user.username}",
+            )
+        activity_log.delete()
+        
+        return redirect('lessons')
+        
+    context = {'obj': activity_log}
+    return render(request, 'delete.html', context)
+
+@login_required(login_url='anonymous')
+def AdminDeleteAchievement(request, pk):
+
+    result = Result.objects.get(id=pk)
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('lessons')
+    if request.method == 'POST':
+        messages.info(request, f"Achievement of {result.user.username} is deleted")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted achievement of {result.user.username}",
+            )
+        result.delete()
+        
+        return redirect('lessons')
+        
+    context = {'obj': result}
+    return render(request, 'delete.html', context)
+
+
+
+  
+@login_required(login_url='anonymous')
+def DeletePersonalAccount(request):
+    if request.user.is_authenticated and  request.user.is_staff:
+        messages.warning(request, "Administrator cannot delete their account!")
+        return redirect('lessons')
+    user = User.objects.get(id=request.user.id)
+    
+   
+        
+        
+    ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{user.username} deleted his account.",
+            )
+
+    user.delete()
+
+    messages.info(request, f"Your account has been deleted")
+    return redirect('logout')
+    
 
 

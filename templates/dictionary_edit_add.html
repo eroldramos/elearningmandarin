@@ -1,0 +1,49 @@
+{% extends 'main.html' %} {% block content %} {% load static%}
+<script>
+  document.getElementById("dictionary_page").style.color = "#ED4E38";
+</script>
+<link rel="stylesheet" href="{% static 'css/dictionaryAdd_Edit.css' %}" />
+
+<div class="container-fluid">
+  <div class="row mb-5" id="dictionary_header">
+    <h1 class="text-center">Dictionary</h1>
+  </div>
+
+  <div class="row justify-content-center" style="margin-bottom:3%">
+    <div class="col col-lg-6">
+      <form action="" method="POST">
+
+
+          <a href="{%url 'dictionary'%}" id="back_btn">
+            <img src="{% static 'images/back_icon.png' %}" class="navbar_mini_icon">
+             Back
+          </a>
+ 
+        <h3 style="margin: 0%;"> {{label}}  {% if label == 'Add' %}new word{% else %}word{%endif%}</h3>
+        
+        {%csrf_token %}
+
+        <div class="col-sm-12">
+            {% for fields in form %}
+          <div class="form-group">
+            <label for="" class="form-label mt-4"> {{fields.label}}</label> </label>
+            {{ fields }}
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="form-group">
+          <br />
+          <button type="submit" class="btn btn-primary btn-lg btn-block">
+            {{label}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<img src="{% static 'images/right_bgImg.png' %}" id="right_bg_img">
+
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock content %}

@@ -1,13 +1,26 @@
 {% extends 'main.html' %} {% block content%} {% load static %}
+<link rel="stylesheet" href="{% static 'css/lesson_details.css' %}">
+<script>
+  document.getElementById("lesson_page").style.color = "#ED4E38";
+</script>
+
+
 <div class="container-fluid py-3 px-3">
   <div class="row justify-content-center">
     <div class="col col-lg-8">
-      <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+      <a href="{%url 'lessons'%}">Go Back</a>
 
-      <div class="card border-primary mb-3">
+      <div class="card border-primary mb-3" id="lessonBox">
         <div class="card-header">
           <strong style="font-size: xx-large">{{lesson.title}}</strong> |
           <span class="text-uppercase">{{lesson.hsklevel}}</span>
+          {% if quiz is None %}
+          <button style="float: right;" class="btn btn-primary border border-light rounded disabled">Assessment Not Available</button>
+          {% else %}
+          {% csrf_token %}
+          <button style="float: right;" class="btn btn-primary border border-light rounded" id="takeQuizBtn">Take Assessment</button>
+          {% endif %}
+          
         </div>
         <div class="card-body">
           <h3 class="card-title">Description</h3>
@@ -15,8 +28,42 @@
           <div class="content">{{lesson.content | safe }}</div>
         </div>
       </div>
+      <!-- QUIZ INFORMATION -->
+      {% if quiz is not None %}
+      <div class="card border-primary mb-3" id="quizBox" style="display: none;">
+        <div class="card-header">
+          <strong style="font-size: xx-large" id="quizTitle"></strong> |
+          <span class="text-capitalize" id="quizPassingScore"></span>
+          <div class="border border-primary rounded" id="timer" style="float: right;">
+            <b>00:00</b>
+          </div>
+          
+        </div>
+        <div class="card-body">
+          <div id="results" style="float: right;"></div>
+          <h4 class="card-title">Description</h4>
+          <p class="card-text" id="quizDescription"></p>
+          <div class="row justify-content-center">
+            <div class="col-2"><button class="btn btn-primary btn-block" id="startQuizBtn">Start</button></div>
+          </div>
+
+          <div class="row justify-content-center" id="quizContainer" style="display: none;">
+            <div class="col col-lg-6 col-md-8 col-sm-12">
+              <div id="quiz"></div>
+              <button id="submit" class="btn btn-primary btn-lg btn-block">Submit Answers</button>
+              
+            </div>
+          </div>
+
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
+  
 </div>
 <script src="{% static 'js/main.js' %}"></script>
+{% if quiz is not None %}
+<script src="{% static 'js/lesson_details.js' %}"></script>
+{% endif %}
 {% endblock content %}

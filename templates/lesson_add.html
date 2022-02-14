@@ -1,15 +1,23 @@
 {% extends 'main.html' %} {% block content %} {% load static%}
-<div class="container-fluid py-3 px-3">
-  <div class="row mb-5">
+<script>
+  document.getElementById("lesson_page").style.color = "#ED4E38";
+</script>
+
+<link rel="stylesheet" href="{% static 'css/dictionaryAdd_Edit.css' %}" />
+
+<div class="container-fluid">
+  <div class="row mb-5" id="dictionary_header">
     <h1 class="text-center">Lesson</h1>
   </div>
-  <div class="row justify-content-center">
+  <div class="row justify-content-center" style="margin-bottom:3%">
     <div class="col col-lg-8">
-      <a href="{{request.META.HTTP_REFERER}}"
-        ></i>Go Back</a
-      >
+      <a href="{% url 'lessons'%}" id="back_btn">
+        <img src="{% static 'images/back_icon.png' %}" class="navbar_mini_icon">
+        Back
+      </a>
+
       <form action="" method="POST">
-        <h3> {{label}} Lesson</h3>
+        <h3> Create Lesson</h3>
         {%csrf_token %}
 
         <div class="col-sm-12">
@@ -25,7 +33,7 @@
         <div class="form-group">
           <br />
           <button type="submit" class="btn btn-primary btn-lg btn-block">
-            {{label}}
+            Create
           </button>
         </div>
       </form>
@@ -54,4 +62,7 @@
       content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
       });
   </script>
+  
+<img src="{% static 'images/right_bgImg.png' %}" id="right_bg_img">
+
 {% endblock content %}

@@ -1,7 +1,10 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+
+<nav class="navbar navbar-expand-lg navbar-dark" id="navbar_header">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'dictionary' %}">Learn Mandarin</a>
+    <img src="{% static 'images/navbar_logo.png' %}" id="navbar_logo">
+    <a class="navbar-brand" href="{% url 'dictionary' %}" id="logo_text">Learn Mandarin Now</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -15,37 +18,50 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarColor02">
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav me-auto navbar_menuChouce">
         <li class="nav-item">
-          <a class="nav-link active" href="{% url 'dictionary' %}"
-            >Dictionary
+          <a class="nav-link navigation_choices" href="{% url 'dictionary' %}"
+             id="dictionary_page">Dictionary
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'lessons' %}">Lessons</a>
+          <a class="nav-link navigation_choices" href="{% url 'lessons' %}" id="lesson_page">Lessons</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">To be Added</a>
+          <a class="nav-link navigation_choices" href="#" id="">To be Added</a>
         </li>
 
         {% if request.user.is_authenticated and request.user.is_staff %}
         <li class="nav-item dropdown">
           <a
-            class="nav-link dropdown-toggle"
+            class="nav-link dropdown-toggle navigation_choices"
             data-bs-toggle="dropdown"
             href="#"
             role="button"
             aria-haspopup="true"
             aria-expanded="false"
-            >To be Added</a
+             id="">Manage Tables</a
           >
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">To be Added</a>
-            <a class="dropdown-item" href="#">To be Added</a>
-            <a class="dropdown-item" href="#">To be Added</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">To be Added</a>
+            <a class="dropdown-item" href="{% url 'superuser-users' %}">
+              <img src="{% static 'images/manageUser_icon_navbar.png' %}" class="navbar_mini_icon">
+              Manage Users</a
+            >
+
+            <a class="dropdown-item" href="{% url 'superuser-lessons' %}">
+              <img src="{% static 'images/manageLesson_icon_navbar.png' %}" class="navbar_mini_icon">
+              Manage Lessons</a
+            >
+
+            <a class="dropdown-item" href="{% url 'superuser-dictionary' %}">
+              <img src="{% static 'images/manageDict_icon_navbar.png' %}" class="navbar_mini_icon">
+              Manage Dictionary</a
+            >
+            <a class="dropdown-item" href="{% url 'superuser-quizzes' %}">
+              <img src="{% static 'images/manageQuizzes_icon_navbar.png' %}" class="navbar_mini_icon">
+              Manage Assessments</a
+            >
           </div>
         </li>
         {% endif %}
@@ -55,7 +71,7 @@
         {% if request.user.is_authenticated %}
         <div class="dropdown">
           <button
-            class="btn btn-primary dropdown-toggle"
+            class="btn btn-primary dropdown-toggle button_profile" id="test"
             type="button"
             id="dropdownMenuButton1"
             data-bs-toggle="dropdown"
@@ -71,36 +87,38 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li>
-              <a class="dropdown-item" href="{% url 'update-user' %}"
-                >Profile</a
+              <a class="dropdown-item" href="{% url 'update-user' %}">
+                <img src="{% static 'images/profile_icon_navbar.png' %}" class="navbar_mini_icon">
+                Profile</a
               >
-            </li>
-            <li>
-              <a class="dropdown-item" id="logoutBtn">Logout</a>
             </li>
             {% if request.user.is_staff %}
             <li>
-              <a class="dropdown-item" href="{% url 'superuser-users' %}"
-                >Manage Users</a
+              <a class="dropdown-item" href="{% url 'superuser-activitylogs' %}">
+                <img src="{% static 'images/activityLog_icon_navbar.png' %}" class="navbar_mini_icon">
+                Activity Logs</a
               >
             </li>
             <li>
-              <a class="dropdown-item" href="{% url 'superuser-dictionary' %}"
-                >Manage Dictionary</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="{% url 'superuser-lessons' %}"
-                >Manage Lessons</a
+              <a class="dropdown-item" href="{% url 'superuser-achievements' %}">
+                <img src="{% static 'images/activityLog_icon_navbar.png' %}" class="navbar_mini_icon">
+                Achievements</a
               >
             </li>
             {% endif %}
+            
+            <hr>
+            <li style="margin-top:-.5rem;">
+              <a class="dropdown-item" id="logoutBtn">
+                <img src="{% static 'images/logout_icon_navbar.png' %}" class="navbar_mini_icon">
+                Logout</a>
+            </li>
           </ul>
         </div>
         {% else %}
 
         <div class="dropdown">
-          <a class="btn btn-primary" href="{% url 'login' %}">
+          <a class="btn btn-primary button_profile" href="{% url 'login' %}">
             <img
               src="{% static 'images/avatar.svg' %}"
               alt="profile"
@@ -120,3 +138,4 @@
     </div>
   </div>
 </nav>
+<script src="{% static 'js/main.js' %}"></script>

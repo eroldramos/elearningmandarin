@@ -1,26 +1,34 @@
 {% extends 'main.html' %} {% block content %} {% load static%}
-<div class="container-fluid py-3 px-3">
-  <div class="row mb-5">
+<link rel="stylesheet" href="{% static 'css/lesson_edit.css' %}">
+<link rel="stylesheet" href="{% static 'css/dictionaryAdd_Edit.css' %}" />
+<script>
+  document.getElementById("lesson_page").style.color = "#ED4E38";
+</script>
+
+
+
+<div class="container-fluid">
+  <div class="row mb-5"  id="dictionary_header">
     <h1 class="text-center">Lesson</h1>
   </div>
-  <div class="row justify-content-center">
+  <div class="row justify-content-center" style="margin-bottom:3%">
     <div class="col col-lg-8">
-      <a href="{{request.META.HTTP_REFERER}}"
-        ></i>Go Back</a
-      >
+      <a href="{%url 'lessons'%}" id="back_btn">
+        <img src="{% static 'images/back_icon.png' %}" class="navbar_mini_icon">
+        Back</a>
       <!-- tab bar -->
       <ul class="nav nav-tabs">
         <li class="nav-item">
           <a class="nav-link active" data-bs-toggle="tab" href="#lesson">Lesson</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#quiz">Quiz</a>
+          <a class="nav-link" data-bs-toggle="tab" href="#quiz">Assessment</a>
         </li>
       </ul>
       <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade active show" id="lesson">
           <form action="" method="POST">
-            <h3> {{label}} Lesson</h3>
+            <h3> Edit Lesson</h3>
             {%csrf_token %}
     
             <div class="col-sm-12">
@@ -36,14 +44,206 @@
             <div class="form-group">
               <br />
               <button type="submit" class="btn btn-primary btn-lg btn-block">
-                {{label}}
+                Update
               </button>
             </div>
           </form>
         </div>
         <div class="tab-pane fade" id="quiz">
-          Quiz Form
+        {% if quiz == None %}
+        <!-- IF QUiZ IS NONE DO THIS -->
+        <div >
+          <h3>Assessment</h3>
+          {%csrf_token %}
+  
+          <div class="col-sm-12">
+            
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Assessment Title</label> </label>
+              <input type="text" id="title" class="form-control" placeholder="Quiz Title"> 
+              <p  class="errorMessage" id="titleErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Assessment Description</label> </label>
+              <textarea id="description" class="form-control" rows="10" placeholder="Description" ></textarea>
+              <p  class="errorMessage" id="descriptionErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Time</label> </label>
+              <input type="number" id="time" class="form-control" placeholder="Time in minutes">
+              <p  class="errorMessage" id="timeErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Passing Score</label> </label>
+              <input type="number" id="score" class="form-control" placeholder="Passing Score">
+              <p  class="errorMessage" id="scoreErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Questions</label> </label>
+              <div class="form-control border" style="background-color: #ccc">
+                <p class="question-number" id="question-number" style="display: none;">0</p>
+                <div id="main-questions">
+                  
+                 
+                </div>
+              </div>
+            </div>
+
+          </div>
+  
+          <div class="form-group">
+            <br />
+            <button onclick="saveQuiz()" class="btn btn-primary btn-lg btn-block">
+              Save
+            </button>
+          </div>
+        
+      </div>
+      <!-- END OF NONE -->
+        {% else %}
+        <!-- IF QUiZ IS NOT NONE DO THIS -->
+        <div >
+          <h3>Assessment</h3>
+          {%csrf_token %}
+  
+          <div class="col-sm-12">
+            
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Assessment Title</label> </label>
+              <input type="text" id="title" class="form-control" placeholder="Quiz Title" value="{{quiz.title}}"> 
+              <p  class="errorMessage" id="titleErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Assessment Description</label> </label>
+              <textarea id="description" class="form-control" rows="10" placeholder="Description">{{quiz.description}}</textarea>
+              <p  class="errorMessage" id="descriptionErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Time</label> </label>
+              <input type="number" id="time" class="form-control" placeholder="Time in minutes" value="{{quiz.time}}">
+              <p  class="errorMessage" id="timeErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Passing Score</label> </label>
+              <input type="number" id="score" class="form-control" placeholder="Passing Score" value="{{quiz.passingScore}}">
+              <p  class="errorMessage" id="scoreErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Questions</label> </label>
+              <div class="form-control border" style="background-color: #ccc">
+                <p class="question-number" id="question-number" style="display: none;">0</p>
+                <div id="main-questions">
+                 
+
+                  {% for question in questions %}
+
+                  {% if question.type == "MC" %}
+                  <div class="questions" id="questions{{forloop.counter}}"><!--
+                  --><button class="removeQuestionBtn" onclick='removeQuestion2("questions{{forloop.counter}}")'>X</button><!--
+                  --><p class="question-number">{{forloop.counter}}</p><!--
+                  --><small class="question-type">Multiple Choice</small><!--
+                   --><hr><!--
+                   --><label class="questionAnswerLabel">Question:</label><!--
+                   --><input type="text" class="question" placeholder="Question" value="{{question.question}}"><!--
+                   --><br><!--
+                   --><label class="questionAnswerLabel">Correct Answer:</label><!--
+                   --><input type="text" class="answer" id="answer{{forloop.counter}}" placeholder="Correct Answer" value="{{question.correctAnswer}}"><!--
+                   --><br><!--
+                   --><label class="labelOptions">A:</label><!--
+                   --><input type="text" class="letter_a" id="letter_a{{forloop.counter}}" placeholder="Option A" value="{{question.answers.a}}"><!--
+                   --><label class="labelOptions">B:</label><!--
+                   --><input type="text" class="letter_b" id="letter_b{{forloop.counter}}" placeholder="Option B" value="{{question.answers.b}}"><!--
+                   --><br><!--
+                   --><label class="labelOptions">C:</label><!--
+                   --><input type="text" class="letter_c" id="letter_c{{forloop.counter}}" placeholder="Option C" value="{{question.answers.c}}"><!--
+                   --><label class="labelOptions">D:</label><!--
+                   --><input type="text" class="letter_d" id="letter_d{{forloop.counter}}" placeholder="Option D" value="{{question.answers.d}}"><!--
+                   --><p class="errorMessageQuestion"></p><!--
+                 --></div>
+                  {% endif %}
+
+
+                  {% if question.type == "I" %}
+                  <div class="questions" id="questions{{forloop.counter}}"><!--
+                  --><button class="removeQuestionBtn" onclick='removeQuestion2("questions{{forloop.counter}}")'>X</button><!--
+                --><p class="question-number">{{forloop.counter}}</p><!--
+                --><small class="question-type">Identification</small><!--
+                --><hr><!--
+                --><label class="questionAnswerLabel">Question:</label><!--
+                --><input type="text" class="question" placeholder="Question" value="{{question.question}}"><!--
+                --><br><!--
+                --><label class="questionAnswerLabel">Correct Answer:</label><!--
+                --><input type="text" class="answer" id="answer{{forloop.counter}}" placeholder="Correct Answer" value="{{question.correctAnswer}}"><!--
+                --><p class="errorMessageQuestion"></p><!--
+              --></div>
+                  {% endif %}
+
+                  {% if question.type == "TF" %}
+                  <div class="questions" id="questions{{forloop.counter}}"><!--
+                  --><button class="removeQuestionBtn" onclick='removeQuestion2("questions{{forloop.counter}}")'>X</button><!--
+               --><p class="question-number">{{forloop.counter}}</p><!--
+               --><small class="question-type">True or False</small><!--
+               --><hr><!--
+               --><label class="questionAnswerLabel">Question:</label><!--
+               --><input type="text" class="question" placeholder="Question" value="{{question.question}}"><!--
+               --><br><!--
+               --><label class="questionAnswerLabel">Correct Answer:</label>
+                  {% if question.correctAnswer == "a" %}
+                  <input type="radio" name="truefalse{{forloop.counter}}" id="true{{forloop.counter}}" value="true" checked><!--
+                 --><label>True</label><!--
+                 --><input type="radio" name="truefalse{{forloop.counter}}" id="false{{forloop.counter}}" value="false"><!--
+                 --><label>False</label><!--
+                 --><p class="errorMessageQuestion"></p>
+                  {% else %}
+                  <input type="radio" name="truefalse{{forloop.counter}}" id="true{{forloop.counter}}" value="true"><!--
+                 --><label>True</label><!--
+                 --><input type="radio" name="truefalse{{forloop.counter}}" id="false{{forloop.counter}}" value="false" checked><!--
+                 --><label>False</label><!--
+                 --><p class="errorMessageQuestion"></p>
+                  {% endif %}
+                  
+                 </div>
+                  {% endif %}
+
+                  
+                  {% endfor %}
+                 
+                </div>
+              </div>
+            </div>
+
+          </div>
+  
+          <div class="form-group">
+            <br />
+            <button onclick="saveQuiz()" class="btn btn-primary btn-lg btn-block">
+              Save
+            </button>
+          </div>
+        
+      </div>
+    <!-- END OF NOT NONE -->
+        {% endif %}
+        
+        <div class="menu-question-type">
+          <div class="title-question-menu" style='text-align: center;'>Question Types</div>
+          <ul class="nav">
+            <li class='list' onclick="addIdentification2()"><span>Identification</span></li>
+            <li class='list' onclick="addMultipleChoice2()"><span>Multiple Choice</span></li>
+            <li class='list' onclick="addTrueOrFalse2()"><span>True or False</span></li>
+            <li class='list' onclick="removeQuestion()"><span>Remove Question</span></li>
+          </ul>
         </div>
+        </div>
+
       </div>
       <!-- tab bar -->
       
@@ -51,25 +251,8 @@
   </div>
 </div>
 
+<img src="{% static 'images/right_bgImg.png' %}" id="right_bg_img">
+
 <script src="{% static 'js/main.js' %}"></script>
-<script>
-    tinymce.init({
-        selector: '#myTextArea',
-        branding: false,
-        height: "500",
-        plugins: [
-        'advlist autolink link image lists charmap print preview hr anchor pagebreak',
-        'searchreplace wordcount visualblocks code fullscreen insertdatetime media nonbreaking',
-        'table emoticons template paste help', 'table advtable', 'pageembed'
-      ],
-      toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
-        'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
-        'forecolor backcolor emoticons | help | advtablerownumbering | pageembed',
-      menu: {
-        favs: {title: 'My Favorites', items: 'code visualaid | searchreplace | emoticons'}
-      },
-      menubar: 'favs file edit view insert format tools table help',
-      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-      });
-  </script>
+<script src="{% static 'js/lesson_edit.js' %}"></script>
 {% endblock content %}

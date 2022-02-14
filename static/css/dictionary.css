@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.forRemovingMargin{
+    padding-top: 0rem !important;
+    padding-right: 0rem !important;
+    padding-left: 0rem !important;
+}
+#dictionary_header{
+    height: 30vh;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-image: url(../../static/images/dictionary_headerBg.png);
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+}
+.dictionary_text{
+    text-align: center;
+    font-size: 5vh;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bolder;
+}
+.input_searchD{
+    margin: 0 1rem;
+    padding: .7rem 0;
+    text-indent: 10px;
+}
+.search_btn{
+    padding: 0rem 2rem;
+    margin-right: 2rem;
+}
+
+#card_header{
+    background-image: url(../../static/images/card_headerbg.png);
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+#card-body{
+    background-color: rgb(248, 248, 248);
+    border-radius: 10px;
+}
+.for_shadow{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.card_head_def{
+    background-color: rgb(243, 242, 242);
+    padding-top: .7rem;
+    padding-bottom: .7rem;
+}
+
+#card_subhead{
+    background-color: #ED4E38;
+    color: #fff;
+}
+.sub_headIcon{
+    color: #fff;
+}
+
+
+#left{
+    padding-top: 1rem;
+    padding-left: 2rem;
+    margin-right: 5rem;
+    float: left;
+    width: auto;
+    height: auto;
+}
+#word_hanzi{
+    font-size: 3rem;
+}
+#right{
+    padding-top: 1rem;
+    margin-left: 2rem;
+    float: left;
+    text-align: left;
+}
+#more_info_container{
+    position: relative;
+    bottom: 0;
+    right: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+#def_text{
+    text-indent: 2rem;
+}
