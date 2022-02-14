@@ -710,6 +710,26 @@ def AdminDeleteActivityLog(request, pk):
     context = {'obj': activity_log}
     return render(request, 'delete.html', context)
 
+@login_required(login_url='anonymous')
+def AdminDeleteAchievement(request, pk):
+
+    result = Result.objects.get(id=pk)
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('lessons')
+    if request.method == 'POST':
+        messages.info(request, f"Achievement of {result.user.username} is deleted")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted achievement of {result.user.username}",
+            )
+        result.delete()
+        
+        return redirect('lessons')
+        
+    context = {'obj': result}
+    return render(request, 'delete.html', context)
+
 
 
   

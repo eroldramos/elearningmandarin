@@ -52,7 +52,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
     <td>{{result.score}}</td>
     <td>{{result.created|date:'Y-m-d'}}</td>
     <td class="text-center">
-      <a href=""
+      <a href="{% url 'superuser-delete-achievement' result.id %}"
         ><i class="fas fa-trash px-3"></i
       ></a>
     </td>
