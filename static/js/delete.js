@@ -3,7 +3,7 @@ document.getElementById("deleteBtn").onclick = function () {
   };
   
   document.getElementById("confirm_delete").onclick = function () {
-    window.location.href = "/delete";
+    window.location.href = "/delete-account";
   };
   
   document.getElementById("cancel_delete").onclick = function () {

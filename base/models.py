@@ -78,7 +78,7 @@ class Result(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return str(self.user.username)
+        return str(f"{self.user.username}-{self.quiz.lesson}")
     class Meta:
         ordering = ['-score']
 
