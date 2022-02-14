@@ -1,14 +1,23 @@
 {% extends 'main.html' %} {% block content%} {% load static %}
 <link rel="stylesheet" href="{% static 'css/lesson_details.css' %}">
+<link rel="stylesheet" href="{% static 'css/dictionaryAdd_Edit.css' %}" />
 <script>
   document.getElementById("lesson_page").style.color = "#ED4E38";
 </script>
 
 
-<div class="container-fluid py-3 px-3">
+<div class="container-fluid">
+
+  <div class="row mb-5" id="dictionary_header1">
+    <p class="lesson_Text_header">{{lesson.hsklevel}}</p>
+  </div>
+
   <div class="row justify-content-center">
     <div class="col col-lg-8">
-      <a href="{%url 'lessons'%}">Go Back</a>
+      <a href="{%url 'lessons'%}" id="back_btn">
+        <img src="{% static 'images/back_icon.png' %}" class="navbar_mini_icon">
+        Back
+      </a>
 
       <div class="card border-primary mb-3" id="lessonBox">
         <div class="card-header">

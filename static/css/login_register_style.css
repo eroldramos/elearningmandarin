@@ -273,3 +273,10 @@ input {
 .create_text{
   margin-bottom: 0;
 }
+
+#bg_left{
+  background-image: url(../../images/login_bg.png);
+  width: 45%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

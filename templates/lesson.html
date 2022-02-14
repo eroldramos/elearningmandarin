@@ -1,5 +1,6 @@
 {% extends "main.html" %} {% block content %} {% load static %}
 <link rel="stylesheet" href="{% static 'css/dictionary.css' %}" />
+<link rel="stylesheet" href="{% static 'css/table.css' %}" />
 
 <script>
     document.getElementById("lesson_page").style.color = "#ED4E38";
@@ -66,7 +67,11 @@
   <div class="col col-lg-8 col-md-8">
     {% if lessons|length == 0 %}
 
-    <p class="text-center">No Results Found.</p>
+    <div id="no_dataVerifyer" style="display: flex;">
+      <img src="{% static 'images/no_record_found.png' %}" alt="">
+      NO DATA FOUND
+      <a href="{%url 'lessons'%}" style="font-size:.8rem;">Clear Searches</a>
+    </div>
 
     {% endif %}
 
