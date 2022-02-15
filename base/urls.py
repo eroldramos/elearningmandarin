@@ -5,6 +5,7 @@ urlpatterns = [
     path('update-user/', views.UpdateUserPage, name = 'update-user'),
     path('register/', views.RegisterPage, name = 'register'),
     path('login/', views.LoginPage, name = 'login'),
+    path('admin-login/', views.AdminLoginPage, name = 'admin-login'),
     path('logout/', views.LogoutUser, name = 'logout'),
     path('anonymous-user/', views.PleaseLoginToAccessThisPage, name = 'anonymous'),
     path('passwordreset/', views.PasswordReset, name = 'passwordreset'),

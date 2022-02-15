@@ -132,7 +132,7 @@ def LoginPage(request):
         if formErrors == 0:
             user = authenticate(request, username = username, password=password)
             if user is not None:
-                if user.is_staff:
+                if not user.is_staff:
                     login(request, user)
                     messages.success(request, f'You are logged in as {username}')
                     ActivityLog.objects.create(
@@ -141,13 +141,8 @@ def LoginPage(request):
                     )
                     return redirect('lessons')
                 else:
-                    login(request, user)
-                    messages.success(request, f'You are logged in as {username}')
-                    ActivityLog.objects.create(
-                    user = user,
-                    action = f"Logged In",
-                    )
-                    return redirect('dictionary')
+                    messages.warning(request, 'This is not the log in page for administrator')
+                    return redirect('login')
             else:
                 messages.warning(request, 'Invalid credentials!')
                 return redirect('login')
@@ -157,6 +152,58 @@ def LoginPage(request):
 
     }
     return render(request, 'login.html', context)
+
+# LOGIN FOR ADMIN
+def AdminLoginPage(request):
+
+    if request.user.is_authenticated:
+        messages.info(request, 'You are already logged in')
+        return redirect('dictionary')
+
+    if request.method == 'POST':
+        username = request.POST.get('username').lower()
+        password = request.POST.get('password')
+        formErrors = 0
+
+        if "@" in username:
+            try:
+                user = User.objects.get(email = username)
+                username = user.username 
+            except:
+                formErrors += 1
+                messages.error(request, f'{username} does not exist')
+                return redirect('login')
+        else:
+            try:
+                user = User.objects.get(username = username)
+            except:
+                formErrors += 1
+                messages.error(request, f'{username} does not exist')
+                return redirect('admin-login')
+        
+        if formErrors == 0:
+            user = authenticate(request, username = username, password=password)
+            if user is not None:
+                if user.is_staff:
+                    login(request, user)
+                    messages.success(request, f'You are logged in as {username}')
+                    ActivityLog.objects.create(
+                    user = user,
+                    action = f"Logged In",
+                    )
+                    return redirect('lessons')
+                else:
+                    messages.warning(request, 'Only authorize personel is allowed to log in here!')
+                    return redirect('login')
+            else:
+                messages.warning(request, 'Invalid credentials!')
+                return redirect('login')
+
+    context = {
+        'page' : 'login'
+
+    }
+    return render(request, 'admin.html', context)
     
 @login_required(login_url='anonymous')
 def PasswordReset(request):
