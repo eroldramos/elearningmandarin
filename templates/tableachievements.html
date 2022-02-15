@@ -53,7 +53,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
     <td>{{result.score}}</td>
     <td>{{result.created|date:'Y-m-d'}}</td>
     <td class="text-center">
-      <a href="{% url 'superuser-delete-achievement' result.id %}"
+      <a href="#" onclick="showDeleteModal('modal_achievements')"
         ><i class="fas fa-trash px-3"></i
       ></a>
     </td>
@@ -68,6 +68,29 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
   <img src="{% static 'images/no_record_found.png' %}" alt="">
   NO DATA FOUND
 </div>
+
+
+<!--Delete Modal-->
+<div class="modal_container" id="modal_achievements">
+  <div class="card" style="width: 25rem;" id="modal_box">
+      <div class="top_header">
+          <img src="{% static 'images/questionmark_validationRed.png' %}" alt="">
+      </div>
+      <p class="modal_text">Quick reminder</p>
+      <p class="modal_text1">Are you sure you want to delete this log?</p>
+
+      <div class="btn_modal">
+          <button type="button" class="btn  btn1" id="confirm_logout">Confirm</button>
+          <button type="button" class="btn  btn2" id="cancel_logout" onclick="closeDeleteModal('modal_achievements')">Cancel</button>
+      </div>
+  </div>
+</div>
+
+<!--Script for Modal-->
+<script src="{% static 'js/modal.js' %}"></script>
+
+
+
 
 
 

@@ -60,7 +60,7 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
       <a href="{% url 'superuser-edit-lesson' lesson.id %}"
         ><i class="fas fa-edit px-3"></i
       ></a>
-      <a href="{% url 'superuser-delete-lesson' lesson.id %}"
+      <a href="#" onclick="showDeleteModal('modal_lesson')"
         ><i class="fas fa-trash px-3"></i
       ></a>
     </td>
@@ -76,6 +76,25 @@ class="table table-hover table-striped table-responsive table-bordered overflow-
   NO DATA FOUND
 </div>
 
+
+<!--Delete Modal-->
+<div class="modal_container" id="modal_lesson">
+  <div class="card" style="width: 25rem;" id="modal_box">
+      <div class="top_header">
+          <img src="{% static 'images/questionmark_validationRed.png' %}" alt="">
+      </div>
+      <p class="modal_text">Quick reminder</p>
+      <p class="modal_text1">Are you sure you want to delete this lesson?</p>
+
+      <div class="btn_modal">
+          <button type="button" class="btn  btn1" id="confirm_logout">Confirm</button>
+          <button type="button" class="btn  btn2" id="cancel_logout" onclick="closeDeleteModal('modal_lesson')">Cancel</button>
+      </div>
+  </div>
+</div>
+
+<!--Script for Modal-->
+<script src="{% static 'js/modal.js' %}"></script>
 
 
 
