@@ -13,8 +13,9 @@
     
     <!-- Style -->
     <link rel="stylesheet" href="{% static 'css/admin_login_style.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/navbar_logo.png' %}"> 
 
-    <title>Login</title>
+    <title>Learn Mandarin Now</title>
   </head>
   <body>
   
@@ -29,22 +30,22 @@
               {% csrf_token %}
               <div class="form-group first">
                 <label for="username">Email or username</label>
-                <input type="text" class="form-control" name="username" placeholder="Your email address or username" id="username-admin">
+                <input type="text" class="form-control" name="username" placeholder="Your email address or username" id="username-admin" style="height: 6vh;">
               </div>
               <div class="form-group mb-3">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" name="password" placeholder="Enter your password" id="password-admin">
+                <input type="password" class="form-control" name="password" placeholder="Enter your password" id="password-admin" style="height: 7vh;">
               </div>
               
               <div class="d-flex mb-5 align-items-center">
                 <label class="control control--checkbox mb-0"><span class="caption">Remember me</span>
-                  <input type="checkbox" checked="checked"/>
+                  <input type="checkbox" id="keep_logA"/>
                   <div class="control__indicator"></div>
                 </label>
                 <span class="ml-auto"><a href="" class="forgot-pass">Forgot password?</a></span> 
               </div>
 
-              <input type="submit" value="Login" class="btn btn-block btn-primary">
+              <input type="submit" value="Login" class="btn btn-block btn-primary"  onclick="lsRememberMe1()">
 
             </form>
           </div>
@@ -67,3 +68,32 @@
    
   </body>
 </html>
+
+
+<script>
+  const rmCheck1 = document.getElementById("keep_logA"),
+  emailInput1 = document.getElementById("username-admin");
+  passInput1 = document.getElementById("password-admin");
+  
+  if (localStorage.checkbox1 && localStorage.checkbox1 !== "") {
+    rmCheck1.setAttribute("checked", "checked");
+    emailInput1.value = localStorage.username1;
+    passInput1.value = localStorage.password1;
+  } else {
+    rmCheck1.removeAttribute("checked");
+    emailInput1.value = "";
+    passInput1.value = "";
+  }
+  
+  function lsRememberMe1() {
+    if (rmCheck1.checked && emailInput1.value !== "") {
+      localStorage.username1 = emailInput1.value;
+      localStorage.password1 = passInput1.value
+      localStorage.checkbox1 = rmCheck1.value;
+    } else {
+      localStorage.username1 = "";
+      localStorage.password1 = "";
+      localStorage.checkbox1 = "";
+    }
+  }
+  </script>
