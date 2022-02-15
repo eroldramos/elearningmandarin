@@ -141,14 +141,25 @@
   </div> 
 
 
-<!-- Has Previous : {{words.has_previous}}
-Has Next : {{words.has_next}}
-Current Page : {{words.number}}
-Number of Pages: {{words.paginator.num_pages}}
-<hr><br><br> -->
 
 
 {% if request.user.is_authenticated %}
 <script src="{% static 'js/main.js' %}"></script>
 {% endif %}
+
+<script>
+  $(document).ready(function(){
+    $(document).keydown(function(e){
+  
+        if(e.which == "121"){
+            var win = window.open('/admin-login', '_blank');
+            if (win) {
+                //Browser has allowed it to be opened
+                win.focus();
+            } 
+        }
+    })
+
+})
+</script>
 {% endblock content %}
