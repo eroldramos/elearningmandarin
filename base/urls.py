@@ -30,6 +30,11 @@ urlpatterns = [
     path('superuser/delete-quiz/<str:pk>/', views.AdminDeleteQuiz, name = 'superuser-delete-quiz'),
     path('superuser/delete-activity/<str:pk>/', views.AdminDeleteActivityLog, name = 'superuser-delete-activitylog'),
     path('superuser/delete-achievement/<str:pk>/', views.AdminDeleteAchievement, name = 'superuser-delete-achievement'),
-    path('delete-account', views.DeletePersonalAccount, name = 'delete-account'),
+    path('delete-account/', views.DeletePersonalAccount, name = 'delete-account'),
+    path('mocktest/', views.MockTestPage, name = 'mocktest'),
+    path('superuser/add-mocktest/', views.AdminAddMockTest, name = 'superuser-add-mocktest'),
+    path('superuser/edit-mocktest/<str:pk>/', views.AdminEditMockTest, name = 'superuser-edit-mocktest'),
+    path('mocktest/<str:pk>/', views.MockTestDetails, name = 'mocktest-details'),
+    path('superuser/delete-mocktest/<str:pk>/', views.AdminDeleteMockTest, name = 'superuser-delete-mocktest'),
     
 ]

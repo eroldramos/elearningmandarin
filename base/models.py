@@ -91,3 +91,16 @@ class ActivityLog(models.Model):
         return str(f"{self.user.username} ({self.action})")
     class Meta:
         ordering = ['-time_stamp']
+class MockTest(models.Model):
+    
+    hsklevel = models.ForeignKey(HskLevel, on_delete=models.SET_NULL, null=True, verbose_name = "HSK Level")
+    title = models.CharField(max_length=120, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    questions = models.TextField(null=True, blank=True)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return str(self.title)
+
+    class Meta:
+        ordering = ['-updated', '-created']
