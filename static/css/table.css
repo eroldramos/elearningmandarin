@@ -235,3 +235,63 @@
 .btn_modal button:hover{
     opacity: 70%;
 }
+
+
+/*roper alert
+.roper_container{
+    position: fixed;
+    right: 2%; 
+    top: 5%;
+    height: auto;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.roper_container .for_image{
+    height: 17vh;
+    width: 100%;
+}
+.roper_container .for_text{
+    height: 17vh;
+    width: 100%;
+    margin-top: -17vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.roper_container .for_image img{
+    height: 100%;
+    width: 100%;
+}
+.roper_container p{
+    margin: 0%;
+    margin-left: 27%;
+    color: #fff;
+    white-space: nowrap;
+}
+.roper_container p:hover{
+    cursor: context-menu;
+}
+.roper_container .roper_header{
+    font-size: 1.7rem;
+    font-weight: bold;
+}
+.roper_container .roper_text{
+    margin-top: -.3rem;
+    font-size: .9rem;
+    margin-bottom: 7.5%;
+}
+.roper_container .close_roper{
+    font-size: 2.5rem;
+    color: #ffff;
+    float: right;
+    position: absolute;
+    right: 5%;
+    top: 15%;
+}
+.roper_container .close_roper:hover{
+    cursor: pointer;
+    opacity: 70%;
+}
+*/
