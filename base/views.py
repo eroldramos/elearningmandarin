@@ -976,3 +976,20 @@ def AdminDeleteMockTest(request, pk):
         return redirect('mocktest')
     context = {'obj': mocktest}
     return render(request, 'delete.html', context)
+
+
+@login_required(login_url='anonymous')
+def MyActivityLogs(request):
+
+    context = {
+
+    }
+    return render(request, 'my_activitylogs.html', context)
+
+@login_required(login_url='anonymous')
+def MyAchievements(request):
+    
+    context = {
+
+    }
+    return render(request, 'my_achievements.html', context)

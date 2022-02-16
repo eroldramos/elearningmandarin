@@ -36,6 +36,8 @@ urlpatterns = [
     path('superuser/edit-mocktest/<str:pk>/', views.AdminEditMockTest, name = 'superuser-edit-mocktest'),
     path('mocktest/<str:pk>/', views.MockTestDetails, name = 'mocktest-details'),
     path('superuser/delete-mocktest/<str:pk>/', views.AdminDeleteMockTest, name = 'superuser-delete-mocktest'),
-  
+    path('my-activitylogs/', views.MyActivityLogs, name = 'my-activitylogs'),
+    path('my-achievements/', views.MyAchievements, name = 'my-achievements'),
+    
     
 ]

@@ -105,6 +105,21 @@
                 Achievements</a
               >
             </li>
+            {% else %}
+
+            <li>
+              <a class="dropdown-item" href="{% url 'my-activitylogs' %}">
+                <img src="{% static 'images/activityLog_icon_navbar.png' %}" class="navbar_mini_icon">
+                My Activity Logs</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'my-achievements' %}">
+                <img src="{% static 'images/manageAchieveicon_navbar.png' %}" class="navbar_mini_icon">
+                My Achievements</a
+              >
+            </li>
+
             {% endif %}
             
             <hr>
