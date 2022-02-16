@@ -780,7 +780,7 @@ def LessonsDetails(request, pk):
     if request.method == 'POST' and request.POST.get('score'):
         ActivityLog.objects.create(
                     user = request.user,
-                    action = f"{request.user.username} took a quiz for {lesson}",
+                    action = f"took a quiz for {lesson}",
             )
         result = Result.objects.create(
             quiz = quiz,
@@ -794,12 +794,10 @@ def LessonsDetails(request, pk):
     return render(request, 'lesson_details.html',context)
 
 @login_required(login_url='anonymous')
-def AdminDeleteActivityLog(request, pk):
+def UserDeleteActivityLog(request, pk):
 
     activity_log = ActivityLog.objects.get(id=pk)
-    if request.user.is_authenticated and not request.user.is_staff:
-        messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('lessons')
+
     if request.method == 'POST':
         messages.info(request, f"Activity of {activity_log.user.username} is deleted")
         ActivityLog.objects.create(
@@ -814,12 +812,9 @@ def AdminDeleteActivityLog(request, pk):
     return render(request, 'delete.html', context)
 
 @login_required(login_url='anonymous')
-def AdminDeleteAchievement(request, pk):
+def UserDeleteAchievement(request, pk):
 
     result = Result.objects.get(id=pk)
-    if request.user.is_authenticated and not request.user.is_staff:
-        messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('lessons')
     if request.method == 'POST':
         messages.info(request, f"Achievement of {result.user.username} is deleted")
         ActivityLog.objects.create(
@@ -980,16 +975,24 @@ def AdminDeleteMockTest(request, pk):
 
 @login_required(login_url='anonymous')
 def MyActivityLogs(request):
-
+    user = User.objects.get(id=request.user.id)
+    activities = user.activitylog_set.all()
+    p = Paginator(activities, 4)
+    page = request.GET.get('page')
+    activities = p.get_page(page)
     context = {
-
+        'activities' : activities,
     }
     return render(request, 'my_activitylogs.html', context)
 
 @login_required(login_url='anonymous')
 def MyAchievements(request):
-    
+    user = User.objects.get(id=request.user.id)
+    result = user.result_set.all()
+    p = Paginator(result, 4)
+    page = request.GET.get('page')
+    result = p.get_page(page)
     context = {
-
+            'results' : result,
     }
     return render(request, 'my_achievements.html', context)
