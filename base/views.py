@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
-from .models import  User, DictionaryList, SpeechList, HskLevel, Lesson, Quiz, Result, ActivityLog
+from .models import  User, DictionaryList, SpeechList, HskLevel, Lesson, Quiz, Result, ActivityLog, MockTest
 from .forms import MyUserCreationForm, UserForm, DictionaryListForm, LessonForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -172,7 +172,7 @@ def AdminLoginPage(request):
             except:
                 formErrors += 1
                 messages.error(request, f'{username} does not exist')
-                return redirect('login')
+                return redirect('admin-login')
         else:
             try:
                 user = User.objects.get(username = username)
@@ -267,6 +267,16 @@ def AdminUsersTable(request):
         Q(username__icontains = search)|
         Q(email__icontains = search)
         )
+
+    if request.method == 'POST':
+        user = User.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{user.username} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted the account of {user.username}",
+            )
+        user.delete()
+        return redirect('superuser-users')
     p = Paginator(users, 6)
     page = request.GET.get('page')
     users = p.get_page(page)
@@ -283,6 +293,15 @@ def AdminDictionaryTable(request):
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
+    if request.method == 'POST':
+        dictionary = DictionaryList.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{dictionary} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted dictionary {dictionary}",
+            )
+        dictionary.delete()
+        return redirect('superuser-dictionary')
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     dict_list = DictionaryList.objects.filter(
         Q(pinyin__icontains = search) |
@@ -306,6 +325,15 @@ def AdminLessonsTable(request):
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('lessons')
+    if request.method == 'POST':
+        lesson = Lesson.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{lesson} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted lesson {lesson}",
+            )
+        lesson.delete()
+        return redirect('superuser-lessons')
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     lessons = Lesson.objects.filter(
         Q(description__icontains = search) |
@@ -328,6 +356,15 @@ def AdminQuizzesTable(request):
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
+    if request.method == 'POST':
+        quiz = Quiz.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{quiz} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted quiz {quiz}",
+            )
+        quiz.delete()
+        return redirect('superuser-quizzes')
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     quizzes = Quiz.objects.filter(
         Q(description__icontains = search) |
@@ -349,6 +386,15 @@ def AdminActivityLogTable(request):
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
+    if request.method == 'POST':
+        activity = ActivityLog.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{activity} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted activity log of {activity.user.username}",
+            )
+        activity.delete()
+        return redirect('superuser-activitylogs')
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     activity_logs = ActivityLog.objects.filter(
         Q(user__username__icontains = search) |
@@ -370,6 +416,15 @@ def AdminAchievementTable(request):
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
+    if request.method == 'POST':
+        result = Result.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{result} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted achievement of {result.user.username}",
+            )
+        result.delete()
+        return redirect('superuser-achievements')
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     result = Result.objects.filter(
         Q(user__username__icontains = search) |
@@ -421,11 +476,12 @@ def AdminDeleteUser(request, pk):
         return redirect('dictionary')
     if request.method == 'POST':
         messages.info(request, f"{user.username} is deleted.")
-        user.delete()
+        
         ActivityLog.objects.create(
                     user = request.user,
                     action = f"{request.user.username} deleted the account of {user.username}",
             )
+        user.delete()
         return redirect('superuser-users')
     context = {'obj': user}
     return render(request, 'delete.html', context)
@@ -786,10 +842,6 @@ def DeletePersonalAccount(request):
         messages.warning(request, "Administrator cannot delete their account!")
         return redirect('lessons')
     user = User.objects.get(id=request.user.id)
-    
-   
-        
-        
     ActivityLog.objects.create(
                     user = request.user,
                     action = f"{user.username} deleted his account.",
@@ -799,6 +851,128 @@ def DeletePersonalAccount(request):
 
     messages.info(request, f"Your account has been deleted")
     return redirect('logout')
+
+
+def MockTestPage(request):  
+    search =  request.GET.get('search') if request.GET.get('search') != None else ''
+    levels = HskLevel.objects.all()
+    all_result = MockTest.objects.all()
+    mocktest = MockTest.objects.filter(
+        Q(title__icontains = search) |
+        Q(description__icontains = search) |
+        Q(hsklevel__level__icontains = search) 
+        )
+    p = Paginator(mocktest, 6)
+    page = request.GET.get('page')
+    mocktests = p.get_page(page)
+    context = {
+        'mocktests' : mocktests,
+        'all_result' : all_result,  
+        'hsklevels' : levels,
+    }
+    return render(request, 'mocktest.html', context)
+
+
+@login_required(login_url='anonymous')
+def AdminAddMockTest(request):
+    hsklevels = HskLevel.objects.all()
+    page = "addmocktest"
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('mocktest')
     
+    if request.method == 'POST':
+        levelhsk = HskLevel.objects.get(level=request.POST.get('level'))
+        MockTest.objects.create(
+            hsklevel =  levelhsk,
+            title = request.POST.get('title'),
+            description = request.POST.get('description'),
+            questions = request.POST.get('questions'),
+        )   
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} added mocktest for {levelhsk}",
+            )
+               
+    context = {
+        'hsklevels' : hsklevels,
+        'page': page,
+    }
+    return render(request, 'mocktest_add_edit.html', context)
+
+@login_required(login_url='anonymous')
+def AdminEditMockTest(request, pk):
+    hsklevels = HskLevel.objects.all()
+
+    mocktest = MockTest.objects.get(id=pk)
+    questions = json.loads(mocktest.questions)
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('mocktest')
+    
+    if request.method == 'POST':
+        levelhsk = HskLevel.objects.get(level=request.POST.get('level'))
+        mocktest.hsklevel = levelhsk
+        mocktest.title = request.POST.get('title')
+        mocktest.description = request.POST.get('description')
+        mocktest.questions = request.POST.get('questions')
+
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} updated mocktest {mocktest}",
+            )
+
+        mocktest.save()
 
 
+               
+    context = {
+        'hsklevels' : hsklevels,
+        'mocktest' : mocktest,
+        'questions': questions,
+    }
+    return render(request, 'mocktest_add_edit.html', context)
+    
+@login_required(login_url='anonymous')
+def MockTestDetails(request, pk):
+
+
+    mocktest = MockTest.objects.get(id=pk)
+    questions = json.loads(mocktest.questions)
+    
+    
+    if request.method == 'POST':
+        shuffledQuestion = questions
+        random.shuffle(shuffledQuestion)
+        data = {
+            'title' : mocktest.title,
+            'description': mocktest.description,
+            'questions': json.dumps(shuffledQuestion),
+            'hsklevel': mocktest.hsklevel.level,
+           
+        }
+        return JsonResponse(data)
+               
+    context = {
+       
+    }
+    return render(request, 'mocktest_details.html', context)
+
+
+@login_required(login_url='anonymous')
+def AdminDeleteMockTest(request, pk):
+
+    mocktest = MockTest.objects.get(id=pk)
+    if request.user.is_authenticated and not request.user.is_staff:
+        messages.warning(request, "Access denied, 403 forbidden page!")
+        return redirect('lessons')
+    if request.method == 'POST':
+        messages.info(request, f"{mocktest.title} is deleted.")
+        mocktest.delete()
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted mocktest {mocktest}",
+            )
+        return redirect('mocktest')
+    context = {'obj': mocktest}
+    return render(request, 'delete.html', context)

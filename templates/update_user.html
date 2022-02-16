@@ -6,15 +6,6 @@
     <h1 class="text-center" id="head_Text">Edit Profile</h1>
   </div>
 
-  {% if page == 'authenticated' %}
- <div class="row justify-content-center">
-   <div class="col col-lg-6">
-    <button class="btn btn-primary" id="deleteBtn">Delete Account</button>
-   </div>
- </div> 
- {% include 'delete_personal_account.html' %}
- <script src="{% static 'js/delete.js' %}"></script>
- {% endif %}
   <div class="row" >
     <div class="col" style="display: flex; justify-content: center">
     
@@ -75,7 +66,15 @@
           <button type="submit" class="btn btn-primary btn-lg btn-block">
           Update
           </button>
-  
+
+          {% if page == 'authenticated' %}
+         <!-- can't use button tag because it is inside of a form tag and considers automatically as submit -->
+             <span class="btn btn-primary btn-lg btn-block" id="deleteBtn">Delete Account</span>
+        
+          {% include 'delete_personal_account.html' %}
+          <script src="{% static 'js/delete.js' %}"></script>
+          {% endif %}
+    
           {% if page == 'authenticated' %}
 
               <div class="form-check">

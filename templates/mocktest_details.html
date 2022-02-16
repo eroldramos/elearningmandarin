@@ -1,0 +1,53 @@
+{% extends 'main.html' %} {% block content%} {% load static %}
+<link rel="stylesheet" href="{% static 'css/lesson_details.css' %}">
+<link rel="stylesheet" href="{% static 'css/dictionaryAdd_Edit.css' %}" />
+<script>
+  document.getElementById("mocktest_page").style.color = "#ED4E38";
+</script>
+
+
+<div class="container-fluid">
+{% csrf_token %}
+  <div class="row mb-5" id="dictionary_header1">
+    <p class="lesson_Text_header">Mock Test</p>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col col-lg-8">
+      <a href="{%url 'mocktest'%}" id="back_btn">
+        <img src="{% static 'images/back_icon.png' %}" class="navbar_mini_icon">
+        Back
+      </a>
+
+      <!-- QUIZ INFORMATION -->
+      
+      <div class="card border-primary mb-3" id="quizBox">
+        <div class="card-header">
+          <strong style="font-size: xx-large" id="quizTitle"></strong> |
+          <span class="text-capitalize" id="quizHskLevel"></span>
+         
+          
+        </div>
+        <div class="card-body">
+          <div id="results" style="float: right;"></div>
+          <h4 class="card-title">Description</h4>
+          <p class="card-text" id="quizDescription"></p>
+          <div class="row justify-content-center" id="quizContainer" >
+            <div class="col col-lg-6 col-md-8 col-sm-12">
+              <div id="quiz"></div>
+              <button id="submit" class="btn btn-primary btn-lg btn-block">Submit Answers</button>
+              
+            </div>
+          </div>
+
+        </div>
+      </div>
+    
+    </div>
+  </div>
+  
+</div>
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/mocktest_details.js' %}"></script>
+
+{% endblock content %}

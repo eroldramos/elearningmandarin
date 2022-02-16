@@ -1,0 +1,179 @@
+{% extends 'main.html' %} {% block content %} {% load static%}
+<link rel="stylesheet" href="{% static 'css/lesson_edit.css' %}">
+<link rel="stylesheet" href="{% static 'css/dictionaryAdd_Edit.css' %}" />
+<script>
+  document.getElementById("mocktest_page").style.color = "#ED4E38";
+</script>
+
+
+
+<div class="container-fluid">
+  <div class="row mb-5"  id="dictionary_header">
+    <h1 class="text-center">Mock Test</h1>
+  </div>
+  <div class="row justify-content-center" style="margin-bottom:3%">
+    <div class="col col-lg-8">
+      <a href="{%url 'mocktest'%}" id="back_btn">
+        <img src="{% static 'images/back_icon.png' %}" class="navbar_mini_icon">
+        Back</a>
+      <!-- tab bar -->
+      <br>
+      
+        
+        
+        {% if page == 'addmocktest' %}
+        <!-- IF QUiZ IS NONE DO THIS -->
+        <div >
+          <h3>Create Mock Test</h3>
+          {%csrf_token %}
+  
+          <div class="col-sm-12">
+            <div class="form-group">
+                <label for="exampleSelect1" class="form-label mt-4">HSK Level</label>
+                <select class="form-select" id="level" style="border-color: #CED4DA ;">
+                    <option value="">--select-level--</option>
+                {% for hsklevel in hsklevels %}
+                  <option value="{{hsklevel}}">{{hsklevel}}</option>
+                {% endfor %}
+                </select>
+                <p  class="errorMessage" id="levelErrorMessage"></p>
+              </div>
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Title</label> </label>
+              <input type="text" id="title" class="form-control" placeholder="Title"> 
+              <p  class="errorMessage" id="titleErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Description</label> </label>
+              <textarea id="description" class="form-control" rows="10" placeholder="Description" ></textarea>
+              <p  class="errorMessage" id="descriptionErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Questions</label> </label>
+              <div class="form-control border" style="background-color: #ccc">
+                <p class="question-number" id="question-number" style="display: none;">0</p>
+                <div id="main-questions">
+                  
+                 
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-block mt-2" style="float: right;" onclick="addMultipleChoice2()">Add New Question</button>
+          </div>
+  
+          <div class="form-group">
+            <br />
+            <button onclick="saveQuiz(1)" class="btn btn-primary btn-lg btn-block">
+              Save
+            </button>
+          </div>
+        
+      </div>
+      <!-- END OF NONE -->
+        {% else %}
+        <!-- IF QUiZ IS NOT NONE DO THIS -->
+        <div >
+          <h3>Update Mock Test</h3>
+          {%csrf_token %}
+  
+          <div class="col-sm-12">
+            
+            <div class="form-group">
+                <label for="exampleSelect1" class="form-label mt-4">HSK Level</label>
+                <select class="form-select" id="level" style="border-color: #CED4DA ;">
+                    <option value="">--select-level--</option>
+                
+                {% for hsklevel in hsklevels %}
+                  
+                  {% if hsklevel == mocktest.hsklevel %}
+                  <option value="{{hsklevel}}"  selected="selected">{{hsklevel}}</option>
+                  {% else %}   
+                  <option value="{{hsklevel}}">{{hsklevel}}</option>
+                  {% endif %}
+                  
+                {% endfor %}
+                </select>
+                <p  class="errorMessage" id="levelErrorMessage"></p>
+              </div>
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Title</label> </label>
+              <input type="text" id="title" class="form-control" placeholder="Title" value="{{mocktest.title}}"> 
+              <p  class="errorMessage" id="titleErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Description</label> </label>
+              <textarea id="description" class="form-control" rows="10" placeholder="Description" >{{mocktest.description}}</textarea>
+              <p  class="errorMessage" id="descriptionErrorMessage"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="form-label mt-4">Questions</label> </label>
+              <div class="form-control border" style="background-color: #ccc">
+                <p class="question-number" id="question-number" style="display: none;">0</p>
+                <div id="main-questions">
+                 
+
+                  {% for question in questions %}
+
+                  {% if question.type == "MC" %}
+                  <div class="questions" id="questions{{forloop.counter}}"><!--
+                  --><button class="removeQuestionBtn" onclick='removeQuestion2("questions{{forloop.counter}}")'>&#215;</button><!--
+                  --><p class="question-number">{{forloop.counter}}</p><!--
+                  --><small class="question-type">Multiple Choice</small><!--
+                   --><hr><!--
+                   --><label class="questionAnswerLabel">Question:</label><!--
+                   --><input type="text" class="question" placeholder="Question" value="{{question.question}}"><!--
+                   --><br><!--
+                   --><label class="questionAnswerLabel">Correct Answer:</label><!--
+                   --><input type="text" class="answer" id="answer{{forloop.counter}}" placeholder="Correct Answer" value="{{question.correctAnswer}}"><!--
+                   --><br><!--
+                   --><label class="labelOptions">A:</label><!--
+                   --><input type="text" class="letter_a" id="letter_a{{forloop.counter}}" placeholder="Option A" value="{{question.answers.a}}"><!--
+                   --><label class="labelOptions">B:</label><!--
+                   --><input type="text" class="letter_b" id="letter_b{{forloop.counter}}" placeholder="Option B" value="{{question.answers.b}}"><!--
+                   --><br><!--
+                   --><label class="labelOptions">C:</label><!--
+                   --><input type="text" class="letter_c" id="letter_c{{forloop.counter}}" placeholder="Option C" value="{{question.answers.c}}"><!--
+                   --><label class="labelOptions">D:</label><!--
+                   --><input type="text" class="letter_d" id="letter_d{{forloop.counter}}" placeholder="Option D" value="{{question.answers.d}}"><!--
+                   --><p class="errorMessageQuestion"></p><!--
+                 --></div>
+                  {% endif %}
+                  
+                  {% endfor %}
+                 
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-block mt-2" style="float: right;" onclick="addMultipleChoice2()">Add New Question</button>
+          </div>
+  
+          <div class="form-group">
+            <br />
+            <button onclick="saveQuiz(2)" class="btn btn-primary btn-lg btn-block">
+              Save
+            </button>
+          </div>
+        
+      </div>
+    <!-- END OF NOT NONE -->
+        {% endif %}
+        
+       
+  
+
+      
+      <!-- tab bar -->
+      
+    </div>
+  </div>
+</div>
+
+
+
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/mocktest_add_edit.js' %}"></script>
+{% endblock content %}
