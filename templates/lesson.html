@@ -137,7 +137,7 @@
   </div>
 </div>
 
-
+{% if request.user.is_authenticated and request.user.is_staff %}
 <script src="{% static 'js/main.js' %}"></script>
 
 <!--Delete Modal-->
@@ -162,7 +162,7 @@
 
 <!--Script for Modal-->
 <script src="{% static 'js/modal.js' %}"></script>
-
+{% endif %}
 
 {% endblock content %}
 

@@ -70,7 +70,7 @@
     <div id="no_dataVerifyer" style="display: flex;">
       <img src="{% static 'images/no_record_found.png' %}" alt="">
       NO DATA FOUND
-      <a href="{%url 'mocktests'%}" style="font-size:.8rem;">Clear Searches</a>
+      <a href="{%url 'mocktest'%}" style="font-size:.8rem;">Clear Searches</a>
     </div>
 
     {% endif %}
@@ -140,7 +140,7 @@
 
 <script src="{% static 'js/main.js' %}"></script>
 
-
+{% if request.user.is_authenticated and request.user.is_staff %}
 <!--Delete Modal-->
 <div class="modal_container" id="modal_mocktest">
   <div class="card" style="width: 25rem;" id="modal_box">
@@ -163,7 +163,7 @@
 
 <!--Script for Modal-->
 <script src="{% static 'js/modal.js' %}"></script>
-
+{% endif %}
 
 
 {% endblock content %}

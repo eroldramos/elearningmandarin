@@ -467,24 +467,7 @@ def AdminUpdateUser(request, pk):
     }
     return render(request, 'update_user.html', context)
 
-@login_required(login_url='anonymous')
-def AdminDeleteUser(request, pk):
 
-    user = User.objects.get(id=pk)
-    if request.user.is_authenticated and not request.user.is_staff:
-        messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('dictionary')
-    if request.method == 'POST':
-        messages.info(request, f"{user.username} is deleted.")
-        
-        ActivityLog.objects.create(
-                    user = request.user,
-                    action = f"{request.user.username} deleted the account of {user.username}",
-            )
-        user.delete()
-        return redirect('superuser-users')
-    context = {'obj': user}
-    return render(request, 'delete.html', context)
 
 @login_required(login_url='anonymous')
 def LogoutUser(request):
@@ -550,23 +533,7 @@ def AdminEditWordToDictionary(request, pk):
     }
     return render(request, 'dictionary_edit_add.html', context)
 
-@login_required(login_url='anonymous')
-def AdminDeleteWordToDictionary(request, pk):
 
-    dict_list = DictionaryList.objects.get(id=pk)
-    if request.user.is_authenticated and not request.user.is_staff:
-        messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('dictionary')
-    if request.method == 'POST':
-        messages.info(request, f"{dict_list.pinyin} is deleted.")
-        dict_list.delete()
-        ActivityLog.objects.create(
-                    user = request.user,
-                    action = f"{request.user.username} deleted a word from dictionary",
-            )
-        return redirect('dictionary')
-    context = {'obj': dict_list}
-    return render(request, 'delete.html', context)
     
 def DictionaryPage(request):
     
@@ -580,6 +547,16 @@ def DictionaryPage(request):
         Q(part_of_speech__speech__icontains = search) |
         Q(definition__icontains = search)
         )
+
+    if request.method == 'POST':
+        dictionary = DictionaryList.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{dictionary} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted the word of {dictionary}",
+            )
+        dictionary.delete()
+        return redirect('dictionary')
     p = Paginator(words, 6)
     page = request.GET.get('page')
     words = p.get_page(page)
@@ -686,44 +663,10 @@ def AdminEditLesson(request, pk):
         'questions' : questions,
     }
     return render(request, 'lesson_edit.html', context)
-@login_required(login_url='anonymous')
-def AdminDeleteLesson(request, pk):
-
-    lesson = Lesson.objects.get(id=pk)
-    if request.user.is_authenticated and not request.user.is_staff:
-        messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('lessons')
-    if request.method == 'POST':
-        messages.info(request, f"{lesson.title} is deleted.")
-        lesson.delete()
-        ActivityLog.objects.create(
-                    user = request.user,
-                    action = f"{request.user.username} deleted lesson {lesson}",
-            )
-        return redirect('lessons')
-    context = {'obj': lesson}
-    return render(request, 'delete.html', context)
 
 
-@login_required(login_url='anonymous')
-def AdminDeleteQuiz(request, pk):
 
-    quiz = Quiz.objects.get(id=pk)
-    if request.user.is_authenticated and not request.user.is_staff:
-        messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('lessons')
-    if request.method == 'POST':
-        messages.info(request, f"{quiz.title} is deleted.")
-        ActivityLog.objects.create(
-                    user = request.user,
-                    action = f"{request.user.username} added a quiz for {quiz.lesson}",
-            )
-        quiz.delete()
-        
-        return redirect('lessons')
-        
-    context = {'obj': quiz}
-    return render(request, 'delete.html', context)
+
 
 
 @login_required(login_url='anonymous')
@@ -731,6 +674,17 @@ def LessonsPage(request):
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     hsklevels = HskLevel.objects.all()
     all_result = Lesson.objects.all()
+
+
+    if request.method == 'POST':
+        lesson = Lesson.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{lesson} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted the lesson of {lesson.title}",
+            )
+        lesson.delete()
+        return redirect('lessons')
     lessons = Lesson.objects.filter(
         Q(title__icontains = search) |
         Q(description__icontains = search) |
@@ -793,40 +747,9 @@ def LessonsDetails(request, pk):
     }
     return render(request, 'lesson_details.html',context)
 
-@login_required(login_url='anonymous')
-def UserDeleteActivityLog(request, pk):
 
-    activity_log = ActivityLog.objects.get(id=pk)
 
-    if request.method == 'POST':
-        messages.info(request, f"Activity of {activity_log.user.username} is deleted")
-        ActivityLog.objects.create(
-                    user = request.user,
-                    action = f"{request.user.username} deleted activity of {activity_log.user.username}",
-            )
-        activity_log.delete()
-        
-        return redirect('lessons')
-        
-    context = {'obj': activity_log}
-    return render(request, 'delete.html', context)
 
-@login_required(login_url='anonymous')
-def UserDeleteAchievement(request, pk):
-
-    result = Result.objects.get(id=pk)
-    if request.method == 'POST':
-        messages.info(request, f"Achievement of {result.user.username} is deleted")
-        ActivityLog.objects.create(
-                    user = request.user,
-                    action = f"{request.user.username} deleted achievement of {result.user.username}",
-            )
-        result.delete()
-        
-        return redirect('lessons')
-        
-    context = {'obj': result}
-    return render(request, 'delete.html', context)
 
 
 
@@ -852,6 +775,16 @@ def MockTestPage(request):
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     levels = HskLevel.objects.all()
     all_result = MockTest.objects.all()
+
+    if request.method == 'POST':
+        mocktest = MockTest.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{mocktest} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted the mocktest of {mocktest} for {mocktest.hsklevel}",
+            )
+        mocktest.delete()
+        return redirect('mocktest')
     mocktest = MockTest.objects.filter(
         Q(title__icontains = search) |
         Q(description__icontains = search) |
@@ -955,28 +888,15 @@ def MockTestDetails(request, pk):
 
 
 @login_required(login_url='anonymous')
-def AdminDeleteMockTest(request, pk):
-
-    mocktest = MockTest.objects.get(id=pk)
-    if request.user.is_authenticated and not request.user.is_staff:
-        messages.warning(request, "Access denied, 403 forbidden page!")
-        return redirect('lessons')
-    if request.method == 'POST':
-        messages.info(request, f"{mocktest.title} is deleted.")
-        mocktest.delete()
-        ActivityLog.objects.create(
-                    user = request.user,
-                    action = f"{request.user.username} deleted mocktest {mocktest}",
-            )
-        return redirect('mocktest')
-    context = {'obj': mocktest}
-    return render(request, 'delete.html', context)
-
-
-@login_required(login_url='anonymous')
 def MyActivityLogs(request):
     user = User.objects.get(id=request.user.id)
     activities = user.activitylog_set.all()
+
+    if request.method == 'POST':
+        activity = ActivityLog.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{activity} is deleted.")
+        activity.delete()
+        return redirect('my-activitylogs')
     p = Paginator(activities, 4)
     page = request.GET.get('page')
     activities = p.get_page(page)
@@ -989,6 +909,11 @@ def MyActivityLogs(request):
 def MyAchievements(request):
     user = User.objects.get(id=request.user.id)
     result = user.result_set.all()
+    if request.method == 'POST':
+        result = Result.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{result.score} score is deleted.")
+        result.delete()
+        return redirect('my-achievements')
     p = Paginator(result, 4)
     page = request.GET.get('page')
     result = p.get_page(page)
