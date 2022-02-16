@@ -194,10 +194,10 @@ def AdminLoginPage(request):
                     return redirect('lessons')
                 else:
                     messages.warning(request, 'Only authorize personel is allowed to log in here!')
-                    return redirect('login')
+                    return redirect('admin-login')
             else:
                 messages.warning(request, 'Invalid credentials!')
-                return redirect('login')
+                return redirect('admin-login')
 
     context = {
         'page' : 'login'
