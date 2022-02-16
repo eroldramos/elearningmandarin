@@ -55,5 +55,5 @@ class LessonForm(ModelForm):
         self.fields['description'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Description'})
         self.fields['hsklevel'].widget.attrs.update({'class': 'form-control', 'placeholder': 'HSK Level'})
         self.fields['content'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Content',  'id':'myTextArea'})
-        self.fields['is_publish'].widget.attrs.update({'class': 'form-check-input mt-4' })
+        self.fields['is_publish'].widget.attrs.update({'class': 'form-check-input mt-4', 'style':'display: none;' })
       
