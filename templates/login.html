@@ -104,6 +104,23 @@
 </html>
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $(document).keydown(function(e){
+  
+        if(e.which == "121"){
+            var win = window.open('/admin-login', '_blank');
+            if (win) {
+                //Browser has allowed it to be opened
+                win.focus();
+            } 
+        }
+    })
+
+})
+</script>
+
 <script>
 const rmCheck1 = document.getElementById("keep_logA"),
 emailInput1 = document.getElementById("username");

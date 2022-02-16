@@ -103,6 +103,23 @@
     
   </div>
     
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $(document).keydown(function(e){
+    
+          if(e.which == "121"){
+              var win = window.open('/admin-login', '_blank');
+              if (win) {
+                  //Browser has allowed it to be opened
+                  win.focus();
+              } 
+          }
+      })
+  
+  })
+  </script>
+
   <script
   src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
   integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
