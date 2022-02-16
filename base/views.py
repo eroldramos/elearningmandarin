@@ -267,6 +267,16 @@ def AdminUsersTable(request):
         Q(username__icontains = search)|
         Q(email__icontains = search)
         )
+
+    if request.method == 'POST':
+        user = User.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{user.username} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted the account of {user.username}",
+            )
+        user.delete()
+        return redirect('superuser-users')
     p = Paginator(users, 6)
     page = request.GET.get('page')
     users = p.get_page(page)
@@ -283,6 +293,15 @@ def AdminDictionaryTable(request):
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
+    if request.method == 'POST':
+        dictionary = DictionaryList.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{dictionary} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted dictionary {dictionary}",
+            )
+        dictionary.delete()
+        return redirect('superuser-dictionary')
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     dict_list = DictionaryList.objects.filter(
         Q(pinyin__icontains = search) |
@@ -306,6 +325,15 @@ def AdminLessonsTable(request):
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('lessons')
+    if request.method == 'POST':
+        lesson = Lesson.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{lesson} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted lesson {lesson}",
+            )
+        lesson.delete()
+        return redirect('superuser-lessons')
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     lessons = Lesson.objects.filter(
         Q(description__icontains = search) |
@@ -328,6 +356,15 @@ def AdminQuizzesTable(request):
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
+    if request.method == 'POST':
+        quiz = Quiz.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{quiz} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted quiz {quiz}",
+            )
+        quiz.delete()
+        return redirect('superuser-quizzes')
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     quizzes = Quiz.objects.filter(
         Q(description__icontains = search) |
@@ -349,6 +386,15 @@ def AdminActivityLogTable(request):
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
+    if request.method == 'POST':
+        activity = ActivityLog.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{activity} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted activity log of {activity.user.username}",
+            )
+        activity.delete()
+        return redirect('superuser-activitylogs')
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     activity_logs = ActivityLog.objects.filter(
         Q(user__username__icontains = search) |
@@ -370,6 +416,15 @@ def AdminAchievementTable(request):
     if request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "Access denied, 403 forbidden page!")
         return redirect('dictionary')
+    if request.method == 'POST':
+        result = Result.objects.get(id = request.POST.get('id'))
+        messages.info(request, f"{result} is deleted.")
+        ActivityLog.objects.create(
+                    user = request.user,
+                    action = f"{request.user.username} deleted achievement of {result.user.username}",
+            )
+        result.delete()
+        return redirect('superuser-achievements')
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     result = Result.objects.filter(
         Q(user__username__icontains = search) |
@@ -421,11 +476,12 @@ def AdminDeleteUser(request, pk):
         return redirect('dictionary')
     if request.method == 'POST':
         messages.info(request, f"{user.username} is deleted.")
-        user.delete()
+        
         ActivityLog.objects.create(
                     user = request.user,
                     action = f"{request.user.username} deleted the account of {user.username}",
             )
+        user.delete()
         return redirect('superuser-users')
     context = {'obj': user}
     return render(request, 'delete.html', context)
