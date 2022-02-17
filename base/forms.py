@@ -48,12 +48,11 @@ class DictionaryListForm(ModelForm):
 class LessonForm(ModelForm):
     class Meta:
         model = Lesson
-        fields = ['title', 'description', 'hsklevel', 'content', 'is_publish']
+        fields = ['title', 'description', 'hsklevel', 'content']
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)   
         self.fields['title'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Title'})
         self.fields['description'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Description'})
         self.fields['hsklevel'].widget.attrs.update({'class': 'form-control', 'placeholder': 'HSK Level'})
         self.fields['content'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Content',  'id':'myTextArea'})
-        self.fields['is_publish'].widget.attrs.update({'class': 'form-check-input mt-4' })
       

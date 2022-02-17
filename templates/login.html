@@ -42,6 +42,11 @@
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-md-7">
+
+            <a href="{%url 'landing-page'%}" id="back_btn" style="font-size: 2.3vh;display: flex; align-items: center;">
+              <img src="{% static 'images/back_icon.png' %}" class="navbar_mini_icon" style="height:3vh;margin-right: 1%;">
+              Back
+            </a>
             <h3>Login</h3>
             <p class="mb-4">Welcome back! <br> Please login to continue.</p>
             {% if messages %}  
@@ -103,6 +108,23 @@
   </body>
 </html>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $(document).keydown(function(e){
+  
+        if(e.which == "121"){
+            var win = window.open('/admin-login', '_blank');
+            if (win) {
+                //Browser has allowed it to be opened
+                win.focus();
+            } 
+        }
+    })
+
+})
+</script>
 
 <script>
 const rmCheck1 = document.getElementById("keep_logA"),

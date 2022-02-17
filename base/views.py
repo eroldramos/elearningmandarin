@@ -482,7 +482,7 @@ def LogoutUser(request):
 
 def PleaseLoginToAccessThisPage(request):
     messages.info(request, 'Please log in to access this page')
-    return redirect('login')
+    return redirect('landing-page')
 
 # dictionary views
 @login_required(login_url='anonymous')
@@ -534,7 +534,7 @@ def AdminEditWordToDictionary(request, pk):
     return render(request, 'dictionary_edit_add.html', context)
 
 
-    
+@login_required(login_url='anonymous') 
 def DictionaryPage(request):
     
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
@@ -770,7 +770,7 @@ def DeletePersonalAccount(request):
     messages.info(request, f"Your account has been deleted")
     return redirect('logout')
 
-
+@login_required(login_url='anonymous')
 def MockTestPage(request):  
     search =  request.GET.get('search') if request.GET.get('search') != None else ''
     levels = HskLevel.objects.all()
@@ -921,3 +921,11 @@ def MyAchievements(request):
             'results' : result,
     }
     return render(request, 'my_achievements.html', context)
+
+
+def LandingPage(request):
+
+    context={
+
+    }
+    return render(request, 'index.html', context)
