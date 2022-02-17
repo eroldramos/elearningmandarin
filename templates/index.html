@@ -28,6 +28,31 @@
       href="{% static 'images/navbar_logo.png' %}"
     />
 
+    <style>
+    body::-webkit-scrollbar {
+        display: flex;
+    }
+    body{
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+    body::-webkit-scrollbar {
+      width: 5px;
+    }
+    body::-webkit-scrollbar-track {
+      -webkit-border-radius: 8px;
+      border-radius: 8px;
+    }
+    body::-webkit-scrollbar-thumb {
+      -webkit-border-radius: 5px;
+      background: #ed4e38;
+    }
+    body::-webkit-scrollbar-thumb:window-inactive {
+      background: rgba(184, 164, 164, 0.4); 
+    }
+
+    </style>
+
     <title>Learn Mandarin Now</title>
   </head>
   <body style="background-color: #ececec;">
