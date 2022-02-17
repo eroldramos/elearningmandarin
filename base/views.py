@@ -482,7 +482,7 @@ def LogoutUser(request):
 
 def PleaseLoginToAccessThisPage(request):
     messages.info(request, 'Please log in to access this page')
-    return redirect('login')
+    return redirect('landing-page')
 
 # dictionary views
 @login_required(login_url='anonymous')
@@ -921,3 +921,11 @@ def MyAchievements(request):
             'results' : result,
     }
     return render(request, 'my_achievements.html', context)
+
+
+def LandingPage(request):
+
+    context={
+
+    }
+    return render(request, 'index.html', context)

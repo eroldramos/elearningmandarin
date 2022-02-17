@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--Scroll Animation-->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+
+    <!-- Tab icon-->
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="{% static 'images/navbar_logo.png' %}"
+    />
+
+    <title>Learn Mandarin Now</title>
+  </head>
+  <body style="background-color: #ececec;">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+
+    <div id="first_screen">
+      <nav
+        class="navbar navbar-expand-lg navbar-dark"
+        id="navbar_header"
+        style="background-color: transparent"
+      >
+        <div class="container-fluid">
+          <img
+            src="{% static 'images/navbar_logo.png' %}"
+            id="navbar_logo"
+            style="height: 7vh"
+          />
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarColor02"
+            aria-controls="navbarColor02"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul
+              class="navbar-nav me-auto navbar_menuChouce"
+              style="margin: 0%; margin-left: 5%"
+            >
+              <li class="nav-item">
+                <a
+                  class="nav-link navigation_choices"
+                  href="{% url 'landing-page' %}"
+                  style="color: black; font-weight: bolder;font-size: 2.3vh;"
+                  id="dictionary_page"
+                  >Home
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link navigation_choices"
+                  href="#fourth_div"
+                  id="lesson_page"
+                  style="color: black; font-weight: bolder;font-size: 2.3vh;"
+                  >About us</a
+                >
+              </li>
+            </ul>
+
+            <div class="dropdown" style="display: flex; margin-right: 3%">
+              <a
+                class="btn btn-primary button_profile"
+                href="{% url 'login' %}"
+                style="background-color: transparent; color: black;font-size: 2.3vh;"
+              >
+                Login
+              </a>
+
+              <a
+                class="btn btn-primary button_profile"
+                href="{% url 'register' %}"
+                style="
+                  border-radius: 10px;
+                  margin-left: 15%;
+                  white-space: nowrap;
+                  font-size: 2.3vh;
+                "
+              >
+                Sign up
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div id="first_screenContent">
+            <p class="fs_header">Learn</p>
+            <p class="fs_header">Mandarin</p>
+            <p class="fs_header">Now</p>
+            <div class="line_fs"></div>
+            <p class="fs_subtext">Have you always wanted to learn Chinese for</p>
+            <p class="fs_subtext">travelling, business affairs or any personal </p>
+            <p class="fs_subtext">reasons? We are happy to help! We will teach</p>
+            <p class="fs_subtext">you how to learn Mandarin the smart way!</p>
+
+            <a
+                class="btn btn-primary button_profile"
+                href="#second_div"
+                style="
+                  border-radius: 30px;
+                  margin-top: 1rem;
+                  padding: .8rem 2rem;
+                  font-size: 2.3vh;
+                  white-space: nowrap;"
+              >
+                Get Started
+              </a>
+      </div>
+    </div>
+
+    <div id="second_div">
+            <p id="s1" data-aos="fade-left">HSK COURSES</p>
+            <p id="s2" data-aos="fade-left">HSK is the most important proficiency test in use today, cointaining 6 levels to determine comprehensive language and communication ability.</p>
+    </div>
+
+    <div id="third_div">
+        <img src="{% static 'images/index_banner.png' %}" data-aos="fade-right">
+    </div>
+
+    <div id="fourth_div"> 
+        <div id="left" data-aos="fade-up-right">
+            <img src="{% static 'images/navbar_logo.png' %}">
+            <p>Learn Mandarin Now</p>
+        </div>
+        <div id="right" data-aos="fade-up-left">
+            <p id="head">About Us</p>
+            <p id="subhead">Our means Wén or Language in english. We teach you some of the most important Chinese (Mandarin) words and phrases. We will try to make your learning Chinese (Mandarin) as easy as possible and give you a lot of resources about Chinese (Mandarin).
+
+            </p>
+        </div>
+
+    </div>
+
+    <div id="fifth_div" style="clear: both;">
+        <img src="{% static 'images/navbar_logo.png' %}">
+        <div style="display: flex;">
+            <li class="nav-item" style="list-style-type:none;margin-top: 1%;">
+              <a
+                class="nav-link navigation_choices"
+                href="{% url 'landing-page' %}"
+                style="color: whitesmoke; font-weight: bolder;font-size: 2.3vh;"
+                id="dictionary_page"
+                >Home
+              </a>
+            </li>
+            <li class="nav-item" style="list-style-type:none;margin-top: 1%;">
+              <a
+                class="nav-link navigation_choices"
+                href="#fourth_div"
+                id="lesson_page"
+                style="color: whitesmoke; font-weight: bolder;font-size: 2.3vh;"
+                >About us</a
+              >
+            </li>
+        </div>
+        <p>© 2022 All Rights Reserved</p>
+    </div>
+   
+
+  </body>
+</html>
+<script>
+    AOS.init();
+</script>

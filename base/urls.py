@@ -18,7 +18,7 @@ urlpatterns = [
     path('superuser/edit-user/<str:pk>/', views.AdminUpdateUser, name = 'superuser-edit-user'),
     path('superuser/add-word/', views.AdminAddWordToDictionary, name = 'superuser-add-word'),
     path('superuser/edit-word/<str:pk>/', views.AdminEditWordToDictionary, name = 'superuser-edit-word'),
-    path('', views.DictionaryPage, name = 'dictionary'),
+    path('dictionary/', views.DictionaryPage, name = 'dictionary'),
     path('dictionary/<str:pk>/', views.DictionaryDetails, name = 'dictionary-details'),
     path('lessons/', views.LessonsPage, name = 'lessons'),
     path('lessons/<str:pk>/', views.LessonsDetails, name = 'lessons-details'),
@@ -32,5 +32,5 @@ urlpatterns = [
     path('my-activitylogs/', views.MyActivityLogs, name = 'my-activitylogs'),
     path('my-achievements/', views.MyAchievements, name = 'my-achievements'),
     
-    
+    path('',views.LandingPage, name="landing-page"),
 ]
