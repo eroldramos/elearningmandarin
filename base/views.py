@@ -92,7 +92,8 @@ def RegisterPage(request):
                 messages.success(request, f'You are logged in as {user.username}')
                 return redirect('dictionary')
             else:
-                messages.warning(request, 'An error suddenly occured!')
+                for field, errors in form.errors.items():
+                    messages.error(request, '{}'.format(''.join(errors)))
                 return redirect('register')
         else:
             return redirect('register')
