@@ -478,7 +478,7 @@ def LogoutUser(request):
                     action = f"Logged out",
             )
     logout(request)        
-    return redirect('dictionary')
+    return redirect('landing-page')
 
 def PleaseLoginToAccessThisPage(request):
     messages.info(request, 'Please log in to access this page')
@@ -924,6 +924,10 @@ def MyAchievements(request):
 
 
 def LandingPage(request):
+
+    if request.user.is_authenticated:
+        messages.info(request, f"You are already logged in")
+        return redirect('lessons')
 
     context={
 
