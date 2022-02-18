@@ -92,7 +92,8 @@ def RegisterPage(request):
                 messages.success(request, f'You are logged in as {user.username}')
                 return redirect('dictionary')
             else:
-                messages.warning(request, 'An error suddenly occured!')
+                for field, errors in form.errors.items():
+                    messages.error(request, '{}'.format(''.join(errors)))
                 return redirect('register')
         else:
             return redirect('register')
@@ -478,7 +479,7 @@ def LogoutUser(request):
                     action = f"Logged out",
             )
     logout(request)        
-    return redirect('dictionary')
+    return redirect('landing-page')
 
 def PleaseLoginToAccessThisPage(request):
     messages.info(request, 'Please log in to access this page')
@@ -924,6 +925,10 @@ def MyAchievements(request):
 
 
 def LandingPage(request):
+
+    if request.user.is_authenticated:
+        messages.info(request, f"You are already logged in")
+        return redirect('lessons')
 
     context={
 
